@@ -22,11 +22,13 @@ var accountsLink = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "country-code",
 			Usage:    "Two-letter ISO country code of the institution.",
+			Required: true,
 			BodyPath: "countryCode",
 		},
 		&requestflag.Flag[any]{
 			Name:     "institution-name",
 			Usage:    "Name of the financial institution to link.",
+			Required: true,
 			BodyPath: "institutionName",
 		},
 		&requestflag.Flag[any]{
@@ -49,7 +51,8 @@ var accountsRetrieveDetails = cli.Command{
 	Usage: "Retrieves comprehensive analytics for a specific financial account, including\nhistorical balance trends, projected cash flow, and AI-driven insights into\nspending patterns.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "account-id",
+			Name:     "account-id",
+			Required: true,
 		},
 	},
 	Action:          handleAccountsRetrieveDetails,
@@ -81,16 +84,19 @@ var accountsRetrieveStatements = cli.Command{
 	Usage: "Fetches digital statements for a specific account, allowing filtering by date\nrange and format.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "account-id",
+			Name:     "account-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:      "month",
 			Usage:     "Month for the statement (1-12).",
+			Required:  true,
 			QueryPath: "month",
 		},
 		&requestflag.Flag[any]{
 			Name:      "year",
 			Usage:     "Year for the statement.",
+			Required:  true,
 			QueryPath: "year",
 		},
 		&requestflag.Flag[string]{

@@ -55,7 +55,8 @@ var marketplaceProductsSimulateImpact = cli.Command{
 	Usage: "Uses the Quantum Oracle to simulate the long-term financial impact of purchasing\nor subscribing to a specific marketplace product, such as a loan, investment, or\ninsurance policy, on the user's overall financial health and goals.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "product-id",
+			Name:     "product-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "simulation-parameters",

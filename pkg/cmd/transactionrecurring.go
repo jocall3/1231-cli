@@ -22,36 +22,43 @@ var transactionsRecurringCreate = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "amount",
 			Usage:    "Amount of the recurring transaction.",
+			Required: true,
 			BodyPath: "amount",
 		},
 		&requestflag.Flag[any]{
 			Name:     "category",
 			Usage:    "Category of the recurring transaction.",
+			Required: true,
 			BodyPath: "category",
 		},
 		&requestflag.Flag[any]{
 			Name:     "currency",
 			Usage:    "ISO 4217 currency code.",
+			Required: true,
 			BodyPath: "currency",
 		},
 		&requestflag.Flag[any]{
 			Name:     "description",
 			Usage:    "Description of the recurring transaction.",
+			Required: true,
 			BodyPath: "description",
 		},
 		&requestflag.Flag[string]{
 			Name:     "frequency",
 			Usage:    "Frequency of the recurring transaction.",
+			Required: true,
 			BodyPath: "frequency",
 		},
 		&requestflag.Flag[any]{
 			Name:     "linked-account-id",
 			Usage:    "ID of the account to associate with this recurring transaction.",
+			Required: true,
 			BodyPath: "linkedAccountId",
 		},
 		&requestflag.Flag[any]{
 			Name:     "start-date",
 			Usage:    "The date when this recurring transaction is expected to start.",
+			Required: true,
 			BodyPath: "startDate",
 		},
 	},

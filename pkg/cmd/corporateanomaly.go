@@ -66,11 +66,13 @@ var corporateAnomaliesUpdateStatus = cli.Command{
 	Usage: "Updates the review status of a specific financial anomaly, allowing compliance\nofficers to mark it as dismissed, resolved, or escalate for further\ninvestigation after thorough AI-assisted and human review.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "anomaly-id",
+			Name:     "anomaly-id",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:     "status",
 			Usage:    "The new status for the financial anomaly.",
+			Required: true,
 			BodyPath: "status",
 		},
 		&requestflag.Flag[any]{

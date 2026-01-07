@@ -22,16 +22,19 @@ var aiAdsGenerateAdvanced = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "length-seconds",
 			Usage:    "Desired length of the video in seconds.",
+			Required: true,
 			BodyPath: "lengthSeconds",
 		},
 		&requestflag.Flag[any]{
 			Name:     "prompt",
 			Usage:    "The textual prompt to guide the AI video generation.",
+			Required: true,
 			BodyPath: "prompt",
 		},
 		&requestflag.Flag[string]{
 			Name:     "style",
 			Usage:    "Artistic style of the video.",
+			Required: true,
 			BodyPath: "style",
 		},
 		&requestflag.Flag[string]{
@@ -92,16 +95,19 @@ var aiAdsGenerateStandard = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "length-seconds",
 			Usage:    "Desired length of the video in seconds.",
+			Required: true,
 			BodyPath: "lengthSeconds",
 		},
 		&requestflag.Flag[any]{
 			Name:     "prompt",
 			Usage:    "The textual prompt to guide the AI video generation.",
+			Required: true,
 			BodyPath: "prompt",
 		},
 		&requestflag.Flag[string]{
 			Name:     "style",
 			Usage:    "Artistic style of the video.",
+			Required: true,
 			BodyPath: "style",
 		},
 		&requestflag.Flag[string]{

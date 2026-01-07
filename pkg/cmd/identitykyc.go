@@ -30,26 +30,31 @@ var identityKYCSubmit = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "country-of-issue",
 			Usage:    "The two-letter ISO country code where the document was issued.",
+			Required: true,
 			BodyPath: "countryOfIssue",
 		},
 		&requestflag.Flag[any]{
 			Name:     "document-number",
 			Usage:    "The identification number on the document.",
+			Required: true,
 			BodyPath: "documentNumber",
 		},
 		&requestflag.Flag[string]{
 			Name:     "document-type",
 			Usage:    "The type of KYC document being submitted.",
+			Required: true,
 			BodyPath: "documentType",
 		},
 		&requestflag.Flag[any]{
 			Name:     "expiration-date",
 			Usage:    "The expiration date of the document (YYYY-MM-DD).",
+			Required: true,
 			BodyPath: "expirationDate",
 		},
 		&requestflag.Flag[any]{
 			Name:     "issue-date",
 			Usage:    "The issue date of the document (YYYY-MM-DD).",
+			Required: true,
 			BodyPath: "issueDate",
 		},
 		&requestflag.Flag[[]any]{

@@ -20,7 +20,8 @@ var transactionsRetrieve = cli.Command{
 	Usage: "Retrieves granular information for a single transaction by its unique ID,\nincluding AI categorization confidence, merchant details, and associated carbon\nfootprint.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "transaction-id",
+			Name:     "transaction-id",
+			Required: true,
 		},
 	},
 	Action:          handleTransactionsRetrieve,
@@ -87,11 +88,13 @@ var transactionsCategorize = cli.Command{
 	Usage: "Allows the user to override or refine the AI's categorization for a transaction,\nimproving future AI accuracy and personal financial reporting.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "transaction-id",
+			Name:     "transaction-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "category",
 			Usage:    "The new category for the transaction. Can be hierarchical.",
+			Required: true,
 			BodyPath: "category",
 		},
 		&requestflag.Flag[any]{
@@ -114,16 +117,19 @@ var transactionsDispute = cli.Command{
 	Usage: "Begins the process of disputing a specific transaction, providing details and\nsupporting documentation for review by our compliance team and AI.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "transaction-id",
+			Name:     "transaction-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "details",
 			Usage:    "Detailed explanation of the dispute.",
+			Required: true,
 			BodyPath: "details",
 		},
 		&requestflag.Flag[string]{
 			Name:     "reason",
 			Usage:    "The primary reason for disputing the transaction.",
+			Required: true,
 			BodyPath: "reason",
 		},
 		&requestflag.Flag[[]any]{
@@ -141,11 +147,13 @@ var transactionsUpdateNotes = cli.Command{
 	Usage: "Allows the user to add or update personal notes for a specific transaction.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "transaction-id",
+			Name:     "transaction-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "notes",
 			Usage:    "The personal notes to add or update for the transaction.",
+			Required: true,
 			BodyPath: "notes",
 		},
 	},

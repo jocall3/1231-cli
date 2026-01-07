@@ -22,26 +22,31 @@ var budgetsCreate = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "end-date",
 			Usage:    "End date of the budget period.",
+			Required: true,
 			BodyPath: "endDate",
 		},
 		&requestflag.Flag[any]{
 			Name:     "name",
 			Usage:    "Name of the new budget.",
+			Required: true,
 			BodyPath: "name",
 		},
 		&requestflag.Flag[string]{
 			Name:     "period",
 			Usage:    "The frequency or period of the budget.",
+			Required: true,
 			BodyPath: "period",
 		},
 		&requestflag.Flag[any]{
 			Name:     "start-date",
 			Usage:    "Start date of the budget period.",
+			Required: true,
 			BodyPath: "startDate",
 		},
 		&requestflag.Flag[any]{
 			Name:     "total-amount",
 			Usage:    "Total amount allocated for the entire budget.",
+			Required: true,
 			BodyPath: "totalAmount",
 		},
 		&requestflag.Flag[any]{
@@ -69,7 +74,8 @@ var budgetsRetrieve = cli.Command{
 	Usage: "Retrieves detailed information for a specific budget, including current\nspending, remaining amounts, and AI recommendations.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "budget-id",
+			Name:     "budget-id",
+			Required: true,
 		},
 	},
 	Action:          handleBudgetsRetrieve,
@@ -81,7 +87,8 @@ var budgetsUpdate = cli.Command{
 	Usage: "Updates the parameters of an existing budget, such as total amount, dates, or\ncategories.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "budget-id",
+			Name:     "budget-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "alert-threshold",
@@ -148,7 +155,8 @@ var budgetsDelete = cli.Command{
 	Usage: "Deletes a specific budget from the user's profile.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "budget-id",
+			Name:     "budget-id",
+			Required: true,
 		},
 	},
 	Action:          handleBudgetsDelete,

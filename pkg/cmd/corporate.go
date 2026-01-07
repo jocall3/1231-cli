@@ -22,16 +22,19 @@ var corporatePerformSanctionScreening = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "country",
 			Usage:    "Two-letter ISO country code related to the entity (e.g., country of residence, registration).",
+			Required: true,
 			BodyPath: "country",
 		},
 		&requestflag.Flag[string]{
 			Name:     "entity-type",
 			Usage:    "The type of entity being screened.",
+			Required: true,
 			BodyPath: "entityType",
 		},
 		&requestflag.Flag[any]{
 			Name:     "name",
 			Usage:    "Full name of the individual or organization to screen.",
+			Required: true,
 			BodyPath: "name",
 		},
 		&requestflag.Flag[map[string]any]{

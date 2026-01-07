@@ -22,31 +22,37 @@ var paymentsInternationalInitiate = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "amount",
 			Usage:    "The amount to send in the source currency.",
+			Required: true,
 			BodyPath: "amount",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "beneficiary",
 			Usage:    "Details of the payment beneficiary.",
+			Required: true,
 			BodyPath: "beneficiary",
 		},
 		&requestflag.Flag[any]{
 			Name:     "purpose",
 			Usage:    "Purpose of the payment.",
+			Required: true,
 			BodyPath: "purpose",
 		},
 		&requestflag.Flag[any]{
 			Name:     "source-account-id",
 			Usage:    "The ID of the user's source account for the payment.",
+			Required: true,
 			BodyPath: "sourceAccountId",
 		},
 		&requestflag.Flag[any]{
 			Name:     "source-currency",
 			Usage:    "The ISO 4217 currency code of the source funds.",
+			Required: true,
 			BodyPath: "sourceCurrency",
 		},
 		&requestflag.Flag[any]{
 			Name:     "target-currency",
 			Usage:    "The ISO 4217 currency code for the beneficiary's currency.",
+			Required: true,
 			BodyPath: "targetCurrency",
 		},
 		&requestflag.Flag[any]{
@@ -75,7 +81,8 @@ var paymentsInternationalRetrieveStatus = cli.Command{
 	Usage: "Retrieves the current processing status and details of an initiated\ninternational payment.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "payment-id",
+			Name:     "payment-id",
+			Required: true,
 		},
 	},
 	Action:          handlePaymentsInternationalRetrieveStatus,

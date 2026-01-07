@@ -20,7 +20,8 @@ var accountsOverdraftSettingsRetrieveOverdraftSettings = cli.Command{
 	Usage: "Retrieves the current overdraft protection settings for a specific account.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "account-id",
+			Name:     "account-id",
+			Required: true,
 		},
 	},
 	Action:          handleAccountsOverdraftSettingsRetrieveOverdraftSettings,
@@ -32,7 +33,8 @@ var accountsOverdraftSettingsUpdateOverdraftSettings = cli.Command{
 	Usage: "Updates the overdraft protection settings for a specific account, enabling or\ndisabling protection and configuring preferences.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "account-id",
+			Name:     "account-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "enabled",

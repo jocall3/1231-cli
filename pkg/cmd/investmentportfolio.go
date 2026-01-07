@@ -22,26 +22,31 @@ var investmentsPortfoliosCreate = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "currency",
 			Usage:    "ISO 4217 currency code of the portfolio.",
+			Required: true,
 			BodyPath: "currency",
 		},
 		&requestflag.Flag[any]{
 			Name:     "initial-investment",
 			Usage:    "Initial amount to invest into the portfolio.",
+			Required: true,
 			BodyPath: "initialInvestment",
 		},
 		&requestflag.Flag[any]{
 			Name:     "name",
 			Usage:    "Name for the new investment portfolio.",
+			Required: true,
 			BodyPath: "name",
 		},
 		&requestflag.Flag[string]{
 			Name:     "risk-tolerance",
 			Usage:    "Desired risk tolerance for this portfolio.",
+			Required: true,
 			BodyPath: "riskTolerance",
 		},
 		&requestflag.Flag[string]{
 			Name:     "type",
 			Usage:    "General type or strategy of the portfolio.",
+			Required: true,
 			BodyPath: "type",
 		},
 		&requestflag.Flag[any]{
@@ -64,7 +69,8 @@ var investmentsPortfoliosRetrieve = cli.Command{
 	Usage: "Retrieves detailed information for a specific investment portfolio, including\nholdings, performance, and AI insights.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "portfolio-id",
+			Name:     "portfolio-id",
+			Required: true,
 		},
 	},
 	Action:          handleInvestmentsPortfoliosRetrieve,
@@ -76,7 +82,8 @@ var investmentsPortfoliosUpdate = cli.Command{
 	Usage: "Updates high-level details of an investment portfolio, such as name or risk\ntolerance.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "portfolio-id",
+			Name:     "portfolio-id",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:     "ai-rebalancing-frequency",
@@ -123,11 +130,13 @@ var investmentsPortfoliosRebalance = cli.Command{
 	Usage: "Triggers an AI-driven rebalancing process for a specific investment portfolio\nbased on a target risk tolerance or strategy.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "portfolio-id",
+			Name:     "portfolio-id",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:     "target-risk-tolerance",
 			Usage:    "The desired risk tolerance for rebalancing the portfolio.",
+			Required: true,
 			BodyPath: "targetRiskTolerance",
 		},
 		&requestflag.Flag[any]{

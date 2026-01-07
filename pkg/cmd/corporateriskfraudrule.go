@@ -22,31 +22,37 @@ var corporateRiskFraudRulesCreate = cli.Command{
 		&requestflag.Flag[map[string]any]{
 			Name:     "action",
 			Usage:    "Action to take when a fraud rule is triggered.",
+			Required: true,
 			BodyPath: "action",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "criteria",
 			Usage:    "Criteria that define when a fraud rule should trigger.",
+			Required: true,
 			BodyPath: "criteria",
 		},
 		&requestflag.Flag[any]{
 			Name:     "description",
 			Usage:    "Detailed description of what the rule detects.",
+			Required: true,
 			BodyPath: "description",
 		},
 		&requestflag.Flag[any]{
 			Name:     "name",
 			Usage:    "Name of the new fraud rule.",
+			Required: true,
 			BodyPath: "name",
 		},
 		&requestflag.Flag[string]{
 			Name:     "severity",
 			Usage:    "Severity level when this rule is triggered.",
+			Required: true,
 			BodyPath: "severity",
 		},
 		&requestflag.Flag[string]{
 			Name:     "status",
 			Usage:    "Initial status of the rule.",
+			Required: true,
 			BodyPath: "status",
 		},
 	},
@@ -59,7 +65,8 @@ var corporateRiskFraudRulesUpdate = cli.Command{
 	Usage: "Updates an existing custom AI-powered fraud detection rule, modifying its\ncriteria, actions, or status.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "rule-id",
+			Name:     "rule-id",
+			Required: true,
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "action",
@@ -121,7 +128,8 @@ var corporateRiskFraudRulesDelete = cli.Command{
 	Usage: "Deletes a specific custom AI-powered fraud detection rule.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "rule-id",
+			Name:     "rule-id",
+			Required: true,
 		},
 	},
 	Action:          handleCorporateRiskFraudRulesDelete,

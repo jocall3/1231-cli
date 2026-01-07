@@ -22,11 +22,13 @@ var usersLogin = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "email",
 			Usage:    "User's email address.",
+			Required: true,
 			BodyPath: "email",
 		},
 		&requestflag.Flag[any]{
 			Name:     "password",
 			Usage:    "User's password.",
+			Required: true,
 			BodyPath: "password",
 		},
 		&requestflag.Flag[any]{
@@ -46,16 +48,19 @@ var usersRegister = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "email",
 			Usage:    "Email address for registration and login.",
+			Required: true,
 			BodyPath: "email",
 		},
 		&requestflag.Flag[any]{
 			Name:     "name",
 			Usage:    "Full name of the user.",
+			Required: true,
 			BodyPath: "name",
 		},
 		&requestflag.Flag[any]{
 			Name:     "password",
 			Usage:    "User's chosen password.",
+			Required: true,
 			BodyPath: "password",
 		},
 		&requestflag.Flag[map[string]any]{

@@ -20,7 +20,8 @@ var accountsTransactionsRetrievePending = cli.Command{
 	Usage: "Retrieves a list of pending transactions that have not yet cleared for a\nspecific financial account.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "account-id",
+			Name:     "account-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:      "limit",

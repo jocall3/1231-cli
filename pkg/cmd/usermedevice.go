@@ -40,7 +40,8 @@ var usersMeDevicesDeregister = cli.Command{
 	Usage: "Removes a specific device from the user's linked devices, revoking its access\nand requiring re-registration for future use. Useful for lost or compromised\ndevices.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "device-id",
+			Name:     "device-id",
+			Required: true,
 		},
 	},
 	Action:          handleUsersMeDevicesDeregister,
@@ -54,16 +55,19 @@ var usersMeDevicesRegister = cli.Command{
 		&requestflag.Flag[string]{
 			Name:     "device-type",
 			Usage:    "Type of the device being registered.",
+			Required: true,
 			BodyPath: "deviceType",
 		},
 		&requestflag.Flag[any]{
 			Name:     "model",
 			Usage:    "Model of the device.",
+			Required: true,
 			BodyPath: "model",
 		},
 		&requestflag.Flag[any]{
 			Name:     "os",
 			Usage:    "Operating system of the device.",
+			Required: true,
 			BodyPath: "os",
 		},
 		&requestflag.Flag[any]{
