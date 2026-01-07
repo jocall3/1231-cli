@@ -22,16 +22,19 @@ var sustainabilityPurchaseCarbonOffsets = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "amount-kg-co2e",
 			Usage:    "The amount of carbon dioxide equivalent to offset in kilograms.",
+			Required: true,
 			BodyPath: "amountKgCO2e",
 		},
 		&requestflag.Flag[any]{
 			Name:     "offset-project",
 			Usage:    "Optional: The specific carbon offset project to support.",
+			Required: true,
 			BodyPath: "offsetProject",
 		},
 		&requestflag.Flag[any]{
 			Name:     "payment-account-id",
 			Usage:    "The ID of the user's account to use for payment.",
+			Required: true,
 			BodyPath: "paymentAccountId",
 		},
 	},

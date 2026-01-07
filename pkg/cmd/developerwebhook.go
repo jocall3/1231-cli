@@ -22,11 +22,13 @@ var developersWebhooksCreate = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "callback-url",
 			Usage:    "The URL to which webhook events will be sent.",
+			Required: true,
 			BodyPath: "callbackUrl",
 		},
 		&requestflag.Flag[[]any]{
 			Name:     "event",
 			Usage:    "List of event types to subscribe to.",
+			Required: true,
 			BodyPath: "events",
 		},
 		&requestflag.Flag[any]{
@@ -44,7 +46,8 @@ var developersWebhooksUpdate = cli.Command{
 	Usage: "Modifies an existing webhook subscription, allowing changes to the callback URL,\nsubscribed events, or activation status.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "subscription-id",
+			Name:     "subscription-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "callback-url",
@@ -91,7 +94,8 @@ var developersWebhooksDelete = cli.Command{
 	Usage: "Deletes an existing webhook subscription, stopping all future event\nnotifications to the specified callback URL.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "subscription-id",
+			Name:     "subscription-id",
+			Required: true,
 		},
 	},
 	Action:          handleDevelopersWebhooksDelete,

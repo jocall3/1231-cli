@@ -50,7 +50,8 @@ var notificationsMarkAsRead = cli.Command{
 	Usage: "Marks a specific user notification as read.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "notification-id",
+			Name:     "notification-id",
+			Required: true,
 		},
 	},
 	Action:          handleNotificationsMarkAsRead,

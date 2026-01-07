@@ -42,21 +42,25 @@ var corporateCardsCreateVirtual = cli.Command{
 		&requestflag.Flag[map[string]any]{
 			Name:     "controls",
 			Usage:    "Granular spending controls for a corporate card.",
+			Required: true,
 			BodyPath: "controls",
 		},
 		&requestflag.Flag[any]{
 			Name:     "expiration-date",
 			Usage:    "Expiration date for the virtual card (YYYY-MM-DD).",
+			Required: true,
 			BodyPath: "expirationDate",
 		},
 		&requestflag.Flag[any]{
 			Name:     "holder-name",
 			Usage:    "Name to appear on the virtual card.",
+			Required: true,
 			BodyPath: "holderName",
 		},
 		&requestflag.Flag[any]{
 			Name:     "purpose",
 			Usage:    "Brief description of the virtual card's purpose.",
+			Required: true,
 			BodyPath: "purpose",
 		},
 		&requestflag.Flag[any]{
@@ -79,11 +83,13 @@ var corporateCardsFreeze = cli.Command{
 	Usage: "Immediately changes the frozen status of a corporate card, preventing or\nallowing transactions in real-time, critical for security and expense\nmanagement.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "card-id",
+			Name:     "card-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "freeze",
 			Usage:    "Set to `true` to freeze the card, `false` to unfreeze.",
+			Required: true,
 			BodyPath: "freeze",
 		},
 	},
@@ -96,7 +102,8 @@ var corporateCardsListTransactions = cli.Command{
 	Usage: "Retrieves a paginated list of transactions made with a specific corporate card,\nincluding AI categorization and compliance flags.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "card-id",
+			Name:     "card-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:      "end-date",
@@ -129,7 +136,8 @@ var corporateCardsUpdateControls = cli.Command{
 	Usage: "Updates the sophisticated spending controls, limits, and policy overrides for a\nspecific corporate card, enabling real-time adjustments for security and budget\nadherence.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "card-id",
+			Name:     "card-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "atm-withdrawals",

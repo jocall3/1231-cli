@@ -22,26 +22,31 @@ var web3TransactionsInitiateTransfer = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "amount",
 			Usage:    "The amount of cryptocurrency to transfer.",
+			Required: true,
 			BodyPath: "amount",
 		},
 		&requestflag.Flag[any]{
 			Name:     "asset-symbol",
 			Usage:    "Symbol of the crypto asset to transfer (e.g., ETH, USDC).",
+			Required: true,
 			BodyPath: "assetSymbol",
 		},
 		&requestflag.Flag[any]{
 			Name:     "blockchain-network",
 			Usage:    "The blockchain network for the transfer.",
+			Required: true,
 			BodyPath: "blockchainNetwork",
 		},
 		&requestflag.Flag[any]{
 			Name:     "recipient-address",
 			Usage:    "The recipient's blockchain address.",
+			Required: true,
 			BodyPath: "recipientAddress",
 		},
 		&requestflag.Flag[any]{
 			Name:     "source-wallet-id",
 			Usage:    "ID of the connected wallet from which to send funds.",
+			Required: true,
 			BodyPath: "sourceWalletId",
 		},
 		&requestflag.Flag[any]{

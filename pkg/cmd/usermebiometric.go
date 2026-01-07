@@ -30,16 +30,19 @@ var usersMeBiometricsEnroll = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "biometric-signature",
 			Usage:    "Base64 encoded representation of the biometric template or proof.",
+			Required: true,
 			BodyPath: "biometricSignature",
 		},
 		&requestflag.Flag[string]{
 			Name:     "biometric-type",
 			Usage:    "The type of biometric data being enrolled.",
+			Required: true,
 			BodyPath: "biometricType",
 		},
 		&requestflag.Flag[any]{
 			Name:     "device-id",
 			Usage:    "The ID of the device on which the biometric is being enrolled.",
+			Required: true,
 			BodyPath: "deviceId",
 		},
 		&requestflag.Flag[any]{
@@ -67,16 +70,19 @@ var usersMeBiometricsVerify = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "biometric-signature",
 			Usage:    "Base64 encoded representation of the one-time biometric proof for verification.",
+			Required: true,
 			BodyPath: "biometricSignature",
 		},
 		&requestflag.Flag[string]{
 			Name:     "biometric-type",
 			Usage:    "The type of biometric data being verified.",
+			Required: true,
 			BodyPath: "biometricType",
 		},
 		&requestflag.Flag[any]{
 			Name:     "device-id",
 			Usage:    "The ID of the device initiating the biometric verification.",
+			Required: true,
 			BodyPath: "deviceId",
 		},
 	},

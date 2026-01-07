@@ -22,16 +22,19 @@ var usersPasswordResetConfirm = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "identifier",
 			Usage:    "User's email or phone number used for verification.",
+			Required: true,
 			BodyPath: "identifier",
 		},
 		&requestflag.Flag[any]{
 			Name:     "new-password",
 			Usage:    "The new password for the user account.",
+			Required: true,
 			BodyPath: "newPassword",
 		},
 		&requestflag.Flag[any]{
 			Name:     "verification-code",
 			Usage:    "The verification code received via email or SMS.",
+			Required: true,
 			BodyPath: "verificationCode",
 		},
 	},
@@ -46,6 +49,7 @@ var usersPasswordResetInitiate = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "identifier",
 			Usage:    "User's email or phone number for verification.",
+			Required: true,
 			BodyPath: "identifier",
 		},
 	},

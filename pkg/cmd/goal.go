@@ -22,21 +22,25 @@ var goalsCreate = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "name",
 			Usage:    "Name of the new financial goal.",
+			Required: true,
 			BodyPath: "name",
 		},
 		&requestflag.Flag[any]{
 			Name:     "target-amount",
 			Usage:    "The target monetary amount for the goal.",
+			Required: true,
 			BodyPath: "targetAmount",
 		},
 		&requestflag.Flag[any]{
 			Name:     "target-date",
 			Usage:    "The target completion date for the goal.",
+			Required: true,
 			BodyPath: "targetDate",
 		},
 		&requestflag.Flag[string]{
 			Name:     "type",
 			Usage:    "Type of financial goal.",
+			Required: true,
 			BodyPath: "type",
 		},
 		&requestflag.Flag[[]any]{
@@ -69,7 +73,8 @@ var goalsRetrieve = cli.Command{
 	Usage: "Retrieves detailed information for a specific financial goal, including current\nprogress, AI strategic plan, and related insights.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "goal-id",
+			Name:     "goal-id",
+			Required: true,
 		},
 	},
 	Action:          handleGoalsRetrieve,
@@ -81,7 +86,8 @@ var goalsUpdate = cli.Command{
 	Usage: "Updates the parameters of an existing financial goal, such as target amount,\ndate, or contributing accounts. This may trigger an AI plan recalculation.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "goal-id",
+			Name:     "goal-id",
+			Required: true,
 		},
 		&requestflag.Flag[[]any]{
 			Name:     "contributing-account",
@@ -148,7 +154,8 @@ var goalsDelete = cli.Command{
 	Usage: "Deletes a specific financial goal from the user's profile.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "goal-id",
+			Name:     "goal-id",
+			Required: true,
 		},
 	},
 	Action:          handleGoalsDelete,

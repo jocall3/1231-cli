@@ -42,21 +42,25 @@ var web3WalletsConnect = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "blockchain-network",
 			Usage:    "The blockchain network for this wallet (e.g., Ethereum, Solana).",
+			Required: true,
 			BodyPath: "blockchainNetwork",
 		},
 		&requestflag.Flag[any]{
 			Name:     "signed-message",
 			Usage:    "A message cryptographically signed by the wallet owner to prove ownership/intent.",
+			Required: true,
 			BodyPath: "signedMessage",
 		},
 		&requestflag.Flag[any]{
 			Name:     "wallet-address",
 			Usage:    "The public address of the cryptocurrency wallet.",
+			Required: true,
 			BodyPath: "walletAddress",
 		},
 		&requestflag.Flag[any]{
 			Name:     "wallet-provider",
 			Usage:    "The name of the wallet provider (e.g., MetaMask, Phantom).",
+			Required: true,
 			BodyPath: "walletProvider",
 		},
 		&requestflag.Flag[any]{
@@ -74,7 +78,8 @@ var web3WalletsRetrieveBalances = cli.Command{
 	Usage: "Retrieves the current balances of all recognized crypto assets within a specific\nconnected wallet.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "wallet-id",
+			Name:     "wallet-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:      "limit",

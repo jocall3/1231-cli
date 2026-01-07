@@ -20,7 +20,8 @@ var aiOracleSimulationsRetrieve = cli.Command{
 	Usage: "Retrieves the full, detailed results of a specific financial simulation by its\nID.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "simulation-id",
+			Name:     "simulation-id",
+			Required: true,
 		},
 	},
 	Action:          handleAIOracleSimulationsRetrieve,
@@ -52,7 +53,8 @@ var aiOracleSimulationsDelete = cli.Command{
 	Usage: "Deletes a previously run financial simulation and its results.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "simulation-id",
+			Name:     "simulation-id",
+			Required: true,
 		},
 	},
 	Action:          handleAIOracleSimulationsDelete,

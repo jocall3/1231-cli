@@ -22,21 +22,25 @@ var paymentsFxConvert = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "source-account-id",
 			Usage:    "The ID of the account from which funds will be converted.",
+			Required: true,
 			BodyPath: "sourceAccountId",
 		},
 		&requestflag.Flag[any]{
 			Name:     "source-amount",
 			Usage:    "The amount to convert from the source currency.",
+			Required: true,
 			BodyPath: "sourceAmount",
 		},
 		&requestflag.Flag[any]{
 			Name:     "source-currency",
 			Usage:    "The ISO 4217 currency code of the source funds.",
+			Required: true,
 			BodyPath: "sourceCurrency",
 		},
 		&requestflag.Flag[any]{
 			Name:     "target-currency",
 			Usage:    "The ISO 4217 currency code for the target currency.",
+			Required: true,
 			BodyPath: "targetCurrency",
 		},
 		&requestflag.Flag[any]{
@@ -61,11 +65,13 @@ var paymentsFxRetrieveRates = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "base-currency",
 			Usage:     "The base currency code (e.g., USD).",
+			Required:  true,
 			QueryPath: "baseCurrency",
 		},
 		&requestflag.Flag[any]{
 			Name:      "target-currency",
 			Usage:     "The target currency code (e.g., EUR).",
+			Required:  true,
 			QueryPath: "targetCurrency",
 		},
 		&requestflag.Flag[any]{

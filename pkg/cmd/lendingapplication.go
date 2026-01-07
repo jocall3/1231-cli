@@ -20,7 +20,8 @@ var lendingApplicationsRetrieve = cli.Command{
 	Usage: "Retrieves the current status and detailed information for a submitted loan\napplication, including AI underwriting outcomes, approved terms, and next steps.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "application-id",
+			Name:     "application-id",
+			Required: true,
 		},
 	},
 	Action:          handleLendingApplicationsRetrieve,
@@ -34,16 +35,19 @@ var lendingApplicationsSubmit = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "loan-amount",
 			Usage:    "The desired loan amount.",
+			Required: true,
 			BodyPath: "loanAmount",
 		},
 		&requestflag.Flag[string]{
 			Name:     "loan-purpose",
 			Usage:    "The purpose of the loan.",
+			Required: true,
 			BodyPath: "loanPurpose",
 		},
 		&requestflag.Flag[any]{
 			Name:     "repayment-term-months",
 			Usage:    "The desired repayment term in months.",
+			Required: true,
 			BodyPath: "repaymentTermMonths",
 		},
 		&requestflag.Flag[any]{

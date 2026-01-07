@@ -22,11 +22,13 @@ var developersAPIKeysCreate = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "name",
 			Usage:    "A descriptive name for the API key.",
+			Required: true,
 			BodyPath: "name",
 		},
 		&requestflag.Flag[[]any]{
 			Name:     "scope",
 			Usage:    "List of permissions to grant to this API key.",
+			Required: true,
 			BodyPath: "scopes",
 		},
 		&requestflag.Flag[any]{
@@ -64,7 +66,8 @@ var developersAPIKeysRevoke = cli.Command{
 	Usage: "Revokes an existing API key, disabling its access immediately.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "key-id",
+			Name:     "key-id",
+			Required: true,
 		},
 	},
 	Action:          handleDevelopersAPIKeysRevoke,

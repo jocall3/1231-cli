@@ -22,6 +22,7 @@ var investmentsAssetsSearch = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "query",
 			Usage:     "Search query for asset name or symbol.",
+			Required:  true,
 			QueryPath: "query",
 		},
 		&requestflag.Flag[any]{

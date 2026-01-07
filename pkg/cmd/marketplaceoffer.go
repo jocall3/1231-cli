@@ -20,7 +20,8 @@ var marketplaceOffersRedeem = cli.Command{
 	Usage: "Redeems a personalized, exclusive offer from the Plato AI marketplace, often\nresulting in a discount, special rate, or credit to the user's account.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "offer-id",
+			Name:     "offer-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "payment-account-id",

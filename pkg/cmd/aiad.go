@@ -45,7 +45,8 @@ var aiAdsRetrieveStatus = cli.Command{
 	Usage: "Polls the real-time status of an asynchronous video generation operation. Once\ncomplete ('done'), the response includes a temporary, signed URL to access and\ndownload the generated video asset.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "operation-id",
+			Name:     "operation-id",
+			Required: true,
 		},
 	},
 	Action:          handleAIAdsRetrieveStatus,

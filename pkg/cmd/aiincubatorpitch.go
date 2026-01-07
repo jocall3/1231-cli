@@ -20,7 +20,8 @@ var aiIncubatorPitchRetrieveDetails = cli.Command{
 	Usage: "Retrieves the granular AI-driven analysis, strategic feedback, market validation\nresults, and any outstanding questions from Quantum Weaver for a specific\nbusiness pitch.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "pitch-id",
+			Name:     "pitch-id",
+			Required: true,
 		},
 	},
 	Action:          handleAIIncubatorPitchRetrieveDetails,
@@ -34,21 +35,25 @@ var aiIncubatorPitchSubmit = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "business-plan",
 			Usage:    "The user's detailed narrative business plan (e.g., executive summary, vision, strategy).",
+			Required: true,
 			BodyPath: "businessPlan",
 		},
 		&requestflag.Flag[map[string]any]{
 			Name:     "financial-projections",
 			Usage:    "Key financial metrics and projections for the next 3-5 years.",
+			Required: true,
 			BodyPath: "financialProjections",
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "founding-team",
 			Usage:    "Key profiles and expertise of the founding team members.",
+			Required: true,
 			BodyPath: "foundingTeam",
 		},
 		&requestflag.Flag[any]{
 			Name:     "market-opportunity",
 			Usage:    "Detailed analysis of the target market, problem statement, and proposed solution's unique value proposition.",
+			Required: true,
 			BodyPath: "marketOpportunity",
 		},
 	},
@@ -61,7 +66,8 @@ var aiIncubatorPitchSubmitFeedback = cli.Command{
 	Usage: "Allows the entrepreneur to respond to specific questions or provide additional\ndetails requested by Quantum Weaver, moving the pitch forward in the incubation\nprocess.",
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "pitch-id",
+			Name:     "pitch-id",
+			Required: true,
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "answer",

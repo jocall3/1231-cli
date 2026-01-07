@@ -22,10 +22,12 @@ var aiOracleSimulateRunAdvanced = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "prompt",
 			Usage:    "A natural language prompt describing the complex, multi-variable scenario.",
+			Required: true,
 			BodyPath: "prompt",
 		},
 		&requestflag.Flag[[]map[string]any]{
 			Name:     "scenario",
+			Required: true,
 			BodyPath: "scenarios",
 		},
 		&requestflag.Flag[map[string]any]{
@@ -50,6 +52,7 @@ var aiOracleSimulateRunStandard = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "prompt",
 			Usage:    "A natural language prompt describing the 'what-if' scenario.",
+			Required: true,
 			BodyPath: "prompt",
 		},
 		&requestflag.Flag[any]{
