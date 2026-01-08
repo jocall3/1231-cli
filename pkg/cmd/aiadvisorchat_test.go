@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/jocall3/1231-cli/internal/mocktest"
+	"github.com/jocall3/1231-cli/internal/requestflag"
 )
 
 func TestAIAdvisorChatRetrieveHistory(t *testing.T) {
@@ -25,6 +26,19 @@ func TestAIAdvisorChatSendMessage(t *testing.T) {
 		t,
 		"ai:advisor:chat", "send-message",
 		"--function-response", "{name: send_money, response: {status: success, transactionId: pmt_654321, amountSent: 55.5, recipient: Alex}}",
+		"--message", "Can you analyze my recent spending patterns and suggest areas for saving, focusing on my dining expenses?",
+		"--session-id", "session-quantum-xyz-789-alpha",
+	)
+
+	// Check that inner flags have been set up correctly
+	requestflag.CheckInnerFlags(aiAdvisorChatSendMessage)
+
+	// Alternative argument passing style using inner flags
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"ai:advisor:chat", "send-message",
+		"--function-response.name", "send_money",
+		"--function-response.response", "{status: success, transactionId: pmt_654321, amountSent: 55.5, recipient: Alex}",
 		"--message", "Can you analyze my recent spending patterns and suggest areas for saving, focusing on my dining expenses?",
 		"--session-id", "session-quantum-xyz-789-alpha",
 	)

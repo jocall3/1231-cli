@@ -15,7 +15,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var corporateRiskFraudRulesCreate = cli.Command{
+var corporateRiskFraudRulesCreate = requestflag.WithInnerFlags(cli.Command{
 	Name:  "create",
 	Usage: "Creates a new custom AI-powered fraud detection rule, allowing organizations to\ndefine specific criteria, risk scores, and automated responses to evolving\nthreat landscapes.",
 	Flags: []cli.Flag{
@@ -58,9 +58,84 @@ var corporateRiskFraudRulesCreate = cli.Command{
 	},
 	Action:          handleCorporateRiskFraudRulesCreate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"action": {
+		&requestflag.InnerFlag[any]{
+			Name:       "action.details",
+			Usage:      "Details or instructions for the action.",
+			InnerField: "details",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "action.type",
+			Usage:      "Type of action to perform.",
+			InnerField: "type",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "action.target-team",
+			Usage:      "The team or department to notify for alerts/reviews.",
+			InnerField: "targetTeam",
+		},
+	},
+	"criteria": {
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.account-inactivity-days",
+			Usage:      "Number of days an account must be inactive for the rule to apply.",
+			InnerField: "accountInactivityDays",
+		},
+		&requestflag.InnerFlag[[]any]{
+			Name:       "criteria.country-of-origin",
+			Usage:      "List of ISO 2-letter country codes for transaction origin.",
+			InnerField: "countryOfOrigin",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.geographic-distance-km",
+			Usage:      "Minimum geographic distance (in km) from recent activity for anomaly.",
+			InnerField: "geographicDistanceKm",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.last-login-days",
+			Usage:      "Number of days since last user login for anomaly detection.",
+			InnerField: "lastLoginDays",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.no-travel-notification",
+			Usage:      "If true, rule applies only if no prior travel notification was made.",
+			InnerField: "noTravelNotification",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.payment-count-min",
+			Usage:      "Minimum number of payments in a timeframe.",
+			InnerField: "paymentCountMin",
+		},
+		&requestflag.InnerFlag[[]string]{
+			Name:       "criteria.recipient-country-risk-level",
+			Usage:      "List of risk levels for recipient countries.",
+			InnerField: "recipientCountryRiskLevel",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.recipient-new",
+			Usage:      "If true, recipient must be a new payee.",
+			InnerField: "recipientNew",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.timeframe-hours",
+			Usage:      "Timeframe in hours for payment count or other event aggregations.",
+			InnerField: "timeframeHours",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.transaction-amount-min",
+			Usage:      "Minimum transaction amount to consider.",
+			InnerField: "transactionAmountMin",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "criteria.transaction-type",
+			Usage:      "Specific transaction type (e.g., debit, credit).",
+			InnerField: "transactionType",
+		},
+	},
+})
 
-var corporateRiskFraudRulesUpdate = cli.Command{
+var corporateRiskFraudRulesUpdate = requestflag.WithInnerFlags(cli.Command{
 	Name:  "update",
 	Usage: "Updates an existing custom AI-powered fraud detection rule, modifying its\ncriteria, actions, or status.",
 	Flags: []cli.Flag{
@@ -101,7 +176,82 @@ var corporateRiskFraudRulesUpdate = cli.Command{
 	},
 	Action:          handleCorporateRiskFraudRulesUpdate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"action": {
+		&requestflag.InnerFlag[any]{
+			Name:       "action.details",
+			Usage:      "Details or instructions for the action.",
+			InnerField: "details",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "action.type",
+			Usage:      "Type of action to perform.",
+			InnerField: "type",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "action.target-team",
+			Usage:      "The team or department to notify for alerts/reviews.",
+			InnerField: "targetTeam",
+		},
+	},
+	"criteria": {
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.account-inactivity-days",
+			Usage:      "Number of days an account must be inactive for the rule to apply.",
+			InnerField: "accountInactivityDays",
+		},
+		&requestflag.InnerFlag[[]any]{
+			Name:       "criteria.country-of-origin",
+			Usage:      "List of ISO 2-letter country codes for transaction origin.",
+			InnerField: "countryOfOrigin",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.geographic-distance-km",
+			Usage:      "Minimum geographic distance (in km) from recent activity for anomaly.",
+			InnerField: "geographicDistanceKm",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.last-login-days",
+			Usage:      "Number of days since last user login for anomaly detection.",
+			InnerField: "lastLoginDays",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.no-travel-notification",
+			Usage:      "If true, rule applies only if no prior travel notification was made.",
+			InnerField: "noTravelNotification",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.payment-count-min",
+			Usage:      "Minimum number of payments in a timeframe.",
+			InnerField: "paymentCountMin",
+		},
+		&requestflag.InnerFlag[[]string]{
+			Name:       "criteria.recipient-country-risk-level",
+			Usage:      "List of risk levels for recipient countries.",
+			InnerField: "recipientCountryRiskLevel",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.recipient-new",
+			Usage:      "If true, recipient must be a new payee.",
+			InnerField: "recipientNew",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.timeframe-hours",
+			Usage:      "Timeframe in hours for payment count or other event aggregations.",
+			InnerField: "timeframeHours",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.transaction-amount-min",
+			Usage:      "Minimum transaction amount to consider.",
+			InnerField: "transactionAmountMin",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "criteria.transaction-type",
+			Usage:      "Specific transaction type (e.g., debit, credit).",
+			InnerField: "transactionType",
+		},
+	},
+})
 
 var corporateRiskFraudRulesList = cli.Command{
 	Name:  "list",

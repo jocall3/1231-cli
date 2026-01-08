@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/jocall3/1231-cli/internal/mocktest"
+	"github.com/jocall3/1231-cli/internal/requestflag"
 )
 
 func TestCorporateCardsList(t *testing.T) {
@@ -30,6 +31,29 @@ func TestCorporateCardsCreateVirtual(t *testing.T) {
 		"--associated-employee-id", "emp_marketing_01",
 		"--spending-policy-id", "policy_marketing_fixed",
 	)
+
+	// Check that inner flags have been set up correctly
+	requestflag.CheckInnerFlags(corporateCardsCreateVirtual)
+
+	// Alternative argument passing style using inner flags
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"corporate:cards", "create-virtual",
+		"--controls.atmWithdrawals=false",
+		"--controls.contactlessPayments=false",
+		"--controls.dailyLimit", "500",
+		"--controls.internationalTransactions=false",
+		"--controls.merchantCategoryRestrictions", "[Advertising]",
+		"--controls.monthlyLimit", "1000",
+		"--controls.onlineTransactions=true",
+		"--controls.singleTransactionLimit", "200",
+		"--controls.vendorRestrictions", "[Facebook Ads, Google Ads]",
+		"--expiration-date", "2025-12-31",
+		"--holder-name", "Marketing Campaign Q4",
+		"--purpose", "Online advertising for Q4 campaigns",
+		"--associated-employee-id", "emp_marketing_01",
+		"--spending-policy-id", "policy_marketing_fixed",
+	)
 }
 
 func TestCorporateCardsFreeze(t *testing.T) {
@@ -38,7 +62,7 @@ func TestCorporateCardsFreeze(t *testing.T) {
 		t,
 		"corporate:cards", "freeze",
 		"--card-id", "corp_card_xyz987654",
-		"--freeze",
+		"--freeze=true",
 	)
 }
 
@@ -61,14 +85,14 @@ func TestCorporateCardsUpdateControls(t *testing.T) {
 		t,
 		"corporate:cards", "update-controls",
 		"--card-id", "corp_card_xyz987654",
-		"--atm-withdrawals",
-		"--contactless-payments",
+		"--atm-withdrawals=true",
+		"--contactless-payments=true",
 		"--daily-limit", "750",
-		"--international-transactions",
+		"--international-transactions=true",
 		"--merchant-category-restriction", "Software Subscriptions",
 		"--merchant-category-restriction", "Conferences",
 		"--monthly-limit", "3000",
-		"--online-transactions",
+		"--online-transactions=true",
 		"--single-transaction-limit", "1000",
 		"--vendor-restriction", "Amazon",
 		"--vendor-restriction", "Uber",

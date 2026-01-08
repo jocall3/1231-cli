@@ -28,7 +28,7 @@ var lendingApplicationsRetrieve = cli.Command{
 	HideHelpCommand: true,
 }
 
-var lendingApplicationsSubmit = cli.Command{
+var lendingApplicationsSubmit = requestflag.WithInnerFlags(cli.Command{
 	Name:  "submit",
 	Usage: "Submits a new loan application, which is instantly processed and underwritten by\nour Quantum AI, providing rapid decisions and personalized loan offers based on\nreal-time financial health data.",
 	Flags: []cli.Flag{
@@ -63,7 +63,22 @@ var lendingApplicationsSubmit = cli.Command{
 	},
 	Action:          handleLendingApplicationsSubmit,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"co-applicant": {
+		&requestflag.InnerFlag[any]{
+			Name:       "co-applicant.email",
+			InnerField: "email",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "co-applicant.income",
+			InnerField: "income",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "co-applicant.name",
+			InnerField: "name",
+		},
+	},
+})
 
 func handleLendingApplicationsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)

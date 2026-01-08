@@ -28,7 +28,7 @@ var aiIncubatorPitchRetrieveDetails = cli.Command{
 	HideHelpCommand: true,
 }
 
-var aiIncubatorPitchSubmit = cli.Command{
+var aiIncubatorPitchSubmit = requestflag.WithInnerFlags(cli.Command{
 	Name:  "submit",
 	Usage: "Submits a detailed business plan to the Quantum Weaver AI for rigorous analysis,\nmarket validation, and seed funding consideration. This initiates the AI-driven\nincubation journey, aiming to transform innovative ideas into commercially\nsuccessful ventures.",
 	Flags: []cli.Flag{
@@ -59,9 +59,53 @@ var aiIncubatorPitchSubmit = cli.Command{
 	},
 	Action:          handleAIIncubatorPitchSubmit,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"financial-projections": {
+		&requestflag.InnerFlag[any]{
+			Name:       "financial-projections.profitability-estimate",
+			Usage:      "Estimated time to profitability.",
+			InnerField: "profitabilityEstimate",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "financial-projections.projection-years",
+			Usage:      "Number of years for financial projections.",
+			InnerField: "projectionYears",
+		},
+		&requestflag.InnerFlag[[]any]{
+			Name:       "financial-projections.revenue-forecast",
+			InnerField: "revenueForecast",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "financial-projections.seed-round-amount",
+			Usage:      "Requested seed funding in USD.",
+			InnerField: "seedRoundAmount",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "financial-projections.valuation-pre-money",
+			Usage:      "Pre-money valuation in USD.",
+			InnerField: "valuationPreMoney",
+		},
+	},
+	"founding-team": {
+		&requestflag.InnerFlag[any]{
+			Name:       "founding-team.experience",
+			Usage:      "Relevant experience.",
+			InnerField: "experience",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "founding-team.name",
+			Usage:      "Name of the team member.",
+			InnerField: "name",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "founding-team.role",
+			Usage:      "Role of the team member.",
+			InnerField: "role",
+		},
+	},
+})
 
-var aiIncubatorPitchSubmitFeedback = cli.Command{
+var aiIncubatorPitchSubmitFeedback = requestflag.WithInnerFlags(cli.Command{
 	Name:  "submit-feedback",
 	Usage: "Allows the entrepreneur to respond to specific questions or provide additional\ndetails requested by Quantum Weaver, moving the pitch forward in the incubation\nprocess.",
 	Flags: []cli.Flag{
@@ -81,7 +125,20 @@ var aiIncubatorPitchSubmitFeedback = cli.Command{
 	},
 	Action:          handleAIIncubatorPitchSubmitFeedback,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"answer": {
+		&requestflag.InnerFlag[any]{
+			Name:       "answer.answer",
+			Usage:      "The answer to the specific question.",
+			InnerField: "answer",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "answer.question-id",
+			Usage:      "The ID of the question being answered.",
+			InnerField: "questionId",
+		},
+	},
+})
 
 func handleAIIncubatorPitchRetrieveDetails(ctx context.Context, cmd *cli.Command) error {
 	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)

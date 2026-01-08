@@ -23,7 +23,7 @@ var usersMeRetrieve = cli.Command{
 	HideHelpCommand: true,
 }
 
-var usersMeUpdate = cli.Command{
+var usersMeUpdate = requestflag.WithInnerFlags(cli.Command{
 	Name:  "update",
 	Usage: "Updates selected fields of the currently authenticated user's profile\ninformation.",
 	Flags: []cli.Flag{
@@ -49,7 +49,62 @@ var usersMeUpdate = cli.Command{
 	},
 	Action:          handleUsersMeUpdate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"address": {
+		&requestflag.InnerFlag[any]{
+			Name:       "address.city",
+			InnerField: "city",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.country",
+			InnerField: "country",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.state",
+			InnerField: "state",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.street",
+			InnerField: "street",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.zip",
+			InnerField: "zip",
+		},
+	},
+	"preferences": {
+		&requestflag.InnerFlag[string]{
+			Name:       "preferences.ai-interaction-mode",
+			Usage:      "How the user prefers to interact with AI (proactive advice, balanced, or only on demand).",
+			InnerField: "aiInteractionMode",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "preferences.data-sharing-consent",
+			Usage:      "Consent status for sharing anonymized data for AI improvement and personalized offers.",
+			InnerField: "dataSharingConsent",
+		},
+		&requestflag.InnerFlag[map[string]any]{
+			Name:       "preferences.notification-channels",
+			Usage:      "Preferred channels for receiving notifications.",
+			InnerField: "notificationChannels",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "preferences.preferred-language",
+			Usage:      "Preferred language for the user interface.",
+			InnerField: "preferredLanguage",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "preferences.theme",
+			Usage:      "Preferred UI theme (e.g., Light-Default, Dark-Quantum).",
+			InnerField: "theme",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "preferences.transaction-grouping",
+			Usage:      "Default grouping preference for transaction lists.",
+			InnerField: "transactionGrouping",
+		},
+	},
+})
 
 func handleUsersMeRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)

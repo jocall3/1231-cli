@@ -17,7 +17,7 @@ func TestPaymentsFxConvert(t *testing.T) {
 		"--source-amount", "1000",
 		"--source-currency", "USD",
 		"--target-currency", "EUR",
-		"--fx-rate-lock",
+		"--fx-rate-lock=true",
 		"--target-account-id", "acc_euro_savings_9876",
 	)
 }

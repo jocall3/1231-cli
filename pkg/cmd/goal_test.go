@@ -18,7 +18,7 @@ func TestGoalsCreate(t *testing.T) {
 		"--target-date", "2026-06-30",
 		"--type", "large_purchase",
 		"--contributing-account", "{}",
-		"--generate-ai-plan",
+		"--generate-ai-plan=true",
 		"--initial-contribution", "1000",
 		"--risk-tolerance", "conservative",
 	)
@@ -40,7 +40,7 @@ func TestGoalsUpdate(t *testing.T) {
 		"goals", "update",
 		"--goal-id", "goal_retirement_2050",
 		"--contributing-account", "{}",
-		"--generate-ai-plan",
+		"--generate-ai-plan=true",
 		"--name", "Revised Retirement Fund Goal",
 		"--risk-tolerance", "conservative",
 		"--status", "paused",

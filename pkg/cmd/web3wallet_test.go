@@ -27,7 +27,7 @@ func TestWeb3WalletsConnect(t *testing.T) {
 		"--signed-message", "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",
 		"--wallet-address", "0x123abc456def7890...",
 		"--wallet-provider", "MetaMask",
-		"--request-write-access",
+		"--request-write-access=true",
 	)
 }
 

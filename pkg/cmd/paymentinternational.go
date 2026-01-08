@@ -15,7 +15,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var paymentsInternationalInitiate = cli.Command{
+var paymentsInternationalInitiate = requestflag.WithInnerFlags(cli.Command{
 	Name:  "initiate",
 	Usage: "Facilitates the secure initiation of an international wire transfer to a\nbeneficiary in another country and currency, leveraging optimal FX rates and\ntracking capabilities.",
 	Flags: []cli.Flag{
@@ -74,7 +74,45 @@ var paymentsInternationalInitiate = cli.Command{
 	},
 	Action:          handlePaymentsInternationalInitiate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"beneficiary": {
+		&requestflag.InnerFlag[any]{
+			Name:       "beneficiary.address",
+			Usage:      "Full address of the beneficiary.",
+			InnerField: "address",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "beneficiary.bank-name",
+			Usage:      "Name of the beneficiary's bank.",
+			InnerField: "bankName",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "beneficiary.name",
+			Usage:      "Full name of the beneficiary.",
+			InnerField: "name",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "beneficiary.account-number",
+			Usage:      "Account number (if IBAN/SWIFT not applicable).",
+			InnerField: "accountNumber",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "beneficiary.iban",
+			Usage:      "IBAN for Eurozone transfers.",
+			InnerField: "iban",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "beneficiary.routing-number",
+			Usage:      "Routing number (if applicable, e.g., for US transfers).",
+			InnerField: "routingNumber",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "beneficiary.swift-bic",
+			Usage:      "SWIFT/BIC code for international transfers.",
+			InnerField: "swiftBic",
+		},
+	},
+})
 
 var paymentsInternationalRetrieveStatus = cli.Command{
 	Name:  "retrieve-status",

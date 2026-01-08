@@ -40,7 +40,7 @@ var aiAdvisorChatRetrieveHistory = cli.Command{
 	HideHelpCommand: true,
 }
 
-var aiAdvisorChatSendMessage = cli.Command{
+var aiAdvisorChatSendMessage = requestflag.WithInnerFlags(cli.Command{
 	Name:  "send-message",
 	Usage: "Initiates or continues a sophisticated conversation with Quantum, the AI\nAdvisor. Quantum can provide advanced financial insights, execute complex tasks\nvia an expanding suite of intelligent tools, and learn from user interactions to\noffer hyper-personalized guidance.",
 	Flags: []cli.Flag{
@@ -62,7 +62,20 @@ var aiAdvisorChatSendMessage = cli.Command{
 	},
 	Action:          handleAIAdvisorChatSendMessage,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"function-response": {
+		&requestflag.InnerFlag[any]{
+			Name:       "function-response.name",
+			Usage:      "The name of the tool function for which this is a response.",
+			InnerField: "name",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "function-response.response",
+			Usage:      "The JSON output from the execution of the tool function.",
+			InnerField: "response",
+		},
+	},
+})
 
 func handleAIAdvisorChatRetrieveHistory(ctx context.Context, cmd *cli.Command) error {
 	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)

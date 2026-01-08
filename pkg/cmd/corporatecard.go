@@ -35,7 +35,7 @@ var corporateCardsList = cli.Command{
 	HideHelpCommand: true,
 }
 
-var corporateCardsCreateVirtual = cli.Command{
+var corporateCardsCreateVirtual = requestflag.WithInnerFlags(cli.Command{
 	Name:  "create-virtual",
 	Usage: "Creates and issues a new virtual corporate card with specified spending limits,\nmerchant restrictions, and expiration dates, ideal for secure online purchases\nand temporary projects.",
 	Flags: []cli.Flag{
@@ -76,7 +76,55 @@ var corporateCardsCreateVirtual = cli.Command{
 	},
 	Action:          handleCorporateCardsCreateVirtual,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"controls": {
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.atm-withdrawals",
+			Usage:      "If true, ATM cash withdrawals are allowed.",
+			InnerField: "atmWithdrawals",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.contactless-payments",
+			Usage:      "If true, contactless payments are allowed.",
+			InnerField: "contactlessPayments",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.daily-limit",
+			Usage:      "Maximum spending limit per day (null for no limit).",
+			InnerField: "dailyLimit",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.international-transactions",
+			Usage:      "If true, international transactions are allowed.",
+			InnerField: "internationalTransactions",
+		},
+		&requestflag.InnerFlag[[]any]{
+			Name:       "controls.merchant-category-restrictions",
+			Usage:      "List of allowed merchant categories. If empty, all are allowed unless explicitly denied.",
+			InnerField: "merchantCategoryRestrictions",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.monthly-limit",
+			Usage:      "Maximum spending limit per month (null for no limit).",
+			InnerField: "monthlyLimit",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.online-transactions",
+			Usage:      "If true, online transactions are allowed.",
+			InnerField: "onlineTransactions",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.single-transaction-limit",
+			Usage:      "Maximum amount for a single transaction (null for no limit).",
+			InnerField: "singleTransactionLimit",
+		},
+		&requestflag.InnerFlag[[]any]{
+			Name:       "controls.vendor-restrictions",
+			Usage:      "List of allowed vendors/merchants by name.",
+			InnerField: "vendorRestrictions",
+		},
+	},
+})
 
 var corporateCardsFreeze = cli.Command{
 	Name:  "freeze",

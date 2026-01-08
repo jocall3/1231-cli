@@ -23,7 +23,7 @@ var notificationsSettingsRetrieve = cli.Command{
 	HideHelpCommand: true,
 }
 
-var notificationsSettingsUpdate = cli.Command{
+var notificationsSettingsUpdate = requestflag.WithInnerFlags(cli.Command{
 	Name:  "update",
 	Usage: "Updates the user's notification preferences, allowing control over channels,\nevent types, and quiet hours.",
 	Flags: []cli.Flag{
@@ -45,7 +45,62 @@ var notificationsSettingsUpdate = cli.Command{
 	},
 	Action:          handleNotificationsSettingsUpdate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"channel-preferences": {
+		&requestflag.InnerFlag[any]{
+			Name:       "channel-preferences.email",
+			InnerField: "email",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "channel-preferences.in-app",
+			InnerField: "inApp",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "channel-preferences.push",
+			InnerField: "push",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "channel-preferences.sms",
+			InnerField: "sms",
+		},
+	},
+	"event-preferences": {
+		&requestflag.InnerFlag[any]{
+			Name:       "event-preferences.ai-insights",
+			InnerField: "aiInsights",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "event-preferences.budget-alerts",
+			InnerField: "budgetAlerts",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "event-preferences.promotional-offers",
+			InnerField: "promotionalOffers",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "event-preferences.security-alerts",
+			InnerField: "securityAlerts",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "event-preferences.transaction-alerts",
+			InnerField: "transactionAlerts",
+		},
+	},
+	"quiet-hours": {
+		&requestflag.InnerFlag[any]{
+			Name:       "quiet-hours.enabled",
+			InnerField: "enabled",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "quiet-hours.end-time",
+			InnerField: "endTime",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "quiet-hours.start-time",
+			InnerField: "startTime",
+		},
+	},
+})
 
 func handleNotificationsSettingsRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
