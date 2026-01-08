@@ -23,10 +23,10 @@ func TestAccountsOverdraftSettingsUpdateOverdraftSettings(t *testing.T) {
 		t,
 		"accounts:overdraft-settings", "update-overdraft-settings",
 		"--account-id", "acc_chase_checking_4567",
-		"--enabled",
+		"--enabled=false",
 		"--fee-preference", "decline_if_over_limit",
 		"--linked-savings-account-id", "acc_new_savings_5678",
-		"--link-to-savings",
+		"--link-to-savings=false",
 		"--protection-limit", "750",
 	)
 }

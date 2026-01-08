@@ -15,7 +15,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var corporatePerformSanctionScreening = cli.Command{
+var corporatePerformSanctionScreening = requestflag.WithInnerFlags(cli.Command{
 	Name:  "perform-sanction-screening",
 	Usage: "Executes a real-time screening of an individual or entity against global\nsanction lists and watchlists.",
 	Flags: []cli.Flag{
@@ -54,7 +54,30 @@ var corporatePerformSanctionScreening = cli.Command{
 	},
 	Action:          handleCorporatePerformSanctionScreening,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"address": {
+		&requestflag.InnerFlag[any]{
+			Name:       "address.city",
+			InnerField: "city",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.country",
+			InnerField: "country",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.state",
+			InnerField: "state",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.street",
+			InnerField: "street",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.zip",
+			InnerField: "zip",
+		},
+	},
+})
 
 func handleCorporatePerformSanctionScreening(ctx context.Context, cmd *cli.Command) error {
 	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)

@@ -41,7 +41,7 @@ func TestTransactionsCategorize(t *testing.T) {
 		"transactions", "categorize",
 		"--transaction-id", "txn_quantum-2024-07-21-A7B8C9",
 		"--category", "Home > Groceries",
-		"--apply-to-future",
+		"--apply-to-future=true",
 		"--notes", "Bulk purchase for party",
 	)
 }

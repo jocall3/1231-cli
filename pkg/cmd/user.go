@@ -41,7 +41,7 @@ var usersLogin = cli.Command{
 	HideHelpCommand: true,
 }
 
-var usersRegister = cli.Command{
+var usersRegister = requestflag.WithInnerFlags(cli.Command{
 	Name:  "register",
 	Usage: "Registers a new user account with , initiating the onboarding process. Requires\nbasic user details.",
 	Flags: []cli.Flag{
@@ -80,7 +80,30 @@ var usersRegister = cli.Command{
 	},
 	Action:          handleUsersRegister,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"address": {
+		&requestflag.InnerFlag[any]{
+			Name:       "address.city",
+			InnerField: "city",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.country",
+			InnerField: "country",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.state",
+			InnerField: "state",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.street",
+			InnerField: "street",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.zip",
+			InnerField: "zip",
+		},
+	},
+})
 
 func handleUsersLogin(ctx context.Context, cmd *cli.Command) error {
 	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)

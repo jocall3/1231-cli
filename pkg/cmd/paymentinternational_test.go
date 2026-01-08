@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/jocall3/1231-cli/internal/mocktest"
+	"github.com/jocall3/1231-cli/internal/requestflag"
 )
 
 func TestPaymentsInternationalInitiate(t *testing.T) {
@@ -19,7 +20,31 @@ func TestPaymentsInternationalInitiate(t *testing.T) {
 		"--source-account-id", "acc_chase_checking_4567",
 		"--source-currency", "USD",
 		"--target-currency", "EUR",
-		"--fx-rate-lock",
+		"--fx-rate-lock=true",
+		"--fx-rate-provider", "proprietary_ai",
+		"--reference", "{}",
+	)
+
+	// Check that inner flags have been set up correctly
+	requestflag.CheckInnerFlags(paymentsInternationalInitiate)
+
+	// Alternative argument passing style using inner flags
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"payments:international", "initiate",
+		"--amount", "5000",
+		"--beneficiary.address", "Hauptstrasse 1, 10115 Berlin, Germany",
+		"--beneficiary.bankName", "Deutsche Bank",
+		"--beneficiary.name", "Maria Schmidt",
+		"--beneficiary.accountNumber", "{}",
+		"--beneficiary.iban", "DE89370400440532013000",
+		"--beneficiary.routingNumber", "{}",
+		"--beneficiary.swiftBic", "DEUTDEFF",
+		"--purpose", "Vendor payment for Q2 services.",
+		"--source-account-id", "acc_chase_checking_4567",
+		"--source-currency", "USD",
+		"--target-currency", "EUR",
+		"--fx-rate-lock=true",
 		"--fx-rate-provider", "proprietary_ai",
 		"--reference", "{}",
 	)

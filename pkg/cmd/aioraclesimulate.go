@@ -15,7 +15,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var aiOracleSimulateRunAdvanced = cli.Command{
+var aiOracleSimulateRunAdvanced = requestflag.WithInnerFlags(cli.Command{
 	Name:  "run-advanced",
 	Usage: "Engages the Quantum Oracle for highly complex, multi-variable simulations,\nallowing precise control over numerous financial parameters, market conditions,\nand personal events to generate deep, predictive insights and sensitivity\nanalysis.",
 	Flags: []cli.Flag{
@@ -43,7 +43,50 @@ var aiOracleSimulateRunAdvanced = cli.Command{
 	},
 	Action:          handleAIOracleSimulateRunAdvanced,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"scenario": {
+		&requestflag.InnerFlag[any]{
+			Name:       "scenario.duration-years",
+			Usage:      "The duration in years over which this scenario is simulated.",
+			InnerField: "durationYears",
+		},
+		&requestflag.InnerFlag[[]map[string]any]{
+			Name:       "scenario.events",
+			Usage:      "A list of discrete or continuous events that define this scenario.",
+			InnerField: "events",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "scenario.name",
+			Usage:      "A descriptive name for this specific scenario.",
+			InnerField: "name",
+		},
+		&requestflag.InnerFlag[[]map[string]any]{
+			Name:       "scenario.sensitivity-analysis-params",
+			Usage:      "Parameters for multi-variable sensitivity analysis within this scenario.",
+			InnerField: "sensitivityAnalysisParams",
+		},
+	},
+	"global-economic-factors": {
+		&requestflag.InnerFlag[any]{
+			Name:       "global-economic-factors.inflation-rate",
+			InnerField: "inflationRate",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "global-economic-factors.interest-rate-baseline",
+			InnerField: "interestRateBaseline",
+		},
+	},
+	"personal-assumptions": {
+		&requestflag.InnerFlag[any]{
+			Name:       "personal-assumptions.annual-savings-rate",
+			InnerField: "annualSavingsRate",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "personal-assumptions.risk-tolerance",
+			InnerField: "riskTolerance",
+		},
+	},
+})
 
 var aiOracleSimulateRunStandard = cli.Command{
 	Name:  "run-standard",

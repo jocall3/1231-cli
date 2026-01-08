@@ -18,7 +18,7 @@ func TestInvestmentsPortfoliosCreate(t *testing.T) {
 		"--name", "My First Growth Portfolio",
 		"--risk-tolerance", "conservative",
 		"--type", "diversified",
-		"--ai-auto-allocate",
+		"--ai-auto-allocate=true",
 		"--linked-account-id", "acc_chase_checking_4567",
 	)
 }
@@ -61,7 +61,7 @@ func TestInvestmentsPortfoliosRebalance(t *testing.T) {
 		"investments:portfolios", "rebalance",
 		"--portfolio-id", "portfolio_equity_growth",
 		"--target-risk-tolerance", "conservative",
-		"--confirmation-required",
-		"--dry-run",
+		"--confirmation-required=true",
+		"--dry-run=true",
 	)
 }

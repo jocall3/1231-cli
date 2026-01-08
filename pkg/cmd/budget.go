@@ -15,7 +15,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var budgetsCreate = cli.Command{
+var budgetsCreate = requestflag.WithInnerFlags(cli.Command{
 	Name:  "create",
 	Usage: "Creates a new financial budget for the user, with optional AI auto-population of\ncategories and amounts.",
 	Flags: []cli.Flag{
@@ -67,7 +67,18 @@ var budgetsCreate = cli.Command{
 	},
 	Action:          handleBudgetsCreate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"category": {
+		&requestflag.InnerFlag[any]{
+			Name:       "category.allocated",
+			InnerField: "allocated",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "category.name",
+			InnerField: "name",
+		},
+	},
+})
 
 var budgetsRetrieve = cli.Command{
 	Name:  "retrieve",
@@ -82,7 +93,7 @@ var budgetsRetrieve = cli.Command{
 	HideHelpCommand: true,
 }
 
-var budgetsUpdate = cli.Command{
+var budgetsUpdate = requestflag.WithInnerFlags(cli.Command{
 	Name:  "update",
 	Usage: "Updates the parameters of an existing budget, such as total amount, dates, or\ncategories.",
 	Flags: []cli.Flag{
@@ -128,7 +139,18 @@ var budgetsUpdate = cli.Command{
 	},
 	Action:          handleBudgetsUpdate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"category": {
+		&requestflag.InnerFlag[any]{
+			Name:       "category.allocated",
+			InnerField: "allocated",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "category.name",
+			InnerField: "name",
+		},
+	},
+})
 
 var budgetsList = cli.Command{
 	Name:  "list",

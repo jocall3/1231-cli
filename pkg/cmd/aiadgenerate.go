@@ -15,7 +15,7 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
-var aiAdsGenerateAdvanced = cli.Command{
+var aiAdsGenerateAdvanced = requestflag.WithInnerFlags(cli.Command{
 	Name:  "advanced",
 	Usage: "Submits a highly customized request to generate a video ad, allowing\nfine-grained control over artistic style, aspect ratio, voiceover, background\nmusic, target audience, and call-to-action elements for professional-grade\nproductions.",
 	Flags: []cli.Flag{
@@ -86,7 +86,22 @@ var aiAdsGenerateAdvanced = cli.Command{
 	},
 	Action:          handleAIAdsGenerateAdvanced,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"call-to-action": {
+		&requestflag.InnerFlag[any]{
+			Name:       "call-to-action.display-time-seconds",
+			InnerField: "displayTimeSeconds",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "call-to-action.text",
+			InnerField: "text",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "call-to-action.url",
+			InnerField: "url",
+		},
+	},
+})
 
 var aiAdsGenerateStandard = cli.Command{
 	Name:  "standard",

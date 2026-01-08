@@ -23,7 +23,7 @@ var usersMePreferencesRetrieve = cli.Command{
 	HideHelpCommand: true,
 }
 
-var usersMePreferencesUpdate = cli.Command{
+var usersMePreferencesUpdate = requestflag.WithInnerFlags(cli.Command{
 	Name:  "update",
 	Usage: "Updates the user's deep personalization preferences, allowing dynamic control\nover AI behavior, notification delivery, thematic choices, and data privacy\nsettings.",
 	Flags: []cli.Flag{
@@ -60,7 +60,26 @@ var usersMePreferencesUpdate = cli.Command{
 	},
 	Action:          handleUsersMePreferencesUpdate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"notification-channels": {
+		&requestflag.InnerFlag[any]{
+			Name:       "notification-channels.email",
+			InnerField: "email",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "notification-channels.in-app",
+			InnerField: "inApp",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "notification-channels.push",
+			InnerField: "push",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "notification-channels.sms",
+			InnerField: "sms",
+		},
+	},
+})
 
 func handleUsersMePreferencesRetrieve(ctx context.Context, cmd *cli.Command) error {
 	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)

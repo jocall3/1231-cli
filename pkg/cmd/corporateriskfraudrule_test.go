@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/jocall3/1231-cli/internal/mocktest"
+	"github.com/jocall3/1231-cli/internal/requestflag"
 )
 
 func TestCorporateRiskFraudRulesCreate(t *testing.T) {
@@ -15,6 +16,33 @@ func TestCorporateRiskFraudRulesCreate(t *testing.T) {
 		"corporate:risk:fraud:rules", "create",
 		"--action", "{details: 'Hold payment, notify sender for additional verification, and escalate to compliance.', type: auto_review, targetTeam: Fraud Prevention Team}",
 		"--criteria", "{accountInactivityDays: 90, countryOfOrigin: [US, CA], geographicDistanceKm: 5000, lastLoginDays: 7, noTravelNotification: true, paymentCountMin: 3, recipientCountryRiskLevel: [High, Very High], recipientNew: true, timeframeHours: 24, transactionAmountMin: 5000, transactionType: debit}",
+		"--description", "Detects multiple international payments to new beneficiaries in high-risk countries within a short timeframe.",
+		"--name", "Suspicious International Payment Pattern",
+		"--severity", "Critical",
+		"--status", "active",
+	)
+
+	// Check that inner flags have been set up correctly
+	requestflag.CheckInnerFlags(corporateRiskFraudRulesCreate)
+
+	// Alternative argument passing style using inner flags
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"corporate:risk:fraud:rules", "create",
+		"--action.details", "Hold payment, notify sender for additional verification, and escalate to compliance.",
+		"--action.type", "auto_review",
+		"--action.targetTeam", "Fraud Prevention Team",
+		"--criteria.accountInactivityDays", "90",
+		"--criteria.countryOfOrigin", "[US, CA]",
+		"--criteria.geographicDistanceKm", "5000",
+		"--criteria.lastLoginDays", "7",
+		"--criteria.noTravelNotification=true",
+		"--criteria.paymentCountMin", "3",
+		"--criteria.recipientCountryRiskLevel", "[High, Very High]",
+		"--criteria.recipientNew=true",
+		"--criteria.timeframeHours", "24",
+		"--criteria.transactionAmountMin", "5000",
+		"--criteria.transactionType", "debit",
 		"--description", "Detects multiple international payments to new beneficiaries in high-risk countries within a short timeframe.",
 		"--name", "Suspicious International Payment Pattern",
 		"--severity", "Critical",
@@ -30,6 +58,34 @@ func TestCorporateRiskFraudRulesUpdate(t *testing.T) {
 		"--rule-id", "fraud_rule_high_value_inactive",
 		"--action", "{details: 'Flag for manual review only, do not block.', type: block, targetTeam: Fraud Prevention Team}",
 		"--criteria", "{accountInactivityDays: 60, countryOfOrigin: [US, CA], geographicDistanceKm: 5000, lastLoginDays: 7, noTravelNotification: true, paymentCountMin: 3, recipientCountryRiskLevel: [Low], recipientNew: true, timeframeHours: 24, transactionAmountMin: 7500, transactionType: debit}",
+		"--description", "Revised logic for flagging high value transactions from dormant accounts.",
+		"--name", "Revised High Value Transaction Rule",
+		"--severity", "High",
+		"--status", "inactive",
+	)
+
+	// Check that inner flags have been set up correctly
+	requestflag.CheckInnerFlags(corporateRiskFraudRulesUpdate)
+
+	// Alternative argument passing style using inner flags
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"corporate:risk:fraud:rules", "update",
+		"--rule-id", "fraud_rule_high_value_inactive",
+		"--action.details", "Flag for manual review only, do not block.",
+		"--action.type", "block",
+		"--action.targetTeam", "Fraud Prevention Team",
+		"--criteria.accountInactivityDays", "60",
+		"--criteria.countryOfOrigin", "[US, CA]",
+		"--criteria.geographicDistanceKm", "5000",
+		"--criteria.lastLoginDays", "7",
+		"--criteria.noTravelNotification=true",
+		"--criteria.paymentCountMin", "3",
+		"--criteria.recipientCountryRiskLevel", "[Low]",
+		"--criteria.recipientNew=true",
+		"--criteria.timeframeHours", "24",
+		"--criteria.transactionAmountMin", "7500",
+		"--criteria.transactionType", "debit",
 		"--description", "Revised logic for flagging high value transactions from dormant accounts.",
 		"--name", "Revised High Value Transaction Rule",
 		"--severity", "High",
