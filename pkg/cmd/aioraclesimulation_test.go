@@ -26,12 +26,3 @@ func TestAIOracleSimulationsList(t *testing.T) {
 		"--offset", "{}",
 	)
 }
-
-func TestAIOracleSimulationsDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"ai:oracle:simulations", "delete",
-		"--simulation-id", "sim_oracle-growth-2024-xyz",
-	)
-}

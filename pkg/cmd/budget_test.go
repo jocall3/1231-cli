@@ -98,12 +98,3 @@ func TestBudgetsList(t *testing.T) {
 		"--offset", "{}",
 	)
 }
-
-func TestBudgetsDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"budgets", "delete",
-		"--budget-id", "budget_monthly_aug",
-	)
-}

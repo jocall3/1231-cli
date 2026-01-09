@@ -273,19 +273,6 @@ var corporateRiskFraudRulesList = cli.Command{
 	HideHelpCommand: true,
 }
 
-var corporateRiskFraudRulesDelete = cli.Command{
-	Name:  "delete",
-	Usage: "Deletes a specific custom AI-powered fraud detection rule.",
-	Flags: []cli.Flag{
-		&requestflag.Flag[any]{
-			Name:     "rule-id",
-			Required: true,
-		},
-	},
-	Action:          handleCorporateRiskFraudRulesDelete,
-	HideHelpCommand: true,
-}
-
 func handleCorporateRiskFraudRulesCreate(ctx context.Context, cmd *cli.Command) error {
 	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -394,29 +381,4 @@ func handleCorporateRiskFraudRulesList(ctx context.Context, cmd *cli.Command) er
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "corporate:risk:fraud:rules list", obj, format, transform)
-}
-
-func handleCorporateRiskFraudRulesDelete(ctx context.Context, cmd *cli.Command) error {
-	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-	if !cmd.IsSet("rule-id") && len(unusedArgs) > 0 {
-		cmd.Set("rule-id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Corporate.Risk.Fraud.Rules.Delete(ctx, interface{}(cmd.Value("rule-id").(any)), options...)
 }
