@@ -42,12 +42,3 @@ func TestDevelopersWebhooksList(t *testing.T) {
 		"--offset", "{}",
 	)
 }
-
-func TestDevelopersWebhooksDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"developers:webhooks", "delete",
-		"--subscription-id", "whsub_devtool_finance_events",
-	)
-}

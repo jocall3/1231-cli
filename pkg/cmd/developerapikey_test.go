@@ -29,12 +29,3 @@ func TestDevelopersAPIKeysList(t *testing.T) {
 		"--offset", "{}",
 	)
 }
-
-func TestDevelopersAPIKeysRevoke(t *testing.T) {
-	t.Skip("Prism tests are disabled")
-	mocktest.TestRunMockTestWithFlags(
-		t,
-		"developers:api-keys", "revoke",
-		"--key-id", "api_key_dev_app_01",
-	)
-}

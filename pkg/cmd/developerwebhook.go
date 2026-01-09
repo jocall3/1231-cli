@@ -89,19 +89,6 @@ var developersWebhooksList = cli.Command{
 	HideHelpCommand: true,
 }
 
-var developersWebhooksDelete = cli.Command{
-	Name:  "delete",
-	Usage: "Deletes an existing webhook subscription, stopping all future event\nnotifications to the specified callback URL.",
-	Flags: []cli.Flag{
-		&requestflag.Flag[any]{
-			Name:     "subscription-id",
-			Required: true,
-		},
-	},
-	Action:          handleDevelopersWebhooksDelete,
-	HideHelpCommand: true,
-}
-
 func handleDevelopersWebhooksCreate(ctx context.Context, cmd *cli.Command) error {
 	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -210,29 +197,4 @@ func handleDevelopersWebhooksList(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "developers:webhooks list", obj, format, transform)
-}
-
-func handleDevelopersWebhooksDelete(ctx context.Context, cmd *cli.Command) error {
-	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
-	unusedArgs := cmd.Args().Slice()
-	if !cmd.IsSet("subscription-id") && len(unusedArgs) > 0 {
-		cmd.Set("subscription-id", unusedArgs[0])
-		unusedArgs = unusedArgs[1:]
-	}
-	if len(unusedArgs) > 0 {
-		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
-	}
-
-	options, err := flagOptions(
-		cmd,
-		apiquery.NestedQueryFormatBrackets,
-		apiquery.ArrayQueryFormatComma,
-		EmptyBody,
-		false,
-	)
-	if err != nil {
-		return err
-	}
-
-	return client.Developers.Webhooks.Delete(ctx, interface{}(cmd.Value("subscription-id").(any)), options...)
 }
