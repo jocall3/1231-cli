@@ -47,6 +47,7 @@ var paymentsFxConvert = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "fx-rate-lock",
 			Usage:    "If true, attempts to lock the quoted FX rate for a short period.",
+			Default:  false,
 			BodyPath: "fxRateLock",
 		},
 		&requestflag.Flag[any]{

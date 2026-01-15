@@ -39,6 +39,7 @@ var corporateAnomaliesList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 		&requestflag.Flag[string]{

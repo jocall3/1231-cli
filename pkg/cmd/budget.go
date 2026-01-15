@@ -53,6 +53,7 @@ var budgetsCreate = requestflag.WithInnerFlags(cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "ai-auto-populate",
 			Usage:    "If true, AI will automatically populate categories and amounts based on historical spending.",
+			Default:  false,
 			BodyPath: "aiAutoPopulate",
 		},
 		&requestflag.Flag[any]{
@@ -169,6 +170,7 @@ var budgetsList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},

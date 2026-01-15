@@ -53,6 +53,7 @@ var investmentsPortfoliosCreate = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "ai-auto-allocate",
 			Usage:    "If true, AI will automatically allocate initial investment based on risk tolerance.",
+			Default:  false,
 			BodyPath: "aiAutoAllocate",
 		},
 		&requestflag.Flag[any]{
@@ -122,6 +123,7 @@ var investmentsPortfoliosList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
