@@ -63,6 +63,7 @@ var transactionsList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 		&requestflag.Flag[any]{
@@ -103,6 +104,7 @@ var transactionsCategorize = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "apply-to-future",
 			Usage:    "If true, the AI will learn from this correction and try to apply it to similar future transactions.",
+			Default:  false,
 			BodyPath: "applyToFuture",
 		},
 		&requestflag.Flag[any]{

@@ -52,11 +52,13 @@ var goalsCreate = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "generate-ai-plan",
 			Usage:    "If true, AI will automatically generate a strategic plan for the goal.",
+			Default:  false,
 			BodyPath: "generateAIPlan",
 		},
 		&requestflag.Flag[any]{
 			Name:     "initial-contribution",
 			Usage:    "Optional: Initial amount to contribute to the goal.",
+			Default:  0,
 			BodyPath: "initialContribution",
 		},
 		&requestflag.Flag[string]{
@@ -100,6 +102,7 @@ var goalsUpdate = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "generate-ai-plan",
 			Usage:    "If true, AI will recalculate and update the strategic plan for the goal.",
+			Default:  false,
 			BodyPath: "generateAIPlan",
 		},
 		&requestflag.Flag[any]{
@@ -146,6 +149,7 @@ var goalsList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},

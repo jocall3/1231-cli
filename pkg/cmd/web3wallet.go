@@ -29,6 +29,7 @@ var web3WalletsList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -68,6 +69,7 @@ var web3WalletsConnect = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "request-write-access",
 			Usage:    "If true, requests write access to initiate transactions from this wallet.",
+			Default:  false,
 			BodyPath: "requestWriteAccess",
 		},
 	},
@@ -93,6 +95,7 @@ var web3WalletsRetrieveBalances = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},

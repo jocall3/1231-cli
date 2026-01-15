@@ -29,6 +29,7 @@ var corporateTreasuryCashFlowGetForecast = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "include-scenario-analysis",
 			Usage:     "If true, the forecast will include best-case and worst-case scenario analysis alongside the most likely projection.",
+			Default:   false,
 			QueryPath: "includeScenarioAnalysis",
 		},
 	},
