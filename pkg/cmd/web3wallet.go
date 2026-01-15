@@ -16,8 +16,9 @@ import (
 )
 
 var web3WalletsList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of all securely linked cryptocurrency wallets (e.g., MetaMask,\nLedger integration), showing their addresses, associated networks, and\nverification status.",
+	Name:    "list",
+	Usage:   "Retrieves a list of all securely linked cryptocurrency wallets (e.g., MetaMask,\nLedger integration), showing their addresses, associated networks, and\nverification status.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -36,8 +37,9 @@ var web3WalletsList = cli.Command{
 }
 
 var web3WalletsConnect = cli.Command{
-	Name:  "connect",
-	Usage: "Initiates the process to securely connect a new cryptocurrency wallet to the\nuser's profile, typically involving a signed message or OAuth flow from the\nwallet provider.",
+	Name:    "connect",
+	Usage:   "Initiates the process to securely connect a new cryptocurrency wallet to the\nuser's profile, typically involving a signed message or OAuth flow from the\nwallet provider.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "blockchain-network",
@@ -74,8 +76,9 @@ var web3WalletsConnect = cli.Command{
 }
 
 var web3WalletsRetrieveBalances = cli.Command{
-	Name:  "retrieve-balances",
-	Usage: "Retrieves the current balances of all recognized crypto assets within a specific\nconnected wallet.",
+	Name:    "retrieve-balances",
+	Usage:   "Retrieves the current balances of all recognized crypto assets within a specific\nconnected wallet.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "wallet-id",

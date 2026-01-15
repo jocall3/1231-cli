@@ -16,8 +16,9 @@ import (
 )
 
 var corporateCardsList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a comprehensive list of all physical and virtual corporate cards\nassociated with the user's organization, including their status, assigned\nholder, and current spending controls.",
+	Name:    "list",
+	Usage:   "Retrieves a comprehensive list of all physical and virtual corporate cards\nassociated with the user's organization, including their status, assigned\nholder, and current spending controls.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -36,8 +37,9 @@ var corporateCardsList = cli.Command{
 }
 
 var corporateCardsCreateVirtual = requestflag.WithInnerFlags(cli.Command{
-	Name:  "create-virtual",
-	Usage: "Creates and issues a new virtual corporate card with specified spending limits,\nmerchant restrictions, and expiration dates, ideal for secure online purchases\nand temporary projects.",
+	Name:    "create-virtual",
+	Usage:   "Creates and issues a new virtual corporate card with specified spending limits,\nmerchant restrictions, and expiration dates, ideal for secure online purchases\nand temporary projects.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
 			Name:     "controls",
@@ -127,8 +129,9 @@ var corporateCardsCreateVirtual = requestflag.WithInnerFlags(cli.Command{
 })
 
 var corporateCardsFreeze = cli.Command{
-	Name:  "freeze",
-	Usage: "Immediately changes the frozen status of a corporate card, preventing or\nallowing transactions in real-time, critical for security and expense\nmanagement.",
+	Name:    "freeze",
+	Usage:   "Immediately changes the frozen status of a corporate card, preventing or\nallowing transactions in real-time, critical for security and expense\nmanagement.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "card-id",
@@ -146,8 +149,9 @@ var corporateCardsFreeze = cli.Command{
 }
 
 var corporateCardsListTransactions = cli.Command{
-	Name:  "list-transactions",
-	Usage: "Retrieves a paginated list of transactions made with a specific corporate card,\nincluding AI categorization and compliance flags.",
+	Name:    "list-transactions",
+	Usage:   "Retrieves a paginated list of transactions made with a specific corporate card,\nincluding AI categorization and compliance flags.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "card-id",
@@ -180,8 +184,9 @@ var corporateCardsListTransactions = cli.Command{
 }
 
 var corporateCardsUpdateControls = cli.Command{
-	Name:  "update-controls",
-	Usage: "Updates the sophisticated spending controls, limits, and policy overrides for a\nspecific corporate card, enabling real-time adjustments for security and budget\nadherence.",
+	Name:    "update-controls",
+	Usage:   "Updates the sophisticated spending controls, limits, and policy overrides for a\nspecific corporate card, enabling real-time adjustments for security and budget\nadherence.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "card-id",

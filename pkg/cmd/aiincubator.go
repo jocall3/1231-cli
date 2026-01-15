@@ -16,8 +16,9 @@ import (
 )
 
 var aiIncubatorListPitches = cli.Command{
-	Name:  "list-pitches",
-	Usage: "Retrieves a summary list of all business pitches submitted by the authenticated\nuser to Quantum Weaver.",
+	Name:    "list-pitches",
+	Usage:   "Retrieves a summary list of all business pitches submitted by the authenticated\nuser to Quantum Weaver.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",

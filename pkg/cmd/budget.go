@@ -16,8 +16,9 @@ import (
 )
 
 var budgetsCreate = requestflag.WithInnerFlags(cli.Command{
-	Name:  "create",
-	Usage: "Creates a new financial budget for the user, with optional AI auto-population of\ncategories and amounts.",
+	Name:    "create",
+	Usage:   "Creates a new financial budget for the user, with optional AI auto-population of\ncategories and amounts.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "end-date",
@@ -81,8 +82,9 @@ var budgetsCreate = requestflag.WithInnerFlags(cli.Command{
 })
 
 var budgetsRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Retrieves detailed information for a specific budget, including current\nspending, remaining amounts, and AI recommendations.",
+	Name:    "retrieve",
+	Usage:   "Retrieves detailed information for a specific budget, including current\nspending, remaining amounts, and AI recommendations.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "budget-id",
@@ -94,8 +96,9 @@ var budgetsRetrieve = cli.Command{
 }
 
 var budgetsUpdate = requestflag.WithInnerFlags(cli.Command{
-	Name:  "update",
-	Usage: "Updates the parameters of an existing budget, such as total amount, dates, or\ncategories.",
+	Name:    "update",
+	Usage:   "Updates the parameters of an existing budget, such as total amount, dates, or\ncategories.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "budget-id",
@@ -153,8 +156,9 @@ var budgetsUpdate = requestflag.WithInnerFlags(cli.Command{
 })
 
 var budgetsList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of all active and historical budgets for the authenticated\nuser.",
+	Name:    "list",
+	Usage:   "Retrieves a list of all active and historical budgets for the authenticated\nuser.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",

@@ -16,8 +16,9 @@ import (
 )
 
 var web3RetrieveNFTs = cli.Command{
-	Name:  "retrieve-nfts",
-	Usage: "Fetches a comprehensive list of Non-Fungible Tokens (NFTs) owned by the user\nacross all connected wallets and supported blockchain networks, including\nmetadata and market values.",
+	Name:    "retrieve-nfts",
+	Usage:   "Fetches a comprehensive list of Non-Fungible Tokens (NFTs) owned by the user\nacross all connected wallets and supported blockchain networks, including\nmetadata and market values.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",

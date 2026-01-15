@@ -16,8 +16,9 @@ import (
 )
 
 var aiAdsGenerateAdvanced = requestflag.WithInnerFlags(cli.Command{
-	Name:  "advanced",
-	Usage: "Submits a highly customized request to generate a video ad, allowing\nfine-grained control over artistic style, aspect ratio, voiceover, background\nmusic, target audience, and call-to-action elements for professional-grade\nproductions.",
+	Name:    "advanced",
+	Usage:   "Submits a highly customized request to generate a video ad, allowing\nfine-grained control over artistic style, aspect ratio, voiceover, background\nmusic, target audience, and call-to-action elements for professional-grade\nproductions.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "length-seconds",
@@ -104,8 +105,9 @@ var aiAdsGenerateAdvanced = requestflag.WithInnerFlags(cli.Command{
 })
 
 var aiAdsGenerateStandard = cli.Command{
-	Name:  "standard",
-	Usage: "Submits a request to generate a high-quality video ad using the advanced Veo 2.0\ngenerative AI model. This is an asynchronous operation, suitable for standard ad\ncontent creation.",
+	Name:    "standard",
+	Usage:   "Submits a request to generate a high-quality video ad using the advanced Veo 2.0\ngenerative AI model. This is an asynchronous operation, suitable for standard ad\ncontent creation.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "length-seconds",

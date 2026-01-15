@@ -16,8 +16,9 @@ import (
 )
 
 var transactionsRecurringCreate = cli.Command{
-	Name:  "create",
-	Usage: "Defines a new recurring transaction pattern for future tracking and budgeting.",
+	Name:    "create",
+	Usage:   "Defines a new recurring transaction pattern for future tracking and budgeting.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "amount",
@@ -67,8 +68,9 @@ var transactionsRecurringCreate = cli.Command{
 }
 
 var transactionsRecurringList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of all detected or user-defined recurring transactions, useful\nfor budget tracking and subscription management.",
+	Name:    "list",
+	Usage:   "Retrieves a list of all detected or user-defined recurring transactions, useful\nfor budget tracking and subscription management.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",

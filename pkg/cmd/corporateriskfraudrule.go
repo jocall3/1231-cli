@@ -16,8 +16,9 @@ import (
 )
 
 var corporateRiskFraudRulesCreate = requestflag.WithInnerFlags(cli.Command{
-	Name:  "create",
-	Usage: "Creates a new custom AI-powered fraud detection rule, allowing organizations to\ndefine specific criteria, risk scores, and automated responses to evolving\nthreat landscapes.",
+	Name:    "create",
+	Usage:   "Creates a new custom AI-powered fraud detection rule, allowing organizations to\ndefine specific criteria, risk scores, and automated responses to evolving\nthreat landscapes.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
 			Name:     "action",
@@ -136,8 +137,9 @@ var corporateRiskFraudRulesCreate = requestflag.WithInnerFlags(cli.Command{
 })
 
 var corporateRiskFraudRulesUpdate = requestflag.WithInnerFlags(cli.Command{
-	Name:  "update",
-	Usage: "Updates an existing custom AI-powered fraud detection rule, modifying its\ncriteria, actions, or status.",
+	Name:    "update",
+	Usage:   "Updates an existing custom AI-powered fraud detection rule, modifying its\ncriteria, actions, or status.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "rule-id",
@@ -254,8 +256,9 @@ var corporateRiskFraudRulesUpdate = requestflag.WithInnerFlags(cli.Command{
 })
 
 var corporateRiskFraudRulesList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of AI-powered fraud detection rules currently active for the\norganization, including their parameters, thresholds, and associated actions\n(e.g., flag, block, alert).",
+	Name:    "list",
+	Usage:   "Retrieves a list of AI-powered fraud detection rules currently active for the\norganization, including their parameters, thresholds, and associated actions\n(e.g., flag, block, alert).",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",

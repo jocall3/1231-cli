@@ -16,8 +16,9 @@ import (
 )
 
 var accountsTransactionsRetrievePending = cli.Command{
-	Name:  "retrieve-pending",
-	Usage: "Retrieves a list of pending transactions that have not yet cleared for a\nspecific financial account.",
+	Name:    "retrieve-pending",
+	Usage:   "Retrieves a list of pending transactions that have not yet cleared for a\nspecific financial account.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "account-id",

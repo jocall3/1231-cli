@@ -16,8 +16,9 @@ import (
 )
 
 var investmentsAssetsSearch = cli.Command{
-	Name:  "search",
-	Usage: "Searches for available investment assets (stocks, ETFs, mutual funds) and\nreturns their ESG impact scores.",
+	Name:    "search",
+	Usage:   "Searches for available investment assets (stocks, ETFs, mutual funds) and\nreturns their ESG impact scores.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "query",

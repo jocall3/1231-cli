@@ -18,14 +18,16 @@ import (
 var usersMeRetrieve = cli.Command{
 	Name:            "retrieve",
 	Usage:           "Fetches the complete and dynamically updated profile information for the\ncurrently authenticated user, encompassing personal details, security status,\ngamification level, loyalty points, and linked identity attributes.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleUsersMeRetrieve,
 	HideHelpCommand: true,
 }
 
 var usersMeUpdate = requestflag.WithInnerFlags(cli.Command{
-	Name:  "update",
-	Usage: "Updates selected fields of the currently authenticated user's profile\ninformation.",
+	Name:    "update",
+	Usage:   "Updates selected fields of the currently authenticated user's profile\ninformation.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
 			Name:     "address",

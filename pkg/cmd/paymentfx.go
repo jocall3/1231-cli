@@ -16,8 +16,9 @@ import (
 )
 
 var paymentsFxConvert = cli.Command{
-	Name:  "convert",
-	Usage: "Executes an instant currency conversion between two currencies, either from a\nbalance or into a specified account.",
+	Name:    "convert",
+	Usage:   "Executes an instant currency conversion between two currencies, either from a\nbalance or into a specified account.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "source-account-id",
@@ -59,8 +60,9 @@ var paymentsFxConvert = cli.Command{
 }
 
 var paymentsFxRetrieveRates = cli.Command{
-	Name:  "retrieve-rates",
-	Usage: "Retrieves current and AI-predicted future foreign exchange rates for a specified\ncurrency pair, including bid/ask spreads and historical volatility data for\ninformed decisions.",
+	Name:    "retrieve-rates",
+	Usage:   "Retrieves current and AI-predicted future foreign exchange rates for a specified\ncurrency pair, including bid/ask spreads and historical volatility data for\ninformed decisions.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "base-currency",

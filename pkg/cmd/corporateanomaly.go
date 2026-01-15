@@ -16,8 +16,9 @@ import (
 )
 
 var corporateAnomaliesList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a comprehensive list of AI-detected financial anomalies across\ntransactions, payments, and corporate cards that require immediate review and\npotential action to mitigate risk and ensure compliance.",
+	Name:    "list",
+	Usage:   "Retrieves a comprehensive list of AI-detected financial anomalies across\ntransactions, payments, and corporate cards that require immediate review and\npotential action to mitigate risk and ensure compliance.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "end-date",
@@ -62,8 +63,9 @@ var corporateAnomaliesList = cli.Command{
 }
 
 var corporateAnomaliesUpdateStatus = cli.Command{
-	Name:  "update-status",
-	Usage: "Updates the review status of a specific financial anomaly, allowing compliance\nofficers to mark it as dismissed, resolved, or escalate for further\ninvestigation after thorough AI-assisted and human review.",
+	Name:    "update-status",
+	Usage:   "Updates the review status of a specific financial anomaly, allowing compliance\nofficers to mark it as dismissed, resolved, or escalate for further\ninvestigation after thorough AI-assisted and human review.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "anomaly-id",

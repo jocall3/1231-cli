@@ -18,14 +18,16 @@ import (
 var notificationsSettingsRetrieve = cli.Command{
 	Name:            "retrieve",
 	Usage:           "Retrieves the user's granular notification preferences across different channels\n(email, push, SMS, in-app) and event types.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleNotificationsSettingsRetrieve,
 	HideHelpCommand: true,
 }
 
 var notificationsSettingsUpdate = requestflag.WithInnerFlags(cli.Command{
-	Name:  "update",
-	Usage: "Updates the user's notification preferences, allowing control over channels,\nevent types, and quiet hours.",
+	Name:    "update",
+	Usage:   "Updates the user's notification preferences, allowing control over channels,\nevent types, and quiet hours.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
 			Name:     "channel-preferences",

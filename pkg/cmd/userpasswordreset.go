@@ -16,8 +16,9 @@ import (
 )
 
 var usersPasswordResetConfirm = cli.Command{
-	Name:  "confirm",
-	Usage: "Confirms the password reset using the received verification code and sets a new\npassword.",
+	Name:    "confirm",
+	Usage:   "Confirms the password reset using the received verification code and sets a new\npassword.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "identifier",
@@ -43,8 +44,9 @@ var usersPasswordResetConfirm = cli.Command{
 }
 
 var usersPasswordResetInitiate = cli.Command{
-	Name:  "initiate",
-	Usage: "Starts the password reset flow by sending a verification code or link to the\nuser's registered email or phone.",
+	Name:    "initiate",
+	Usage:   "Starts the password reset flow by sending a verification code or link to the\nuser's registered email or phone.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "identifier",

@@ -18,14 +18,16 @@ import (
 var usersMePreferencesRetrieve = cli.Command{
 	Name:            "retrieve",
 	Usage:           "Retrieves the user's deep personalization preferences, including AI\ncustomization settings, notification channel priorities, thematic choices, and\ndata sharing consents.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleUsersMePreferencesRetrieve,
 	HideHelpCommand: true,
 }
 
 var usersMePreferencesUpdate = requestflag.WithInnerFlags(cli.Command{
-	Name:  "update",
-	Usage: "Updates the user's deep personalization preferences, allowing dynamic control\nover AI behavior, notification delivery, thematic choices, and data privacy\nsettings.",
+	Name:    "update",
+	Usage:   "Updates the user's deep personalization preferences, allowing dynamic control\nover AI behavior, notification delivery, thematic choices, and data privacy\nsettings.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "ai-interaction-mode",

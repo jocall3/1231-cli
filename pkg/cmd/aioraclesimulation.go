@@ -16,8 +16,9 @@ import (
 )
 
 var aiOracleSimulationsRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Retrieves the full, detailed results of a specific financial simulation by its\nID.",
+	Name:    "retrieve",
+	Usage:   "Retrieves the full, detailed results of a specific financial simulation by its\nID.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "simulation-id",
@@ -29,8 +30,9 @@ var aiOracleSimulationsRetrieve = cli.Command{
 }
 
 var aiOracleSimulationsList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of all financial simulations previously run by the user,\nincluding their status and summaries.",
+	Name:    "list",
+	Usage:   "Retrieves a list of all financial simulations previously run by the user,\nincluding their status and summaries.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",

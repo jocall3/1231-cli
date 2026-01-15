@@ -16,8 +16,9 @@ import (
 )
 
 var paymentsInternationalInitiate = requestflag.WithInnerFlags(cli.Command{
-	Name:  "initiate",
-	Usage: "Facilitates the secure initiation of an international wire transfer to a\nbeneficiary in another country and currency, leveraging optimal FX rates and\ntracking capabilities.",
+	Name:    "initiate",
+	Usage:   "Facilitates the secure initiation of an international wire transfer to a\nbeneficiary in another country and currency, leveraging optimal FX rates and\ntracking capabilities.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "amount",
@@ -115,8 +116,9 @@ var paymentsInternationalInitiate = requestflag.WithInnerFlags(cli.Command{
 })
 
 var paymentsInternationalRetrieveStatus = cli.Command{
-	Name:  "retrieve-status",
-	Usage: "Retrieves the current processing status and details of an initiated\ninternational payment.",
+	Name:    "retrieve-status",
+	Usage:   "Retrieves the current processing status and details of an initiated\ninternational payment.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "payment-id",

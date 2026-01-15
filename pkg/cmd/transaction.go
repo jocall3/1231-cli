@@ -16,8 +16,9 @@ import (
 )
 
 var transactionsRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Retrieves granular information for a single transaction by its unique ID,\nincluding AI categorization confidence, merchant details, and associated carbon\nfootprint.",
+	Name:    "retrieve",
+	Usage:   "Retrieves granular information for a single transaction by its unique ID,\nincluding AI categorization confidence, merchant details, and associated carbon\nfootprint.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "transaction-id",
@@ -29,8 +30,9 @@ var transactionsRetrieve = cli.Command{
 }
 
 var transactionsList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a paginated list of the user's transactions, with extensive options\nfor filtering by type, category, date range, amount, and intelligent AI-driven\nsorting and search capabilities.",
+	Name:    "list",
+	Usage:   "Retrieves a paginated list of the user's transactions, with extensive options\nfor filtering by type, category, date range, amount, and intelligent AI-driven\nsorting and search capabilities.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "category",
@@ -84,8 +86,9 @@ var transactionsList = cli.Command{
 }
 
 var transactionsCategorize = cli.Command{
-	Name:  "categorize",
-	Usage: "Allows the user to override or refine the AI's categorization for a transaction,\nimproving future AI accuracy and personal financial reporting.",
+	Name:    "categorize",
+	Usage:   "Allows the user to override or refine the AI's categorization for a transaction,\nimproving future AI accuracy and personal financial reporting.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "transaction-id",
@@ -113,8 +116,9 @@ var transactionsCategorize = cli.Command{
 }
 
 var transactionsDispute = cli.Command{
-	Name:  "dispute",
-	Usage: "Begins the process of disputing a specific transaction, providing details and\nsupporting documentation for review by our compliance team and AI.",
+	Name:    "dispute",
+	Usage:   "Begins the process of disputing a specific transaction, providing details and\nsupporting documentation for review by our compliance team and AI.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "transaction-id",
@@ -143,8 +147,9 @@ var transactionsDispute = cli.Command{
 }
 
 var transactionsUpdateNotes = cli.Command{
-	Name:  "update-notes",
-	Usage: "Allows the user to add or update personal notes for a specific transaction.",
+	Name:    "update-notes",
+	Usage:   "Allows the user to add or update personal notes for a specific transaction.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "transaction-id",

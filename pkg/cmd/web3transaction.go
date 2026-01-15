@@ -16,8 +16,9 @@ import (
 )
 
 var web3TransactionsInitiateTransfer = cli.Command{
-	Name:  "initiate-transfer",
-	Usage: "Prepares and initiates a cryptocurrency transfer from a connected wallet to a\nspecified recipient address. Requires user confirmation (e.g., via wallet\nsignature).",
+	Name:    "initiate-transfer",
+	Usage:   "Prepares and initiates a cryptocurrency transfer from a connected wallet to a\nspecified recipient address. Requires user confirmation (e.g., via wallet\nsignature).",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "amount",

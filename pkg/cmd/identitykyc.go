@@ -18,14 +18,16 @@ import (
 var identityKYCRetrieveStatus = cli.Command{
 	Name:            "retrieve-status",
 	Usage:           "Retrieves the current status of the user's Know Your Customer (KYC) verification\nprocess.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleIdentityKYCRetrieveStatus,
 	HideHelpCommand: true,
 }
 
 var identityKYCSubmit = cli.Command{
-	Name:  "submit",
-	Usage: "Submits Know Your Customer (KYC) documentation, such as identity proofs and\naddress verification, for AI-accelerated compliance and identity verification,\ncrucial for higher service tiers and regulatory adherence.",
+	Name:    "submit",
+	Usage:   "Submits Know Your Customer (KYC) documentation, such as identity proofs and\naddress verification, for AI-accelerated compliance and identity verification,\ncrucial for higher service tiers and regulatory adherence.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "country-of-issue",

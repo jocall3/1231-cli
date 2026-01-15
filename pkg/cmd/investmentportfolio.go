@@ -16,8 +16,9 @@ import (
 )
 
 var investmentsPortfoliosCreate = cli.Command{
-	Name:  "create",
-	Usage: "Creates a new investment portfolio, with options for initial asset allocation.",
+	Name:    "create",
+	Usage:   "Creates a new investment portfolio, with options for initial asset allocation.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "currency",
@@ -65,8 +66,9 @@ var investmentsPortfoliosCreate = cli.Command{
 }
 
 var investmentsPortfoliosRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Retrieves detailed information for a specific investment portfolio, including\nholdings, performance, and AI insights.",
+	Name:    "retrieve",
+	Usage:   "Retrieves detailed information for a specific investment portfolio, including\nholdings, performance, and AI insights.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "portfolio-id",
@@ -78,8 +80,9 @@ var investmentsPortfoliosRetrieve = cli.Command{
 }
 
 var investmentsPortfoliosUpdate = cli.Command{
-	Name:  "update",
-	Usage: "Updates high-level details of an investment portfolio, such as name or risk\ntolerance.",
+	Name:    "update",
+	Usage:   "Updates high-level details of an investment portfolio, such as name or risk\ntolerance.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "portfolio-id",
@@ -106,8 +109,9 @@ var investmentsPortfoliosUpdate = cli.Command{
 }
 
 var investmentsPortfoliosList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a summary of all investment portfolios linked to the user's account.",
+	Name:    "list",
+	Usage:   "Retrieves a summary of all investment portfolios linked to the user's account.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -126,8 +130,9 @@ var investmentsPortfoliosList = cli.Command{
 }
 
 var investmentsPortfoliosRebalance = cli.Command{
-	Name:  "rebalance",
-	Usage: "Triggers an AI-driven rebalancing process for a specific investment portfolio\nbased on a target risk tolerance or strategy.",
+	Name:    "rebalance",
+	Usage:   "Triggers an AI-driven rebalancing process for a specific investment portfolio\nbased on a target risk tolerance or strategy.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "portfolio-id",

@@ -16,8 +16,9 @@ import (
 )
 
 var aiAdvisorListTools = cli.Command{
-	Name:  "list-tools",
-	Usage: "Retrieves a dynamic manifest of all integrated AI tools that Quantum can invoke\nand execute, providing details on their capabilities, parameters, and access\nrequirements.",
+	Name:    "list-tools",
+	Usage:   "Retrieves a dynamic manifest of all integrated AI tools that Quantum can invoke\nand execute, providing details on their capabilities, parameters, and access\nrequirements.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",

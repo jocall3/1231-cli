@@ -17,6 +17,7 @@ import (
 var sustainabilityInvestmentsAnalyzeImpact = cli.Command{
 	Name:            "analyze-impact",
 	Usage:           "Provides an AI-driven analysis of the Environmental, Social, and Governance\n(ESG) impact of the user's entire investment portfolio, benchmarking against\nindustry standards and suggesting more sustainable alternatives.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleSustainabilityInvestmentsAnalyzeImpact,
 	HideHelpCommand: true,

@@ -16,8 +16,9 @@ import (
 )
 
 var accountsOverdraftSettingsRetrieveOverdraftSettings = cli.Command{
-	Name:  "retrieve-overdraft-settings",
-	Usage: "Retrieves the current overdraft protection settings for a specific account.",
+	Name:    "retrieve-overdraft-settings",
+	Usage:   "Retrieves the current overdraft protection settings for a specific account.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "account-id",
@@ -29,8 +30,9 @@ var accountsOverdraftSettingsRetrieveOverdraftSettings = cli.Command{
 }
 
 var accountsOverdraftSettingsUpdateOverdraftSettings = cli.Command{
-	Name:  "update-overdraft-settings",
-	Usage: "Updates the overdraft protection settings for a specific account, enabling or\ndisabling protection and configuring preferences.",
+	Name:    "update-overdraft-settings",
+	Usage:   "Updates the overdraft protection settings for a specific account, enabling or\ndisabling protection and configuring preferences.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "account-id",

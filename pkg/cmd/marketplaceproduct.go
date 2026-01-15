@@ -16,8 +16,9 @@ import (
 )
 
 var marketplaceProductsList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a personalized, AI-curated list of products and services from the\nPlato AI marketplace, tailored to the user's financial profile, goals, and\nspending patterns. Includes options for filtering and advanced search.",
+	Name:    "list",
+	Usage:   "Retrieves a personalized, AI-curated list of products and services from the\nPlato AI marketplace, tailored to the user's financial profile, goals, and\nspending patterns. Includes options for filtering and advanced search.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ai-personalization-level",
@@ -51,8 +52,9 @@ var marketplaceProductsList = cli.Command{
 }
 
 var marketplaceProductsSimulateImpact = cli.Command{
-	Name:  "simulate-impact",
-	Usage: "Uses the Quantum Oracle to simulate the long-term financial impact of purchasing\nor subscribing to a specific marketplace product, such as a loan, investment, or\ninsurance policy, on the user's overall financial health and goals.",
+	Name:    "simulate-impact",
+	Usage:   "Uses the Quantum Oracle to simulate the long-term financial impact of purchasing\nor subscribing to a specific marketplace product, such as a loan, investment, or\ninsurance policy, on the user's overall financial health and goals.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "product-id",

@@ -16,8 +16,9 @@ import (
 )
 
 var marketplaceOffersRedeem = cli.Command{
-	Name:  "redeem",
-	Usage: "Redeems a personalized, exclusive offer from the Plato AI marketplace, often\nresulting in a discount, special rate, or credit to the user's account.",
+	Name:    "redeem",
+	Usage:   "Redeems a personalized, exclusive offer from the Plato AI marketplace, often\nresulting in a discount, special rate, or credit to the user's account.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "offer-id",
