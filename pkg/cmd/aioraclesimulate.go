@@ -16,8 +16,9 @@ import (
 )
 
 var aiOracleSimulateRunAdvanced = requestflag.WithInnerFlags(cli.Command{
-	Name:  "run-advanced",
-	Usage: "Engages the Quantum Oracle for highly complex, multi-variable simulations,\nallowing precise control over numerous financial parameters, market conditions,\nand personal events to generate deep, predictive insights and sensitivity\nanalysis.",
+	Name:    "run-advanced",
+	Usage:   "Engages the Quantum Oracle for highly complex, multi-variable simulations,\nallowing precise control over numerous financial parameters, market conditions,\nand personal events to generate deep, predictive insights and sensitivity\nanalysis.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "prompt",
@@ -89,8 +90,9 @@ var aiOracleSimulateRunAdvanced = requestflag.WithInnerFlags(cli.Command{
 })
 
 var aiOracleSimulateRunStandard = cli.Command{
-	Name:  "run-standard",
-	Usage: "Submits a hypothetical scenario to the Quantum Oracle AI for standard financial\nimpact analysis. The AI simulates the effect on the user's current financial\nstate and provides a summary.",
+	Name:    "run-standard",
+	Usage:   "Submits a hypothetical scenario to the Quantum Oracle AI for standard financial\nimpact analysis. The AI simulates the effect on the user's current financial\nstate and provides a summary.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "prompt",

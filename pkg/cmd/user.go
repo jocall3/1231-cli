@@ -16,8 +16,9 @@ import (
 )
 
 var usersLogin = cli.Command{
-	Name:  "login",
-	Usage: "Authenticates a user and creates a secure session, returning access tokens. May\nrequire MFA depending on user settings.",
+	Name:    "login",
+	Usage:   "Authenticates a user and creates a secure session, returning access tokens. May\nrequire MFA depending on user settings.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "email",
@@ -42,8 +43,9 @@ var usersLogin = cli.Command{
 }
 
 var usersRegister = requestflag.WithInnerFlags(cli.Command{
-	Name:  "register",
-	Usage: "Registers a new user account with , initiating the onboarding process. Requires\nbasic user details.",
+	Name:    "register",
+	Usage:   "Registers a new user account with , initiating the onboarding process. Requires\nbasic user details.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "email",

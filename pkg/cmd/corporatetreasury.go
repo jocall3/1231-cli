@@ -17,6 +17,7 @@ import (
 var corporateTreasuryGetLiquidityPositions = cli.Command{
 	Name:            "get-liquidity-positions",
 	Usage:           "Provides a real-time overview of the organization's liquidity across all\naccounts, currencies, and short-term investments.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleCorporateTreasuryGetLiquidityPositions,
 	HideHelpCommand: true,

@@ -16,8 +16,9 @@ import (
 )
 
 var lendingApplicationsRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Retrieves the current status and detailed information for a submitted loan\napplication, including AI underwriting outcomes, approved terms, and next steps.",
+	Name:    "retrieve",
+	Usage:   "Retrieves the current status and detailed information for a submitted loan\napplication, including AI underwriting outcomes, approved terms, and next steps.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "application-id",
@@ -29,8 +30,9 @@ var lendingApplicationsRetrieve = cli.Command{
 }
 
 var lendingApplicationsSubmit = requestflag.WithInnerFlags(cli.Command{
-	Name:  "submit",
-	Usage: "Submits a new loan application, which is instantly processed and underwritten by\nour Quantum AI, providing rapid decisions and personalized loan offers based on\nreal-time financial health data.",
+	Name:    "submit",
+	Usage:   "Submits a new loan application, which is instantly processed and underwritten by\nour Quantum AI, providing rapid decisions and personalized loan offers based on\nreal-time financial health data.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "loan-amount",

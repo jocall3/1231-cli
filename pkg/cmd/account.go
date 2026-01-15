@@ -16,8 +16,9 @@ import (
 )
 
 var accountsLink = cli.Command{
-	Name:  "link",
-	Usage: "Begins the secure process of linking a new external financial institution (e.g.,\nanother bank, investment platform) to the user's profile, typically involving a\nthird-party tokenized flow.",
+	Name:    "link",
+	Usage:   "Begins the secure process of linking a new external financial institution (e.g.,\nanother bank, investment platform) to the user's profile, typically involving a\nthird-party tokenized flow.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "country-code",
@@ -47,8 +48,9 @@ var accountsLink = cli.Command{
 }
 
 var accountsRetrieveDetails = cli.Command{
-	Name:  "retrieve-details",
-	Usage: "Retrieves comprehensive analytics for a specific financial account, including\nhistorical balance trends, projected cash flow, and AI-driven insights into\nspending patterns.",
+	Name:    "retrieve-details",
+	Usage:   "Retrieves comprehensive analytics for a specific financial account, including\nhistorical balance trends, projected cash flow, and AI-driven insights into\nspending patterns.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "account-id",
@@ -60,8 +62,9 @@ var accountsRetrieveDetails = cli.Command{
 }
 
 var accountsRetrieveMe = cli.Command{
-	Name:  "retrieve-me",
-	Usage: "Fetches a comprehensive, real-time list of all external financial accounts\nlinked to the user's profile, including consolidated balances and institutional\ndetails.",
+	Name:    "retrieve-me",
+	Usage:   "Fetches a comprehensive, real-time list of all external financial accounts\nlinked to the user's profile, including consolidated balances and institutional\ndetails.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -80,8 +83,9 @@ var accountsRetrieveMe = cli.Command{
 }
 
 var accountsRetrieveStatements = cli.Command{
-	Name:  "retrieve-statements",
-	Usage: "Fetches digital statements for a specific account, allowing filtering by date\nrange and format.",
+	Name:    "retrieve-statements",
+	Usage:   "Fetches digital statements for a specific account, allowing filtering by date\nrange and format.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "account-id",

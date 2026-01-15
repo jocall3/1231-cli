@@ -16,8 +16,9 @@ import (
 )
 
 var corporatePerformSanctionScreening = requestflag.WithInnerFlags(cli.Command{
-	Name:  "perform-sanction-screening",
-	Usage: "Executes a real-time screening of an individual or entity against global\nsanction lists and watchlists.",
+	Name:    "perform-sanction-screening",
+	Usage:   "Executes a real-time screening of an individual or entity against global\nsanction lists and watchlists.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "country",

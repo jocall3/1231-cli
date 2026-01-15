@@ -16,8 +16,9 @@ import (
 )
 
 var aiIncubatorPitchRetrieveDetails = cli.Command{
-	Name:  "retrieve-details",
-	Usage: "Retrieves the granular AI-driven analysis, strategic feedback, market validation\nresults, and any outstanding questions from Quantum Weaver for a specific\nbusiness pitch.",
+	Name:    "retrieve-details",
+	Usage:   "Retrieves the granular AI-driven analysis, strategic feedback, market validation\nresults, and any outstanding questions from Quantum Weaver for a specific\nbusiness pitch.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "pitch-id",
@@ -29,8 +30,9 @@ var aiIncubatorPitchRetrieveDetails = cli.Command{
 }
 
 var aiIncubatorPitchSubmit = requestflag.WithInnerFlags(cli.Command{
-	Name:  "submit",
-	Usage: "Submits a detailed business plan to the Quantum Weaver AI for rigorous analysis,\nmarket validation, and seed funding consideration. This initiates the AI-driven\nincubation journey, aiming to transform innovative ideas into commercially\nsuccessful ventures.",
+	Name:    "submit",
+	Usage:   "Submits a detailed business plan to the Quantum Weaver AI for rigorous analysis,\nmarket validation, and seed funding consideration. This initiates the AI-driven\nincubation journey, aiming to transform innovative ideas into commercially\nsuccessful ventures.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "business-plan",
@@ -106,8 +108,9 @@ var aiIncubatorPitchSubmit = requestflag.WithInnerFlags(cli.Command{
 })
 
 var aiIncubatorPitchSubmitFeedback = requestflag.WithInnerFlags(cli.Command{
-	Name:  "submit-feedback",
-	Usage: "Allows the entrepreneur to respond to specific questions or provide additional\ndetails requested by Quantum Weaver, moving the pitch forward in the incubation\nprocess.",
+	Name:    "submit-feedback",
+	Usage:   "Allows the entrepreneur to respond to specific questions or provide additional\ndetails requested by Quantum Weaver, moving the pitch forward in the incubation\nprocess.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "pitch-id",

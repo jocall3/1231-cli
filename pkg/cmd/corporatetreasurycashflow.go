@@ -16,8 +16,9 @@ import (
 )
 
 var corporateTreasuryCashFlowGetForecast = cli.Command{
-	Name:  "get-forecast",
-	Usage: "Retrieves an advanced AI-driven cash flow forecast for the organization,\nprojecting liquidity, identifying potential surpluses or deficits, and providing\nrecommendations for optimal treasury management.",
+	Name:    "get-forecast",
+	Usage:   "Retrieves an advanced AI-driven cash flow forecast for the organization,\nprojecting liquidity, identifying potential surpluses or deficits, and providing\nrecommendations for optimal treasury management.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "forecast-horizon-days",

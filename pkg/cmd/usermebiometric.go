@@ -16,8 +16,9 @@ import (
 )
 
 var usersMeBiometricsEnroll = cli.Command{
-	Name:  "enroll",
-	Usage: "Initiates the enrollment process for biometric authentication (e.g.,\nfingerprint, facial scan) to enable secure and convenient access to sensitive\nfeatures. Requires a biometric signature for initial proof.",
+	Name:    "enroll",
+	Usage:   "Initiates the enrollment process for biometric authentication (e.g.,\nfingerprint, facial scan) to enable secure and convenient access to sensitive\nfeatures. Requires a biometric signature for initial proof.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "biometric-signature",
@@ -50,14 +51,16 @@ var usersMeBiometricsEnroll = cli.Command{
 var usersMeBiometricsStatus = cli.Command{
 	Name:            "status",
 	Usage:           "Retrieves the current status of biometric enrollments for the authenticated\nuser.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleUsersMeBiometricsStatus,
 	HideHelpCommand: true,
 }
 
 var usersMeBiometricsVerify = cli.Command{
-	Name:  "verify",
-	Usage: "Performs real-time biometric verification to authorize sensitive actions or\naccess protected resources, using a one-time biometric signature.",
+	Name:    "verify",
+	Usage:   "Performs real-time biometric verification to authorize sensitive actions or\naccess protected resources, using a one-time biometric signature.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "biometric-signature",

@@ -16,8 +16,9 @@ import (
 )
 
 var usersMeDevicesList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of all devices linked to the user's account, including mobile\nphones, tablets, and desktops, indicating their last active status and security\nposture.",
+	Name:    "list",
+	Usage:   "Retrieves a list of all devices linked to the user's account, including mobile\nphones, tablets, and desktops, indicating their last active status and security\nposture.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -36,8 +37,9 @@ var usersMeDevicesList = cli.Command{
 }
 
 var usersMeDevicesRegister = cli.Command{
-	Name:  "register",
-	Usage: "Registers a new device for secure access and multi-factor authentication,\nassociating it with the user's profile. This typically initiates a biometric or\nMFA enrollment flow.",
+	Name:    "register",
+	Usage:   "Registers a new device for secure access and multi-factor authentication,\nassociating it with the user's profile. This typically initiates a biometric or\nMFA enrollment flow.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "device-type",

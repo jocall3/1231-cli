@@ -16,8 +16,9 @@ import (
 )
 
 var developersWebhooksCreate = cli.Command{
-	Name:  "create",
-	Usage: "Establishes a new webhook subscription, allowing a developer application to\nreceive real-time notifications for specified events (e.g., new transaction,\naccount update) via a provided callback URL.",
+	Name:    "create",
+	Usage:   "Establishes a new webhook subscription, allowing a developer application to\nreceive real-time notifications for specified events (e.g., new transaction,\naccount update) via a provided callback URL.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "callback-url",
@@ -42,8 +43,9 @@ var developersWebhooksCreate = cli.Command{
 }
 
 var developersWebhooksUpdate = cli.Command{
-	Name:  "update",
-	Usage: "Modifies an existing webhook subscription, allowing changes to the callback URL,\nsubscribed events, or activation status.",
+	Name:    "update",
+	Usage:   "Modifies an existing webhook subscription, allowing changes to the callback URL,\nsubscribed events, or activation status.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "subscription-id",
@@ -70,8 +72,9 @@ var developersWebhooksUpdate = cli.Command{
 }
 
 var developersWebhooksList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of all active webhook subscriptions for the authenticated\ndeveloper application, detailing endpoint URLs, subscribed events, and current\nstatus.",
+	Name:    "list",
+	Usage:   "Retrieves a list of all active webhook subscriptions for the authenticated\ndeveloper application, detailing endpoint URLs, subscribed events, and current\nstatus.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",

@@ -16,8 +16,9 @@ import (
 )
 
 var notificationsListUserNotifications = cli.Command{
-	Name:  "list-user-notifications",
-	Usage: "Retrieves a paginated list of personalized notifications and proactive AI alerts\nfor the authenticated user, allowing filtering by status and severity.",
+	Name:    "list-user-notifications",
+	Usage:   "Retrieves a paginated list of personalized notifications and proactive AI alerts\nfor the authenticated user, allowing filtering by status and severity.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -46,8 +47,9 @@ var notificationsListUserNotifications = cli.Command{
 }
 
 var notificationsMarkAsRead = cli.Command{
-	Name:  "mark-as-read",
-	Usage: "Marks a specific user notification as read.",
+	Name:    "mark-as-read",
+	Usage:   "Marks a specific user notification as read.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "notification-id",

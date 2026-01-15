@@ -16,8 +16,9 @@ import (
 )
 
 var developersAPIKeysCreate = cli.Command{
-	Name:  "create",
-	Usage: "Generates a new API key for the developer application with specified scopes and\nan optional expiration.",
+	Name:    "create",
+	Usage:   "Generates a new API key for the developer application with specified scopes and\nan optional expiration.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "name",
@@ -42,8 +43,9 @@ var developersAPIKeysCreate = cli.Command{
 }
 
 var developersAPIKeysList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of API keys issued to the authenticated developer application.",
+	Name:    "list",
+	Usage:   "Retrieves a list of API keys issued to the authenticated developer application.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",

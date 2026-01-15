@@ -16,8 +16,9 @@ import (
 )
 
 var aiAdvisorChatRetrieveHistory = cli.Command{
-	Name:  "retrieve-history",
-	Usage: "Fetches the full conversation history with the Quantum AI Advisor for a given\nsession or user.",
+	Name:    "retrieve-history",
+	Usage:   "Fetches the full conversation history with the Quantum AI Advisor for a given\nsession or user.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -41,8 +42,9 @@ var aiAdvisorChatRetrieveHistory = cli.Command{
 }
 
 var aiAdvisorChatSendMessage = requestflag.WithInnerFlags(cli.Command{
-	Name:  "send-message",
-	Usage: "Initiates or continues a sophisticated conversation with Quantum, the AI\nAdvisor. Quantum can provide advanced financial insights, execute complex tasks\nvia an expanding suite of intelligent tools, and learn from user interactions to\noffer hyper-personalized guidance.",
+	Name:    "send-message",
+	Usage:   "Initiates or continues a sophisticated conversation with Quantum, the AI\nAdvisor. Quantum can provide advanced financial insights, execute complex tasks\nvia an expanding suite of intelligent tools, and learn from user interactions to\noffer hyper-personalized guidance.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[map[string]any]{
 			Name:     "function-response",

@@ -16,8 +16,9 @@ import (
 )
 
 var goalsCreate = cli.Command{
-	Name:  "create",
-	Usage: "Creates a new long-term financial goal, with optional AI plan generation.",
+	Name:    "create",
+	Usage:   "Creates a new long-term financial goal, with optional AI plan generation.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "name",
@@ -69,8 +70,9 @@ var goalsCreate = cli.Command{
 }
 
 var goalsRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Retrieves detailed information for a specific financial goal, including current\nprogress, AI strategic plan, and related insights.",
+	Name:    "retrieve",
+	Usage:   "Retrieves detailed information for a specific financial goal, including current\nprogress, AI strategic plan, and related insights.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "goal-id",
@@ -82,8 +84,9 @@ var goalsRetrieve = cli.Command{
 }
 
 var goalsUpdate = cli.Command{
-	Name:  "update",
-	Usage: "Updates the parameters of an existing financial goal, such as target amount,\ndate, or contributing accounts. This may trigger an AI plan recalculation.",
+	Name:    "update",
+	Usage:   "Updates the parameters of an existing financial goal, such as target amount,\ndate, or contributing accounts. This may trigger an AI plan recalculation.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "goal-id",
@@ -130,8 +133,9 @@ var goalsUpdate = cli.Command{
 }
 
 var goalsList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of all financial goals defined by the user, including their\nprogress and associated AI plans.",
+	Name:    "list",
+	Usage:   "Retrieves a list of all financial goals defined by the user, including their\nprogress and associated AI plans.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",

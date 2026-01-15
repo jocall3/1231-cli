@@ -17,6 +17,7 @@ import (
 var transactionsInsightsGetSpendingTrends = cli.Command{
 	Name:            "get-spending-trends",
 	Usage:           "Retrieves AI-generated insights into user spending trends over time, identifying\npatterns and anomalies.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleTransactionsInsightsGetSpendingTrends,
 	HideHelpCommand: true,

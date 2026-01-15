@@ -16,8 +16,9 @@ import (
 )
 
 var sustainabilityPurchaseCarbonOffsets = cli.Command{
-	Name:  "purchase-carbon-offsets",
-	Usage: "Allows users to purchase carbon offsets to neutralize their estimated carbon\nfootprint, supporting environmental initiatives.",
+	Name:    "purchase-carbon-offsets",
+	Usage:   "Allows users to purchase carbon offsets to neutralize their estimated carbon\nfootprint, supporting environmental initiatives.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "amount-kg-co2e",
@@ -45,6 +46,7 @@ var sustainabilityPurchaseCarbonOffsets = cli.Command{
 var sustainabilityRetrieveCarbonFootprint = cli.Command{
 	Name:            "retrieve-carbon-footprint",
 	Usage:           "Generates a detailed report of the user's estimated carbon footprint based on\ntransaction data, lifestyle choices, and AI-driven impact assessments, offering\ninsights and reduction strategies.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleSustainabilityRetrieveCarbonFootprint,
 	HideHelpCommand: true,
