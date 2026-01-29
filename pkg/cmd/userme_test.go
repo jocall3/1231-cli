@@ -42,11 +42,11 @@ func TestUsersMeUpdate(t *testing.T) {
 		"--address.zip", "90210",
 		"--name", "Quantum Visionary Pro",
 		"--phone", "+1-555-999-0000",
-		"--preferences.aiInteractionMode", "balanced",
-		"--preferences.dataSharingConsent=true",
-		"--preferences.notificationChannels", "{email: true, inApp: true, push: true, sms: false}",
-		"--preferences.preferredLanguage", "en-US",
+		"--preferences.ai-interaction-mode", "balanced",
+		"--preferences.data-sharing-consent=true",
+		"--preferences.notification-channels", "{email: true, inApp: true, push: true, sms: false}",
+		"--preferences.preferred-language", "en-US",
 		"--preferences.theme", "Dark-Quantum",
-		"--preferences.transactionGrouping", "category",
+		"--preferences.transaction-grouping", "category",
 	)
 }
