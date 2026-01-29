@@ -64,6 +64,20 @@ var developersAPIKeysList = cli.Command{
 	HideHelpCommand: true,
 }
 
+var developersAPIKeysRevoke = cli.Command{
+	Name:    "revoke",
+	Usage:   "Revokes an existing API key, disabling its access immediately.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[any]{
+			Name:     "key-id",
+			Required: true,
+		},
+	},
+	Action:          handleDevelopersAPIKeysRevoke,
+	HideHelpCommand: true,
+}
+
 func handleDevelopersAPIKeysCreate(ctx context.Context, cmd *cli.Command) error {
 	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -130,4 +144,29 @@ func handleDevelopersAPIKeysList(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "developers:api-keys list", obj, format, transform)
+}
+
+func handleDevelopersAPIKeysRevoke(ctx context.Context, cmd *cli.Command) error {
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("key-id") && len(unusedArgs) > 0 {
+		cmd.Set("key-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	return client.Developers.APIKeys.Revoke(ctx, interface{}(cmd.Value("key-id").(any)), options...)
 }

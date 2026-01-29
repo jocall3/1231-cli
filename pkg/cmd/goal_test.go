@@ -58,3 +58,12 @@ func TestGoalsList(t *testing.T) {
 		"--offset", "{}",
 	)
 }
+
+func TestGoalsDelete(t *testing.T) {
+	t.Skip("Prism tests are disabled")
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"goals", "delete",
+		"--goal-id", "goal_retirement_2050",
+	)
+}

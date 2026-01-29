@@ -37,6 +37,20 @@ var usersMeDevicesList = cli.Command{
 	HideHelpCommand: true,
 }
 
+var usersMeDevicesDeregister = cli.Command{
+	Name:    "deregister",
+	Usage:   "Removes a specific device from the user's linked devices, revoking its access\nand requiring re-registration for future use. Useful for lost or compromised\ndevices.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[any]{
+			Name:     "device-id",
+			Required: true,
+		},
+	},
+	Action:          handleUsersMeDevicesDeregister,
+	HideHelpCommand: true,
+}
+
 var usersMeDevicesRegister = cli.Command{
 	Name:    "register",
 	Usage:   "Registers a new device for secure access and multi-factor authentication,\nassociating it with the user's profile. This typically initiates a biometric or\nMFA enrollment flow.",
@@ -112,6 +126,31 @@ func handleUsersMeDevicesList(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "users:me:devices list", obj, format, transform)
+}
+
+func handleUsersMeDevicesDeregister(ctx context.Context, cmd *cli.Command) error {
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("device-id") && len(unusedArgs) > 0 {
+		cmd.Set("device-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	return client.Users.Me.Devices.Deregister(ctx, interface{}(cmd.Value("device-id").(any)), options...)
 }
 
 func handleUsersMeDevicesRegister(ctx context.Context, cmd *cli.Command) error {

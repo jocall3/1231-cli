@@ -102,3 +102,12 @@ func TestCorporateRiskFraudRulesList(t *testing.T) {
 		"--offset", "{}",
 	)
 }
+
+func TestCorporateRiskFraudRulesDelete(t *testing.T) {
+	t.Skip("Prism tests are disabled")
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"corporate:risk:fraud:rules", "delete",
+		"--rule-id", "fraud_rule_high_value_inactive",
+	)
+}

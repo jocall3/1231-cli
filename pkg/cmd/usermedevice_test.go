@@ -18,6 +18,15 @@ func TestUsersMeDevicesList(t *testing.T) {
 	)
 }
 
+func TestUsersMeDevicesDeregister(t *testing.T) {
+	t.Skip("Prism tests are disabled")
+	mocktest.TestRunMockTestWithFlags(
+		t,
+		"users:me:devices", "deregister",
+		"--device-id", "dev_mobile_ios_aabbcc",
+	)
+}
+
 func TestUsersMeDevicesRegister(t *testing.T) {
 	t.Skip("Prism tests are disabled")
 	mocktest.TestRunMockTestWithFlags(

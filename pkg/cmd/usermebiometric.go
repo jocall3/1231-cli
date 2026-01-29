@@ -15,6 +15,15 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
+var usersMeBiometricsDeregister = cli.Command{
+	Name:            "deregister",
+	Usage:           "Removes all enrolled biometric data associated with the user's account for\nsecurity reasons.",
+	Suggest:         true,
+	Flags:           []cli.Flag{},
+	Action:          handleUsersMeBiometricsDeregister,
+	HideHelpCommand: true,
+}
+
 var usersMeBiometricsEnroll = cli.Command{
 	Name:    "enroll",
 	Usage:   "Initiates the enrollment process for biometric authentication (e.g.,\nfingerprint, facial scan) to enable secure and convenient access to sensitive\nfeatures. Requires a biometric signature for initial proof.",
@@ -83,6 +92,28 @@ var usersMeBiometricsVerify = cli.Command{
 	},
 	Action:          handleUsersMeBiometricsVerify,
 	HideHelpCommand: true,
+}
+
+func handleUsersMeBiometricsDeregister(ctx context.Context, cmd *cli.Command) error {
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	return client.Users.Me.Biometrics.Deregister(ctx, options...)
 }
 
 func handleUsersMeBiometricsEnroll(ctx context.Context, cmd *cli.Command) error {
