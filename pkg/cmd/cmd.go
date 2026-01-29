@@ -110,6 +110,7 @@ func init() {
 				Suggest:  true,
 				Commands: []*cli.Command{
 					&usersMeDevicesList,
+					&usersMeDevicesDeregister,
 					&usersMeDevicesRegister,
 				},
 			},
@@ -118,6 +119,7 @@ func init() {
 				Category: "API RESOURCE",
 				Suggest:  true,
 				Commands: []*cli.Command{
+					&usersMeBiometricsDeregister,
 					&usersMeBiometricsEnroll,
 					&usersMeBiometricsStatus,
 					&usersMeBiometricsVerify,
@@ -189,6 +191,7 @@ func init() {
 					&budgetsRetrieve,
 					&budgetsUpdate,
 					&budgetsList,
+					&budgetsDelete,
 				},
 			},
 			{
@@ -244,6 +247,7 @@ func init() {
 				Commands: []*cli.Command{
 					&aiOracleSimulationsRetrieve,
 					&aiOracleSimulationsList,
+					&aiOracleSimulationsDelete,
 				},
 			},
 			{
@@ -344,6 +348,7 @@ func init() {
 					&corporateRiskFraudRulesCreate,
 					&corporateRiskFraudRulesUpdate,
 					&corporateRiskFraudRulesList,
+					&corporateRiskFraudRulesDelete,
 				},
 			},
 			{
@@ -432,6 +437,7 @@ func init() {
 					&developersWebhooksCreate,
 					&developersWebhooksUpdate,
 					&developersWebhooksList,
+					&developersWebhooksDelete,
 				},
 			},
 			{
@@ -441,6 +447,7 @@ func init() {
 				Commands: []*cli.Command{
 					&developersAPIKeysCreate,
 					&developersAPIKeysList,
+					&developersAPIKeysRevoke,
 				},
 			},
 			{
@@ -461,6 +468,7 @@ func init() {
 					&goalsRetrieve,
 					&goalsUpdate,
 					&goalsList,
+					&goalsDelete,
 				},
 			},
 			{

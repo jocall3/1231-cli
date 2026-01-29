@@ -178,6 +178,20 @@ var budgetsList = cli.Command{
 	HideHelpCommand: true,
 }
 
+var budgetsDelete = cli.Command{
+	Name:    "delete",
+	Usage:   "Deletes a specific budget from the user's profile.",
+	Suggest: true,
+	Flags: []cli.Flag{
+		&requestflag.Flag[any]{
+			Name:     "budget-id",
+			Required: true,
+		},
+	},
+	Action:          handleBudgetsDelete,
+	HideHelpCommand: true,
+}
+
 func handleBudgetsCreate(ctx context.Context, cmd *cli.Command) error {
 	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
@@ -321,4 +335,29 @@ func handleBudgetsList(ctx context.Context, cmd *cli.Command) error {
 	format := cmd.Root().String("format")
 	transform := cmd.Root().String("transform")
 	return ShowJSON(os.Stdout, "budgets list", obj, format, transform)
+}
+
+func handleBudgetsDelete(ctx context.Context, cmd *cli.Command) error {
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
+	unusedArgs := cmd.Args().Slice()
+	if !cmd.IsSet("budget-id") && len(unusedArgs) > 0 {
+		cmd.Set("budget-id", unusedArgs[0])
+		unusedArgs = unusedArgs[1:]
+	}
+	if len(unusedArgs) > 0 {
+		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
+	}
+
+	options, err := flagOptions(
+		cmd,
+		apiquery.NestedQueryFormatBrackets,
+		apiquery.ArrayQueryFormatComma,
+		EmptyBody,
+		false,
+	)
+	if err != nil {
+		return err
+	}
+
+	return client.Budgets.Delete(ctx, interface{}(cmd.Value("budget-id").(any)), options...)
 }
