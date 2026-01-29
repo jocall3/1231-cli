@@ -59,7 +59,7 @@ var identityKYCSubmit = cli.Command{
 			Required: true,
 			BodyPath: "issueDate",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "additional-document",
 			Usage:    "Array of additional documents (e.g., utility bills) as base64 encoded images.",
 			BodyPath: "additionalDocuments",

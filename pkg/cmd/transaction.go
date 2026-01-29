@@ -138,7 +138,7 @@ var transactionsDispute = cli.Command{
 			Required: true,
 			BodyPath: "reason",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "supporting-document",
 			Usage:    "URLs to supporting documents (e.g., receipts, communication).",
 			BodyPath: "supportingDocuments",

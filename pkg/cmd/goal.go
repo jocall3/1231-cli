@@ -44,7 +44,7 @@ var goalsCreate = cli.Command{
 			Required: true,
 			BodyPath: "type",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "contributing-account",
 			Usage:    "Optional: List of account IDs initially contributing to this goal.",
 			BodyPath: "contributingAccounts",
@@ -61,7 +61,7 @@ var goalsCreate = cli.Command{
 			Default:  0,
 			BodyPath: "initialContribution",
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:     "risk-tolerance",
 			Usage:    "Desired risk tolerance for investments related to this goal.",
 			BodyPath: "riskTolerance",
@@ -94,7 +94,7 @@ var goalsUpdate = cli.Command{
 			Name:     "goal-id",
 			Required: true,
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "contributing-account",
 			Usage:    "Updated list of account IDs contributing to this goal.",
 			BodyPath: "contributingAccounts",
@@ -110,7 +110,7 @@ var goalsUpdate = cli.Command{
 			Usage:    "Updated name of the financial goal.",
 			BodyPath: "name",
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:     "risk-tolerance",
 			Usage:    "Updated risk tolerance for investments related to this goal.",
 			BodyPath: "riskTolerance",

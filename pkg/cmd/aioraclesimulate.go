@@ -61,7 +61,7 @@ var aiOracleSimulateRunAdvanced = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "A descriptive name for this specific scenario.",
 			InnerField: "name",
 		},
-		&requestflag.InnerFlag[[]map[string]any]{
+		&requestflag.InnerFlag[any]{
 			Name:       "scenario.sensitivity-analysis-params",
 			Usage:      "Parameters for multi-variable sensitivity analysis within this scenario.",
 			InnerField: "sensitivityAnalysisParams",
