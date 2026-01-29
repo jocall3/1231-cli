@@ -101,7 +101,7 @@ var corporateCardsCreateVirtual = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "If true, international transactions are allowed.",
 			InnerField: "internationalTransactions",
 		},
-		&requestflag.InnerFlag[[]any]{
+		&requestflag.InnerFlag[any]{
 			Name:       "controls.merchant-category-restrictions",
 			Usage:      "List of allowed merchant categories. If empty, all are allowed unless explicitly denied.",
 			InnerField: "merchantCategoryRestrictions",
@@ -121,7 +121,7 @@ var corporateCardsCreateVirtual = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Maximum amount for a single transaction (null for no limit).",
 			InnerField: "singleTransactionLimit",
 		},
-		&requestflag.InnerFlag[[]any]{
+		&requestflag.InnerFlag[any]{
 			Name:       "controls.vendor-restrictions",
 			Usage:      "List of allowed vendors/merchants by name.",
 			InnerField: "vendorRestrictions",
@@ -214,7 +214,7 @@ var corporateCardsUpdateControls = cli.Command{
 			Usage:    "If true, international transactions are allowed.",
 			BodyPath: "internationalTransactions",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "merchant-category-restriction",
 			Usage:    "List of allowed merchant categories. If empty, all are allowed unless explicitly denied.",
 			BodyPath: "merchantCategoryRestrictions",
@@ -234,7 +234,7 @@ var corporateCardsUpdateControls = cli.Command{
 			Usage:    "Maximum amount for a single transaction (null for no limit).",
 			BodyPath: "singleTransactionLimit",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "vendor-restriction",
 			Usage:    "List of allowed vendors/merchants by name.",
 			BodyPath: "vendorRestrictions",

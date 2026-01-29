@@ -83,7 +83,7 @@ var corporateRiskFraudRulesCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Number of days an account must be inactive for the rule to apply.",
 			InnerField: "accountInactivityDays",
 		},
-		&requestflag.InnerFlag[[]any]{
+		&requestflag.InnerFlag[any]{
 			Name:       "criteria.country-of-origin",
 			Usage:      "List of ISO 2-letter country codes for transaction origin.",
 			InnerField: "countryOfOrigin",
@@ -108,7 +108,7 @@ var corporateRiskFraudRulesCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Minimum number of payments in a timeframe.",
 			InnerField: "paymentCountMin",
 		},
-		&requestflag.InnerFlag[[]string]{
+		&requestflag.InnerFlag[any]{
 			Name:       "criteria.recipient-country-risk-level",
 			Usage:      "List of risk levels for recipient countries.",
 			InnerField: "recipientCountryRiskLevel",
@@ -128,7 +128,7 @@ var corporateRiskFraudRulesCreate = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Minimum transaction amount to consider.",
 			InnerField: "transactionAmountMin",
 		},
-		&requestflag.InnerFlag[string]{
+		&requestflag.InnerFlag[any]{
 			Name:       "criteria.transaction-type",
 			Usage:      "Specific transaction type (e.g., debit, credit).",
 			InnerField: "transactionType",
@@ -202,7 +202,7 @@ var corporateRiskFraudRulesUpdate = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Number of days an account must be inactive for the rule to apply.",
 			InnerField: "accountInactivityDays",
 		},
-		&requestflag.InnerFlag[[]any]{
+		&requestflag.InnerFlag[any]{
 			Name:       "criteria.country-of-origin",
 			Usage:      "List of ISO 2-letter country codes for transaction origin.",
 			InnerField: "countryOfOrigin",
@@ -227,7 +227,7 @@ var corporateRiskFraudRulesUpdate = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Minimum number of payments in a timeframe.",
 			InnerField: "paymentCountMin",
 		},
-		&requestflag.InnerFlag[[]string]{
+		&requestflag.InnerFlag[any]{
 			Name:       "criteria.recipient-country-risk-level",
 			Usage:      "List of risk levels for recipient countries.",
 			InnerField: "recipientCountryRiskLevel",
@@ -247,7 +247,7 @@ var corporateRiskFraudRulesUpdate = requestflag.WithInnerFlags(cli.Command{
 			Usage:      "Minimum transaction amount to consider.",
 			InnerField: "transactionAmountMin",
 		},
-		&requestflag.InnerFlag[string]{
+		&requestflag.InnerFlag[any]{
 			Name:       "criteria.transaction-type",
 			Usage:      "Specific transaction type (e.g., debit, credit).",
 			InnerField: "transactionType",

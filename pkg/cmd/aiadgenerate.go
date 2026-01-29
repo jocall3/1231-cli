@@ -44,37 +44,37 @@ var aiAdsGenerateAdvanced = requestflag.WithInnerFlags(cli.Command{
 			Default:  "16:9",
 			BodyPath: "aspectRatio",
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:     "audience-target",
 			Usage:    "Target audience for the ad, influencing tone and visuals.",
 			BodyPath: "audienceTarget",
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:     "background-music-genre",
 			Usage:    "Genre of background music.",
 			BodyPath: "backgroundMusicGenre",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "brand-asset",
 			Usage:    "URLs to brand assets (e.g., logos, specific imagery) to be incorporated.",
 			BodyPath: "brandAssets",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "brand-color",
 			Usage:    "Optional: Hex color codes to influence the video's aesthetic.",
 			BodyPath: "brandColors",
 		},
-		&requestflag.Flag[map[string]any]{
+		&requestflag.Flag[any]{
 			Name:     "call-to-action",
 			Usage:    "Call-to-action text and URL to be displayed.",
 			BodyPath: "callToAction",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "keyword",
 			Usage:    "Optional: Additional keywords to guide the AI's content generation.",
 			BodyPath: "keywords",
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:     "voiceover-style",
 			Usage:    "Style/tone for the AI voiceover.",
 			BodyPath: "voiceoverStyle",
@@ -133,12 +133,12 @@ var aiAdsGenerateStandard = cli.Command{
 			Default:  "16:9",
 			BodyPath: "aspectRatio",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "brand-color",
 			Usage:    "Optional: Hex color codes to influence the video's aesthetic.",
 			BodyPath: "brandColors",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "keyword",
 			Usage:    "Optional: Additional keywords to guide the AI's content generation.",
 			BodyPath: "keywords",

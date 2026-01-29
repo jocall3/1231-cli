@@ -89,7 +89,7 @@ var investmentsPortfoliosUpdate = cli.Command{
 			Name:     "portfolio-id",
 			Required: true,
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:     "ai-rebalancing-frequency",
 			Usage:    "Updated frequency for AI-driven rebalancing.",
 			BodyPath: "aiRebalancingFrequency",
