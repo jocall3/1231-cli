@@ -40,7 +40,7 @@ func TestUsersMePreferencesUpdate(t *testing.T) {
 		"--ai-interaction-mode", "proactive",
 		"--data-sharing-consent=true",
 		"--notification-channels.email=true",
-		"--notification-channels.inApp=true",
+		"--notification-channels.in-app=true",
 		"--notification-channels.push=true",
 		"--notification-channels.sms=false",
 		"--preferred-language", "en-US",

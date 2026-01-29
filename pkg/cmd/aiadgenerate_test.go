@@ -47,7 +47,7 @@ func TestAIAdsGenerateAdvanced(t *testing.T) {
 		"--brand-asset", "https://demobank.com/assets/corporate_logo.png",
 		"--brand-color", "#0000FF",
 		"--brand-color", "#FFD700",
-		"--call-to-action.displayTimeSeconds", "5",
+		"--call-to-action.display-time-seconds", "5",
 		"--call-to-action.text", "Learn more at DemoBank.com/business",
 		"--call-to-action.url", "https://demobank.com/business",
 		"--keyword", "innovation",
