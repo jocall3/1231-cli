@@ -54,7 +54,7 @@ func TestTransactionsDispute(t *testing.T) {
 		"--transaction-id", "txn_quantum-2024-07-21-A7B8C9",
 		"--details", "I did not authorize this purchase. My card may have been compromised and I was traveling internationally on this date.",
 		"--reason", "unauthorized",
-		"--supporting-document", "https://demobank.com/uploads/flight_ticket.png",
+		"--supporting-document", "[https://demobank.com/uploads/flight_ticket.png]",
 	)
 }
 
