@@ -89,12 +89,10 @@ func TestCorporateCardsUpdateControls(t *testing.T) {
 		"--contactless-payments=true",
 		"--daily-limit", "750",
 		"--international-transactions=true",
-		"--merchant-category-restriction", "Software Subscriptions",
-		"--merchant-category-restriction", "Conferences",
+		"--merchant-category-restriction", "[Software Subscriptions, Conferences]",
 		"--monthly-limit", "3000",
 		"--online-transactions=true",
 		"--single-transaction-limit", "1000",
-		"--vendor-restriction", "Amazon",
-		"--vendor-restriction", "Uber",
+		"--vendor-restriction", "[Amazon, Uber]",
 	)
 }
