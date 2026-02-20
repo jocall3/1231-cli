@@ -9,7 +9,7 @@ import (
 )
 
 func TestUsersMeBiometricsDeregister(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users:me:biometrics", "deregister",
@@ -17,7 +17,7 @@ func TestUsersMeBiometricsDeregister(t *testing.T) {
 }
 
 func TestUsersMeBiometricsEnroll(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users:me:biometrics", "enroll",
@@ -29,7 +29,7 @@ func TestUsersMeBiometricsEnroll(t *testing.T) {
 }
 
 func TestUsersMeBiometricsStatus(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users:me:biometrics", "status",
@@ -37,7 +37,7 @@ func TestUsersMeBiometricsStatus(t *testing.T) {
 }
 
 func TestUsersMeBiometricsVerify(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users:me:biometrics", "verify",

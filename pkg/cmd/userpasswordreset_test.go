@@ -9,7 +9,7 @@ import (
 )
 
 func TestUsersPasswordResetConfirm(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users:password-reset", "confirm",
@@ -20,7 +20,7 @@ func TestUsersPasswordResetConfirm(t *testing.T) {
 }
 
 func TestUsersPasswordResetInitiate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users:password-reset", "initiate",

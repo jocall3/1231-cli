@@ -10,7 +10,7 @@ import (
 )
 
 func TestPaymentsInternationalInitiate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"payments:international", "initiate",
@@ -51,7 +51,7 @@ func TestPaymentsInternationalInitiate(t *testing.T) {
 }
 
 func TestPaymentsInternationalRetrieveStatus(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"payments:international", "retrieve-status",

@@ -10,7 +10,7 @@ import (
 )
 
 func TestAIIncubatorPitchRetrieveDetails(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"ai:incubator:pitch", "retrieve-details",
@@ -19,7 +19,7 @@ func TestAIIncubatorPitchRetrieveDetails(t *testing.T) {
 }
 
 func TestAIIncubatorPitchSubmit(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"ai:incubator:pitch", "submit",
@@ -54,7 +54,7 @@ func TestAIIncubatorPitchSubmit(t *testing.T) {
 }
 
 func TestAIIncubatorPitchSubmitFeedback(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"ai:incubator:pitch", "submit-feedback",

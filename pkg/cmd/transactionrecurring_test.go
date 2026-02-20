@@ -9,7 +9,7 @@ import (
 )
 
 func TestTransactionsRecurringCreate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"transactions:recurring", "create",
@@ -24,7 +24,7 @@ func TestTransactionsRecurringCreate(t *testing.T) {
 }
 
 func TestTransactionsRecurringList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"transactions:recurring", "list",

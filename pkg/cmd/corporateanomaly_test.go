@@ -9,7 +9,7 @@ import (
 )
 
 func TestCorporateAnomaliesList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"corporate:anomalies", "list",
@@ -24,7 +24,7 @@ func TestCorporateAnomaliesList(t *testing.T) {
 }
 
 func TestCorporateAnomaliesUpdateStatus(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"corporate:anomalies", "update-status",

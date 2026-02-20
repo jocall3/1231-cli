@@ -10,7 +10,7 @@ import (
 )
 
 func TestAIOracleSimulateRunAdvanced(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"ai:oracle:simulate", "run-advanced",
@@ -40,7 +40,7 @@ func TestAIOracleSimulateRunAdvanced(t *testing.T) {
 }
 
 func TestAIOracleSimulateRunStandard(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"ai:oracle:simulate", "run-standard",

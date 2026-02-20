@@ -9,7 +9,7 @@ import (
 )
 
 func TestAIOracleSimulationsRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"ai:oracle:simulations", "retrieve",
@@ -18,7 +18,7 @@ func TestAIOracleSimulationsRetrieve(t *testing.T) {
 }
 
 func TestAIOracleSimulationsList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"ai:oracle:simulations", "list",
@@ -28,7 +28,7 @@ func TestAIOracleSimulationsList(t *testing.T) {
 }
 
 func TestAIOracleSimulationsDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"ai:oracle:simulations", "delete",

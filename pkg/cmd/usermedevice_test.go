@@ -9,7 +9,7 @@ import (
 )
 
 func TestUsersMeDevicesList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users:me:devices", "list",
@@ -19,7 +19,7 @@ func TestUsersMeDevicesList(t *testing.T) {
 }
 
 func TestUsersMeDevicesDeregister(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users:me:devices", "deregister",
@@ -28,7 +28,7 @@ func TestUsersMeDevicesDeregister(t *testing.T) {
 }
 
 func TestUsersMeDevicesRegister(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users:me:devices", "register",

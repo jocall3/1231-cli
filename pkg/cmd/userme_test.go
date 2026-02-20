@@ -10,7 +10,7 @@ import (
 )
 
 func TestUsersMeRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users:me", "retrieve",
@@ -18,7 +18,7 @@ func TestUsersMeRetrieve(t *testing.T) {
 }
 
 func TestUsersMeUpdate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users:me", "update",

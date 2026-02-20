@@ -9,7 +9,7 @@ import (
 )
 
 func TestGoalsCreate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"goals", "create",
@@ -25,7 +25,7 @@ func TestGoalsCreate(t *testing.T) {
 }
 
 func TestGoalsRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"goals", "retrieve",
@@ -34,7 +34,7 @@ func TestGoalsRetrieve(t *testing.T) {
 }
 
 func TestGoalsUpdate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"goals", "update",
@@ -50,7 +50,7 @@ func TestGoalsUpdate(t *testing.T) {
 }
 
 func TestGoalsList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"goals", "list",
@@ -60,7 +60,7 @@ func TestGoalsList(t *testing.T) {
 }
 
 func TestGoalsDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"goals", "delete",

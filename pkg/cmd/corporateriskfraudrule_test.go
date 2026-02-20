@@ -10,7 +10,7 @@ import (
 )
 
 func TestCorporateRiskFraudRulesCreate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"corporate:risk:fraud:rules", "create",
@@ -51,7 +51,7 @@ func TestCorporateRiskFraudRulesCreate(t *testing.T) {
 }
 
 func TestCorporateRiskFraudRulesUpdate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"corporate:risk:fraud:rules", "update",
@@ -94,7 +94,7 @@ func TestCorporateRiskFraudRulesUpdate(t *testing.T) {
 }
 
 func TestCorporateRiskFraudRulesList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"corporate:risk:fraud:rules", "list",
@@ -104,7 +104,7 @@ func TestCorporateRiskFraudRulesList(t *testing.T) {
 }
 
 func TestCorporateRiskFraudRulesDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"corporate:risk:fraud:rules", "delete",

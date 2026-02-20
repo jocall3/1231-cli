@@ -9,7 +9,7 @@ import (
 )
 
 func TestTransactionsRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"transactions", "retrieve",
@@ -18,7 +18,7 @@ func TestTransactionsRetrieve(t *testing.T) {
 }
 
 func TestTransactionsList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"transactions", "list",
@@ -35,7 +35,7 @@ func TestTransactionsList(t *testing.T) {
 }
 
 func TestTransactionsCategorize(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"transactions", "categorize",
@@ -47,7 +47,7 @@ func TestTransactionsCategorize(t *testing.T) {
 }
 
 func TestTransactionsDispute(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"transactions", "dispute",
@@ -59,7 +59,7 @@ func TestTransactionsDispute(t *testing.T) {
 }
 
 func TestTransactionsUpdateNotes(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"transactions", "update-notes",

@@ -10,7 +10,7 @@ import (
 )
 
 func TestAIAdsGenerateAdvanced(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"ai:ads:generate", "advanced",
@@ -53,7 +53,7 @@ func TestAIAdsGenerateAdvanced(t *testing.T) {
 }
 
 func TestAIAdsGenerateStandard(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"ai:ads:generate", "standard",

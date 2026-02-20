@@ -9,7 +9,7 @@ import (
 )
 
 func TestIdentityKYCRetrieveStatus(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"identity:kyc", "retrieve-status",
@@ -17,7 +17,7 @@ func TestIdentityKYCRetrieveStatus(t *testing.T) {
 }
 
 func TestIdentityKYCSubmit(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"identity:kyc", "submit",
