@@ -7,20 +7,22 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var marketplaceOffersRedeem = cli.Command{
-	Name:  "redeem",
-	Usage: "Redeems a personalized, exclusive offer from the Plato AI marketplace, often\nresulting in a discount, special rate, or credit to the user's account.",
+	Name:    "redeem",
+	Usage:   "Redeems a personalized, exclusive offer from the Plato AI marketplace, often\nresulting in a discount, special rate, or credit to the user's account.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "offer-id",
+			Name:     "offer-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "payment-account-id",
@@ -33,7 +35,7 @@ var marketplaceOffersRedeem = cli.Command{
 }
 
 func handleMarketplaceOffersRedeem(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("offer-id") && len(unusedArgs) > 0 {
 		cmd.Set("offer-id", unusedArgs[0])
@@ -43,7 +45,7 @@ func handleMarketplaceOffersRedeem(ctx context.Context, cmd *cli.Command) error 
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.MarketplaceOfferRedeemParams{}
+	params := jocall3.MarketplaceOfferRedeemParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -60,7 +62,7 @@ func handleMarketplaceOffersRedeem(ctx context.Context, cmd *cli.Command) error 
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Marketplace.Offers.Redeem(
 		ctx,
-		cmd.Value("offer-id").(any),
+		interface{}(cmd.Value("offer-id").(any)),
 		params,
 		options...,
 	)

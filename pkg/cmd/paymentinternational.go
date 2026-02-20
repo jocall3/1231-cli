@@ -7,51 +7,59 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
-var paymentsInternationalInitiate = cli.Command{
-	Name:  "initiate",
-	Usage: "Facilitates the secure initiation of an international wire transfer to a\nbeneficiary in another country and currency, leveraging optimal FX rates and\ntracking capabilities.",
+var paymentsInternationalInitiate = requestflag.WithInnerFlags(cli.Command{
+	Name:    "initiate",
+	Usage:   "Facilitates the secure initiation of an international wire transfer to a\nbeneficiary in another country and currency, leveraging optimal FX rates and\ntracking capabilities.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "amount",
 			Usage:    "The amount to send in the source currency.",
+			Required: true,
 			BodyPath: "amount",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "beneficiary",
 			Usage:    "Details of the payment beneficiary.",
+			Required: true,
 			BodyPath: "beneficiary",
 		},
 		&requestflag.Flag[any]{
 			Name:     "purpose",
 			Usage:    "Purpose of the payment.",
+			Required: true,
 			BodyPath: "purpose",
 		},
 		&requestflag.Flag[any]{
 			Name:     "source-account-id",
 			Usage:    "The ID of the user's source account for the payment.",
+			Required: true,
 			BodyPath: "sourceAccountId",
 		},
 		&requestflag.Flag[any]{
 			Name:     "source-currency",
 			Usage:    "The ISO 4217 currency code of the source funds.",
+			Required: true,
 			BodyPath: "sourceCurrency",
 		},
 		&requestflag.Flag[any]{
 			Name:     "target-currency",
 			Usage:    "The ISO 4217 currency code for the beneficiary's currency.",
+			Required: true,
 			BodyPath: "targetCurrency",
 		},
 		&requestflag.Flag[any]{
 			Name:     "fx-rate-lock",
 			Usage:    "If true, attempts to lock the quoted FX rate for a short period.",
+			Default:  false,
 			BodyPath: "fxRateLock",
 		},
 		&requestflag.Flag[string]{
@@ -68,14 +76,54 @@ var paymentsInternationalInitiate = cli.Command{
 	},
 	Action:          handlePaymentsInternationalInitiate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"beneficiary": {
+		&requestflag.InnerFlag[any]{
+			Name:       "beneficiary.address",
+			Usage:      "Full address of the beneficiary.",
+			InnerField: "address",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "beneficiary.bank-name",
+			Usage:      "Name of the beneficiary's bank.",
+			InnerField: "bankName",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "beneficiary.name",
+			Usage:      "Full name of the beneficiary.",
+			InnerField: "name",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "beneficiary.account-number",
+			Usage:      "Account number (if IBAN/SWIFT not applicable).",
+			InnerField: "accountNumber",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "beneficiary.iban",
+			Usage:      "IBAN for Eurozone transfers.",
+			InnerField: "iban",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "beneficiary.routing-number",
+			Usage:      "Routing number (if applicable, e.g., for US transfers).",
+			InnerField: "routingNumber",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "beneficiary.swift-bic",
+			Usage:      "SWIFT/BIC code for international transfers.",
+			InnerField: "swiftBic",
+		},
+	},
+})
 
 var paymentsInternationalRetrieveStatus = cli.Command{
-	Name:  "retrieve-status",
-	Usage: "Retrieves the current processing status and details of an initiated\ninternational payment.",
+	Name:    "retrieve-status",
+	Usage:   "Retrieves the current processing status and details of an initiated\ninternational payment.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "payment-id",
+			Name:     "payment-id",
+			Required: true,
 		},
 	},
 	Action:          handlePaymentsInternationalRetrieveStatus,
@@ -83,14 +131,14 @@ var paymentsInternationalRetrieveStatus = cli.Command{
 }
 
 func handlePaymentsInternationalInitiate(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.PaymentInternationalInitiateParams{}
+	params := jocall3.PaymentInternationalInitiateParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -117,7 +165,7 @@ func handlePaymentsInternationalInitiate(ctx context.Context, cmd *cli.Command) 
 }
 
 func handlePaymentsInternationalRetrieveStatus(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("payment-id") && len(unusedArgs) > 0 {
 		cmd.Set("payment-id", unusedArgs[0])
@@ -140,7 +188,7 @@ func handlePaymentsInternationalRetrieveStatus(ctx context.Context, cmd *cli.Com
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Payments.International.GetStatus(ctx, cmd.Value("payment-id").(any), options...)
+	_, err = client.Payments.International.GetStatus(ctx, interface{}(cmd.Value("payment-id").(any)), options...)
 	if err != nil {
 		return err
 	}

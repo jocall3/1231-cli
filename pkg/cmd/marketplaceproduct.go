@@ -7,17 +7,18 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var marketplaceProductsList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a personalized, AI-curated list of products and services from the\nPlato AI marketplace, tailored to the user's financial profile, goals, and\nspending patterns. Includes options for filtering and advanced search.",
+	Name:    "list",
+	Usage:   "Retrieves a personalized, AI-curated list of products and services from the\nPlato AI marketplace, tailored to the user's financial profile, goals, and\nspending patterns. Includes options for filtering and advanced search.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:      "ai-personalization-level",
@@ -43,6 +44,7 @@ var marketplaceProductsList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -51,11 +53,13 @@ var marketplaceProductsList = cli.Command{
 }
 
 var marketplaceProductsSimulateImpact = cli.Command{
-	Name:  "simulate-impact",
-	Usage: "Uses the Quantum Oracle to simulate the long-term financial impact of purchasing\nor subscribing to a specific marketplace product, such as a loan, investment, or\ninsurance policy, on the user's overall financial health and goals.",
+	Name:    "simulate-impact",
+	Usage:   "Uses the Quantum Oracle to simulate the long-term financial impact of purchasing\nor subscribing to a specific marketplace product, such as a loan, investment, or\ninsurance policy, on the user's overall financial health and goals.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "product-id",
+			Name:     "product-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "simulation-parameters",
@@ -68,14 +72,14 @@ var marketplaceProductsSimulateImpact = cli.Command{
 }
 
 func handleMarketplaceProductsList(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.MarketplaceProductListParams{}
+	params := jocall3.MarketplaceProductListParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -102,7 +106,7 @@ func handleMarketplaceProductsList(ctx context.Context, cmd *cli.Command) error 
 }
 
 func handleMarketplaceProductsSimulateImpact(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("product-id") && len(unusedArgs) > 0 {
 		cmd.Set("product-id", unusedArgs[0])
@@ -112,7 +116,7 @@ func handleMarketplaceProductsSimulateImpact(ctx context.Context, cmd *cli.Comma
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.MarketplaceProductSimulateImpactParams{}
+	params := jocall3.MarketplaceProductSimulateImpactParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -129,7 +133,7 @@ func handleMarketplaceProductsSimulateImpact(ctx context.Context, cmd *cli.Comma
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Marketplace.Products.SimulateImpact(
 		ctx,
-		cmd.Value("product-id").(any),
+		interface{}(cmd.Value("product-id").(any)),
 		params,
 		options...,
 	)

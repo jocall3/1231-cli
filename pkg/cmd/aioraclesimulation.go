@@ -7,20 +7,22 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var aiOracleSimulationsRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Retrieves the full, detailed results of a specific financial simulation by its\nID.",
+	Name:    "retrieve",
+	Usage:   "Retrieves the full, detailed results of a specific financial simulation by its\nID.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "simulation-id",
+			Name:     "simulation-id",
+			Required: true,
 		},
 	},
 	Action:          handleAIOracleSimulationsRetrieve,
@@ -28,8 +30,9 @@ var aiOracleSimulationsRetrieve = cli.Command{
 }
 
 var aiOracleSimulationsList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of all financial simulations previously run by the user,\nincluding their status and summaries.",
+	Name:    "list",
+	Usage:   "Retrieves a list of all financial simulations previously run by the user,\nincluding their status and summaries.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -40,6 +43,7 @@ var aiOracleSimulationsList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -48,11 +52,13 @@ var aiOracleSimulationsList = cli.Command{
 }
 
 var aiOracleSimulationsDelete = cli.Command{
-	Name:  "delete",
-	Usage: "Deletes a previously run financial simulation and its results.",
+	Name:    "delete",
+	Usage:   "Deletes a previously run financial simulation and its results.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "simulation-id",
+			Name:     "simulation-id",
+			Required: true,
 		},
 	},
 	Action:          handleAIOracleSimulationsDelete,
@@ -60,7 +66,7 @@ var aiOracleSimulationsDelete = cli.Command{
 }
 
 func handleAIOracleSimulationsRetrieve(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("simulation-id") && len(unusedArgs) > 0 {
 		cmd.Set("simulation-id", unusedArgs[0])
@@ -83,7 +89,7 @@ func handleAIOracleSimulationsRetrieve(ctx context.Context, cmd *cli.Command) er
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.AI.Oracle.Simulations.Get(ctx, cmd.Value("simulation-id").(any), options...)
+	_, err = client.AI.Oracle.Simulations.Get(ctx, interface{}(cmd.Value("simulation-id").(any)), options...)
 	if err != nil {
 		return err
 	}
@@ -95,14 +101,14 @@ func handleAIOracleSimulationsRetrieve(ctx context.Context, cmd *cli.Command) er
 }
 
 func handleAIOracleSimulationsList(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.AIOracleSimulationListParams{}
+	params := jocall3.AIOracleSimulationListParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -129,7 +135,7 @@ func handleAIOracleSimulationsList(ctx context.Context, cmd *cli.Command) error 
 }
 
 func handleAIOracleSimulationsDelete(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("simulation-id") && len(unusedArgs) > 0 {
 		cmd.Set("simulation-id", unusedArgs[0])
@@ -150,5 +156,5 @@ func handleAIOracleSimulationsDelete(ctx context.Context, cmd *cli.Command) erro
 		return err
 	}
 
-	return client.AI.Oracle.Simulations.Delete(ctx, cmd.Value("simulation-id").(any), options...)
+	return client.AI.Oracle.Simulations.Delete(ctx, interface{}(cmd.Value("simulation-id").(any)), options...)
 }

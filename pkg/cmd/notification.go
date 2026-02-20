@@ -7,17 +7,18 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var notificationsListUserNotifications = cli.Command{
-	Name:  "list-user-notifications",
-	Usage: "Retrieves a paginated list of personalized notifications and proactive AI alerts\nfor the authenticated user, allowing filtering by status and severity.",
+	Name:    "list-user-notifications",
+	Usage:   "Retrieves a paginated list of personalized notifications and proactive AI alerts\nfor the authenticated user, allowing filtering by status and severity.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -28,6 +29,7 @@ var notificationsListUserNotifications = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 		&requestflag.Flag[string]{
@@ -46,11 +48,13 @@ var notificationsListUserNotifications = cli.Command{
 }
 
 var notificationsMarkAsRead = cli.Command{
-	Name:  "mark-as-read",
-	Usage: "Marks a specific user notification as read.",
+	Name:    "mark-as-read",
+	Usage:   "Marks a specific user notification as read.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "notification-id",
+			Name:     "notification-id",
+			Required: true,
 		},
 	},
 	Action:          handleNotificationsMarkAsRead,
@@ -58,14 +62,14 @@ var notificationsMarkAsRead = cli.Command{
 }
 
 func handleNotificationsListUserNotifications(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.NotificationListUserNotificationsParams{}
+	params := jocall3.NotificationListUserNotificationsParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -92,7 +96,7 @@ func handleNotificationsListUserNotifications(ctx context.Context, cmd *cli.Comm
 }
 
 func handleNotificationsMarkAsRead(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("notification-id") && len(unusedArgs) > 0 {
 		cmd.Set("notification-id", unusedArgs[0])
@@ -115,7 +119,7 @@ func handleNotificationsMarkAsRead(ctx context.Context, cmd *cli.Command) error 
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Notifications.MarkAsRead(ctx, cmd.Value("notification-id").(any), options...)
+	_, err = client.Notifications.MarkAsRead(ctx, interface{}(cmd.Value("notification-id").(any)), options...)
 	if err != nil {
 		return err
 	}

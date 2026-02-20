@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
@@ -17,13 +17,14 @@ import (
 var sustainabilityInvestmentsAnalyzeImpact = cli.Command{
 	Name:            "analyze-impact",
 	Usage:           "Provides an AI-driven analysis of the Environmental, Social, and Governance\n(ESG) impact of the user's entire investment portfolio, benchmarking against\nindustry standards and suggesting more sustainable alternatives.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleSustainabilityInvestmentsAnalyzeImpact,
 	HideHelpCommand: true,
 }
 
 func handleSustainabilityInvestmentsAnalyzeImpact(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {

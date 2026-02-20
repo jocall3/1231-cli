@@ -7,51 +7,59 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var transactionsRecurringCreate = cli.Command{
-	Name:  "create",
-	Usage: "Defines a new recurring transaction pattern for future tracking and budgeting.",
+	Name:    "create",
+	Usage:   "Defines a new recurring transaction pattern for future tracking and budgeting.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "amount",
 			Usage:    "Amount of the recurring transaction.",
+			Required: true,
 			BodyPath: "amount",
 		},
 		&requestflag.Flag[any]{
 			Name:     "category",
 			Usage:    "Category of the recurring transaction.",
+			Required: true,
 			BodyPath: "category",
 		},
 		&requestflag.Flag[any]{
 			Name:     "currency",
 			Usage:    "ISO 4217 currency code.",
+			Required: true,
 			BodyPath: "currency",
 		},
 		&requestflag.Flag[any]{
 			Name:     "description",
 			Usage:    "Description of the recurring transaction.",
+			Required: true,
 			BodyPath: "description",
 		},
 		&requestflag.Flag[string]{
 			Name:     "frequency",
 			Usage:    "Frequency of the recurring transaction.",
+			Required: true,
 			BodyPath: "frequency",
 		},
 		&requestflag.Flag[any]{
 			Name:     "linked-account-id",
 			Usage:    "ID of the account to associate with this recurring transaction.",
+			Required: true,
 			BodyPath: "linkedAccountId",
 		},
 		&requestflag.Flag[any]{
 			Name:     "start-date",
 			Usage:    "The date when this recurring transaction is expected to start.",
+			Required: true,
 			BodyPath: "startDate",
 		},
 	},
@@ -60,8 +68,9 @@ var transactionsRecurringCreate = cli.Command{
 }
 
 var transactionsRecurringList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of all detected or user-defined recurring transactions, useful\nfor budget tracking and subscription management.",
+	Name:    "list",
+	Usage:   "Retrieves a list of all detected or user-defined recurring transactions, useful\nfor budget tracking and subscription management.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -72,6 +81,7 @@ var transactionsRecurringList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -80,14 +90,14 @@ var transactionsRecurringList = cli.Command{
 }
 
 func handleTransactionsRecurringCreate(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.TransactionRecurringNewParams{}
+	params := jocall3.TransactionRecurringNewParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -114,14 +124,14 @@ func handleTransactionsRecurringCreate(ctx context.Context, cmd *cli.Command) er
 }
 
 func handleTransactionsRecurringList(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.TransactionRecurringListParams{}
+	params := jocall3.TransactionRecurringListParams{}
 
 	options, err := flagOptions(
 		cmd,

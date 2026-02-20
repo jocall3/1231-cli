@@ -7,31 +7,35 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var sustainabilityPurchaseCarbonOffsets = cli.Command{
-	Name:  "purchase-carbon-offsets",
-	Usage: "Allows users to purchase carbon offsets to neutralize their estimated carbon\nfootprint, supporting environmental initiatives.",
+	Name:    "purchase-carbon-offsets",
+	Usage:   "Allows users to purchase carbon offsets to neutralize their estimated carbon\nfootprint, supporting environmental initiatives.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "amount-kg-co2e",
 			Usage:    "The amount of carbon dioxide equivalent to offset in kilograms.",
+			Required: true,
 			BodyPath: "amountKgCO2e",
 		},
 		&requestflag.Flag[any]{
 			Name:     "offset-project",
 			Usage:    "Optional: The specific carbon offset project to support.",
+			Required: true,
 			BodyPath: "offsetProject",
 		},
 		&requestflag.Flag[any]{
 			Name:     "payment-account-id",
 			Usage:    "The ID of the user's account to use for payment.",
+			Required: true,
 			BodyPath: "paymentAccountId",
 		},
 	},
@@ -42,20 +46,21 @@ var sustainabilityPurchaseCarbonOffsets = cli.Command{
 var sustainabilityRetrieveCarbonFootprint = cli.Command{
 	Name:            "retrieve-carbon-footprint",
 	Usage:           "Generates a detailed report of the user's estimated carbon footprint based on\ntransaction data, lifestyle choices, and AI-driven impact assessments, offering\ninsights and reduction strategies.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleSustainabilityRetrieveCarbonFootprint,
 	HideHelpCommand: true,
 }
 
 func handleSustainabilityPurchaseCarbonOffsets(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.SustainabilityPurchaseCarbonOffsetsParams{}
+	params := jocall3.SustainabilityPurchaseCarbonOffsetsParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -82,7 +87,7 @@ func handleSustainabilityPurchaseCarbonOffsets(ctx context.Context, cmd *cli.Com
 }
 
 func handleSustainabilityRetrieveCarbonFootprint(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {

@@ -7,17 +7,18 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var corporateTreasuryCashFlowGetForecast = cli.Command{
-	Name:  "get-forecast",
-	Usage: "Retrieves an advanced AI-driven cash flow forecast for the organization,\nprojecting liquidity, identifying potential surpluses or deficits, and providing\nrecommendations for optimal treasury management.",
+	Name:    "get-forecast",
+	Usage:   "Retrieves an advanced AI-driven cash flow forecast for the organization,\nprojecting liquidity, identifying potential surpluses or deficits, and providing\nrecommendations for optimal treasury management.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "forecast-horizon-days",
@@ -28,6 +29,7 @@ var corporateTreasuryCashFlowGetForecast = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "include-scenario-analysis",
 			Usage:     "If true, the forecast will include best-case and worst-case scenario analysis alongside the most likely projection.",
+			Default:   false,
 			QueryPath: "includeScenarioAnalysis",
 		},
 	},
@@ -36,14 +38,14 @@ var corporateTreasuryCashFlowGetForecast = cli.Command{
 }
 
 func handleCorporateTreasuryCashFlowGetForecast(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.CorporateTreasuryCashFlowGetForecastParams{}
+	params := jocall3.CorporateTreasuryCashFlowGetForecastParams{}
 
 	options, err := flagOptions(
 		cmd,

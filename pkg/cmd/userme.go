@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
@@ -18,16 +18,18 @@ import (
 var usersMeRetrieve = cli.Command{
 	Name:            "retrieve",
 	Usage:           "Fetches the complete and dynamically updated profile information for the\ncurrently authenticated user, encompassing personal details, security status,\ngamification level, loyalty points, and linked identity attributes.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleUsersMeRetrieve,
 	HideHelpCommand: true,
 }
 
-var usersMeUpdate = cli.Command{
-	Name:  "update",
-	Usage: "Updates selected fields of the currently authenticated user's profile\ninformation.",
+var usersMeUpdate = requestflag.WithInnerFlags(cli.Command{
+	Name:    "update",
+	Usage:   "Updates selected fields of the currently authenticated user's profile\ninformation.",
+	Suggest: true,
 	Flags: []cli.Flag{
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "address",
 			BodyPath: "address",
 		},
@@ -41,7 +43,7 @@ var usersMeUpdate = cli.Command{
 			Usage:    "Updated primary phone number of the user.",
 			BodyPath: "phone",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "preferences",
 			Usage:    "User's personalized preferences for the platform.",
 			BodyPath: "preferences",
@@ -49,10 +51,65 @@ var usersMeUpdate = cli.Command{
 	},
 	Action:          handleUsersMeUpdate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"address": {
+		&requestflag.InnerFlag[any]{
+			Name:       "address.city",
+			InnerField: "city",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.country",
+			InnerField: "country",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.state",
+			InnerField: "state",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.street",
+			InnerField: "street",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.zip",
+			InnerField: "zip",
+		},
+	},
+	"preferences": {
+		&requestflag.InnerFlag[string]{
+			Name:       "preferences.ai-interaction-mode",
+			Usage:      "How the user prefers to interact with AI (proactive advice, balanced, or only on demand).",
+			InnerField: "aiInteractionMode",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "preferences.data-sharing-consent",
+			Usage:      "Consent status for sharing anonymized data for AI improvement and personalized offers.",
+			InnerField: "dataSharingConsent",
+		},
+		&requestflag.InnerFlag[map[string]any]{
+			Name:       "preferences.notification-channels",
+			Usage:      "Preferred channels for receiving notifications.",
+			InnerField: "notificationChannels",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "preferences.preferred-language",
+			Usage:      "Preferred language for the user interface.",
+			InnerField: "preferredLanguage",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "preferences.theme",
+			Usage:      "Preferred UI theme (e.g., Light-Default, Dark-Quantum).",
+			InnerField: "theme",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "preferences.transaction-grouping",
+			Usage:      "Default grouping preference for transaction lists.",
+			InnerField: "transactionGrouping",
+		},
+	},
+})
 
 func handleUsersMeRetrieve(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
@@ -84,14 +141,14 @@ func handleUsersMeRetrieve(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleUsersMeUpdate(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.UserMeUpdateParams{}
+	params := jocall3.UserMeUpdateParams{}
 
 	options, err := flagOptions(
 		cmd,

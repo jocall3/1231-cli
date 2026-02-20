@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
@@ -17,13 +17,14 @@ import (
 var corporateTreasuryGetLiquidityPositions = cli.Command{
 	Name:            "get-liquidity-positions",
 	Usage:           "Provides a real-time overview of the organization's liquidity across all\naccounts, currencies, and short-term investments.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleCorporateTreasuryGetLiquidityPositions,
 	HideHelpCommand: true,
 }
 
 func handleCorporateTreasuryGetLiquidityPositions(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {

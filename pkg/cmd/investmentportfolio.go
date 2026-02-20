@@ -7,46 +7,53 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var investmentsPortfoliosCreate = cli.Command{
-	Name:  "create",
-	Usage: "Creates a new investment portfolio, with options for initial asset allocation.",
+	Name:    "create",
+	Usage:   "Creates a new investment portfolio, with options for initial asset allocation.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "currency",
 			Usage:    "ISO 4217 currency code of the portfolio.",
+			Required: true,
 			BodyPath: "currency",
 		},
 		&requestflag.Flag[any]{
 			Name:     "initial-investment",
 			Usage:    "Initial amount to invest into the portfolio.",
+			Required: true,
 			BodyPath: "initialInvestment",
 		},
 		&requestflag.Flag[any]{
 			Name:     "name",
 			Usage:    "Name for the new investment portfolio.",
+			Required: true,
 			BodyPath: "name",
 		},
 		&requestflag.Flag[string]{
 			Name:     "risk-tolerance",
 			Usage:    "Desired risk tolerance for this portfolio.",
+			Required: true,
 			BodyPath: "riskTolerance",
 		},
 		&requestflag.Flag[string]{
 			Name:     "type",
 			Usage:    "General type or strategy of the portfolio.",
+			Required: true,
 			BodyPath: "type",
 		},
 		&requestflag.Flag[any]{
 			Name:     "ai-auto-allocate",
 			Usage:    "If true, AI will automatically allocate initial investment based on risk tolerance.",
+			Default:  false,
 			BodyPath: "aiAutoAllocate",
 		},
 		&requestflag.Flag[any]{
@@ -60,11 +67,13 @@ var investmentsPortfoliosCreate = cli.Command{
 }
 
 var investmentsPortfoliosRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Retrieves detailed information for a specific investment portfolio, including\nholdings, performance, and AI insights.",
+	Name:    "retrieve",
+	Usage:   "Retrieves detailed information for a specific investment portfolio, including\nholdings, performance, and AI insights.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "portfolio-id",
+			Name:     "portfolio-id",
+			Required: true,
 		},
 	},
 	Action:          handleInvestmentsPortfoliosRetrieve,
@@ -72,13 +81,15 @@ var investmentsPortfoliosRetrieve = cli.Command{
 }
 
 var investmentsPortfoliosUpdate = cli.Command{
-	Name:  "update",
-	Usage: "Updates high-level details of an investment portfolio, such as name or risk\ntolerance.",
+	Name:    "update",
+	Usage:   "Updates high-level details of an investment portfolio, such as name or risk\ntolerance.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "portfolio-id",
+			Name:     "portfolio-id",
+			Required: true,
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:     "ai-rebalancing-frequency",
 			Usage:    "Updated frequency for AI-driven rebalancing.",
 			BodyPath: "aiRebalancingFrequency",
@@ -99,8 +110,9 @@ var investmentsPortfoliosUpdate = cli.Command{
 }
 
 var investmentsPortfoliosList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a summary of all investment portfolios linked to the user's account.",
+	Name:    "list",
+	Usage:   "Retrieves a summary of all investment portfolios linked to the user's account.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -111,6 +123,7 @@ var investmentsPortfoliosList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -119,15 +132,18 @@ var investmentsPortfoliosList = cli.Command{
 }
 
 var investmentsPortfoliosRebalance = cli.Command{
-	Name:  "rebalance",
-	Usage: "Triggers an AI-driven rebalancing process for a specific investment portfolio\nbased on a target risk tolerance or strategy.",
+	Name:    "rebalance",
+	Usage:   "Triggers an AI-driven rebalancing process for a specific investment portfolio\nbased on a target risk tolerance or strategy.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "portfolio-id",
+			Name:     "portfolio-id",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:     "target-risk-tolerance",
 			Usage:    "The desired risk tolerance for rebalancing the portfolio.",
+			Required: true,
 			BodyPath: "targetRiskTolerance",
 		},
 		&requestflag.Flag[any]{
@@ -148,14 +164,14 @@ var investmentsPortfoliosRebalance = cli.Command{
 }
 
 func handleInvestmentsPortfoliosCreate(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.InvestmentPortfolioNewParams{}
+	params := jocall3.InvestmentPortfolioNewParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -182,7 +198,7 @@ func handleInvestmentsPortfoliosCreate(ctx context.Context, cmd *cli.Command) er
 }
 
 func handleInvestmentsPortfoliosRetrieve(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("portfolio-id") && len(unusedArgs) > 0 {
 		cmd.Set("portfolio-id", unusedArgs[0])
@@ -205,7 +221,7 @@ func handleInvestmentsPortfoliosRetrieve(ctx context.Context, cmd *cli.Command) 
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Investments.Portfolios.Get(ctx, cmd.Value("portfolio-id").(any), options...)
+	_, err = client.Investments.Portfolios.Get(ctx, interface{}(cmd.Value("portfolio-id").(any)), options...)
 	if err != nil {
 		return err
 	}
@@ -217,7 +233,7 @@ func handleInvestmentsPortfoliosRetrieve(ctx context.Context, cmd *cli.Command) 
 }
 
 func handleInvestmentsPortfoliosUpdate(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("portfolio-id") && len(unusedArgs) > 0 {
 		cmd.Set("portfolio-id", unusedArgs[0])
@@ -227,7 +243,7 @@ func handleInvestmentsPortfoliosUpdate(ctx context.Context, cmd *cli.Command) er
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.InvestmentPortfolioUpdateParams{}
+	params := jocall3.InvestmentPortfolioUpdateParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -244,7 +260,7 @@ func handleInvestmentsPortfoliosUpdate(ctx context.Context, cmd *cli.Command) er
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Investments.Portfolios.Update(
 		ctx,
-		cmd.Value("portfolio-id").(any),
+		interface{}(cmd.Value("portfolio-id").(any)),
 		params,
 		options...,
 	)
@@ -259,14 +275,14 @@ func handleInvestmentsPortfoliosUpdate(ctx context.Context, cmd *cli.Command) er
 }
 
 func handleInvestmentsPortfoliosList(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.InvestmentPortfolioListParams{}
+	params := jocall3.InvestmentPortfolioListParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -293,7 +309,7 @@ func handleInvestmentsPortfoliosList(ctx context.Context, cmd *cli.Command) erro
 }
 
 func handleInvestmentsPortfoliosRebalance(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("portfolio-id") && len(unusedArgs) > 0 {
 		cmd.Set("portfolio-id", unusedArgs[0])
@@ -303,7 +319,7 @@ func handleInvestmentsPortfoliosRebalance(ctx context.Context, cmd *cli.Command)
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.InvestmentPortfolioRebalanceParams{}
+	params := jocall3.InvestmentPortfolioRebalanceParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -320,7 +336,7 @@ func handleInvestmentsPortfoliosRebalance(ctx context.Context, cmd *cli.Command)
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Investments.Portfolios.Rebalance(
 		ctx,
-		cmd.Value("portfolio-id").(any),
+		interface{}(cmd.Value("portfolio-id").(any)),
 		params,
 		options...,
 	)

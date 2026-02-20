@@ -7,17 +7,18 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var aiIncubatorListPitches = cli.Command{
-	Name:  "list-pitches",
-	Usage: "Retrieves a summary list of all business pitches submitted by the authenticated\nuser to Quantum Weaver.",
+	Name:    "list-pitches",
+	Usage:   "Retrieves a summary list of all business pitches submitted by the authenticated\nuser to Quantum Weaver.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -28,6 +29,7 @@ var aiIncubatorListPitches = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 		&requestflag.Flag[string]{
@@ -41,14 +43,14 @@ var aiIncubatorListPitches = cli.Command{
 }
 
 func handleAIIncubatorListPitches(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.AIIncubatorListPitchesParams{}
+	params := jocall3.AIIncubatorListPitchesParams{}
 
 	options, err := flagOptions(
 		cmd,

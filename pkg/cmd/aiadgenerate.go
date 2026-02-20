@@ -7,31 +7,35 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
-var aiAdsGenerateAdvanced = cli.Command{
-	Name:  "advanced",
-	Usage: "Submits a highly customized request to generate a video ad, allowing\nfine-grained control over artistic style, aspect ratio, voiceover, background\nmusic, target audience, and call-to-action elements for professional-grade\nproductions.",
+var aiAdsGenerateAdvanced = requestflag.WithInnerFlags(cli.Command{
+	Name:    "advanced",
+	Usage:   "Submits a highly customized request to generate a video ad, allowing\nfine-grained control over artistic style, aspect ratio, voiceover, background\nmusic, target audience, and call-to-action elements for professional-grade\nproductions.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "length-seconds",
 			Usage:    "Desired length of the video in seconds.",
+			Required: true,
 			BodyPath: "lengthSeconds",
 		},
 		&requestflag.Flag[any]{
 			Name:     "prompt",
 			Usage:    "The textual prompt to guide the AI video generation.",
+			Required: true,
 			BodyPath: "prompt",
 		},
 		&requestflag.Flag[string]{
 			Name:     "style",
 			Usage:    "Artistic style of the video.",
+			Required: true,
 			BodyPath: "style",
 		},
 		&requestflag.Flag[string]{
@@ -40,22 +44,22 @@ var aiAdsGenerateAdvanced = cli.Command{
 			Default:  "16:9",
 			BodyPath: "aspectRatio",
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:     "audience-target",
 			Usage:    "Target audience for the ad, influencing tone and visuals.",
 			BodyPath: "audienceTarget",
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:     "background-music-genre",
 			Usage:    "Genre of background music.",
 			BodyPath: "backgroundMusicGenre",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "brand-asset",
 			Usage:    "URLs to brand assets (e.g., logos, specific imagery) to be incorporated.",
 			BodyPath: "brandAssets",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "brand-color",
 			Usage:    "Optional: Hex color codes to influence the video's aesthetic.",
 			BodyPath: "brandColors",
@@ -65,12 +69,12 @@ var aiAdsGenerateAdvanced = cli.Command{
 			Usage:    "Call-to-action text and URL to be displayed.",
 			BodyPath: "callToAction",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "keyword",
 			Usage:    "Optional: Additional keywords to guide the AI's content generation.",
 			BodyPath: "keywords",
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:     "voiceover-style",
 			Usage:    "Style/tone for the AI voiceover.",
 			BodyPath: "voiceoverStyle",
@@ -83,25 +87,44 @@ var aiAdsGenerateAdvanced = cli.Command{
 	},
 	Action:          handleAIAdsGenerateAdvanced,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"call-to-action": {
+		&requestflag.InnerFlag[any]{
+			Name:       "call-to-action.display-time-seconds",
+			InnerField: "displayTimeSeconds",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "call-to-action.text",
+			InnerField: "text",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "call-to-action.url",
+			InnerField: "url",
+		},
+	},
+})
 
 var aiAdsGenerateStandard = cli.Command{
-	Name:  "standard",
-	Usage: "Submits a request to generate a high-quality video ad using the advanced Veo 2.0\ngenerative AI model. This is an asynchronous operation, suitable for standard ad\ncontent creation.",
+	Name:    "standard",
+	Usage:   "Submits a request to generate a high-quality video ad using the advanced Veo 2.0\ngenerative AI model. This is an asynchronous operation, suitable for standard ad\ncontent creation.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "length-seconds",
 			Usage:    "Desired length of the video in seconds.",
+			Required: true,
 			BodyPath: "lengthSeconds",
 		},
 		&requestflag.Flag[any]{
 			Name:     "prompt",
 			Usage:    "The textual prompt to guide the AI video generation.",
+			Required: true,
 			BodyPath: "prompt",
 		},
 		&requestflag.Flag[string]{
 			Name:     "style",
 			Usage:    "Artistic style of the video.",
+			Required: true,
 			BodyPath: "style",
 		},
 		&requestflag.Flag[string]{
@@ -110,12 +133,12 @@ var aiAdsGenerateStandard = cli.Command{
 			Default:  "16:9",
 			BodyPath: "aspectRatio",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "brand-color",
 			Usage:    "Optional: Hex color codes to influence the video's aesthetic.",
 			BodyPath: "brandColors",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "keyword",
 			Usage:    "Optional: Additional keywords to guide the AI's content generation.",
 			BodyPath: "keywords",
@@ -126,14 +149,14 @@ var aiAdsGenerateStandard = cli.Command{
 }
 
 func handleAIAdsGenerateAdvanced(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.AIAdGenerateAdvancedParams{}
+	params := jocall3.AIAdGenerateAdvancedParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -160,14 +183,14 @@ func handleAIAdsGenerateAdvanced(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleAIAdsGenerateStandard(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.AIAdGenerateStandardParams{}
+	params := jocall3.AIAdGenerateStandardParams{}
 
 	options, err := flagOptions(
 		cmd,

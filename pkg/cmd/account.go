@@ -7,26 +7,29 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var accountsLink = cli.Command{
-	Name:  "link",
-	Usage: "Begins the secure process of linking a new external financial institution (e.g.,\nanother bank, investment platform) to the user's profile, typically involving a\nthird-party tokenized flow.",
+	Name:    "link",
+	Usage:   "Begins the secure process of linking a new external financial institution (e.g.,\nanother bank, investment platform) to the user's profile, typically involving a\nthird-party tokenized flow.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "country-code",
 			Usage:    "Two-letter ISO country code of the institution.",
+			Required: true,
 			BodyPath: "countryCode",
 		},
 		&requestflag.Flag[any]{
 			Name:     "institution-name",
 			Usage:    "Name of the financial institution to link.",
+			Required: true,
 			BodyPath: "institutionName",
 		},
 		&requestflag.Flag[any]{
@@ -45,11 +48,13 @@ var accountsLink = cli.Command{
 }
 
 var accountsRetrieveDetails = cli.Command{
-	Name:  "retrieve-details",
-	Usage: "Retrieves comprehensive analytics for a specific financial account, including\nhistorical balance trends, projected cash flow, and AI-driven insights into\nspending patterns.",
+	Name:    "retrieve-details",
+	Usage:   "Retrieves comprehensive analytics for a specific financial account, including\nhistorical balance trends, projected cash flow, and AI-driven insights into\nspending patterns.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "account-id",
+			Name:     "account-id",
+			Required: true,
 		},
 	},
 	Action:          handleAccountsRetrieveDetails,
@@ -57,8 +62,9 @@ var accountsRetrieveDetails = cli.Command{
 }
 
 var accountsRetrieveMe = cli.Command{
-	Name:  "retrieve-me",
-	Usage: "Fetches a comprehensive, real-time list of all external financial accounts\nlinked to the user's profile, including consolidated balances and institutional\ndetails.",
+	Name:    "retrieve-me",
+	Usage:   "Fetches a comprehensive, real-time list of all external financial accounts\nlinked to the user's profile, including consolidated balances and institutional\ndetails.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -69,6 +75,7 @@ var accountsRetrieveMe = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -77,20 +84,24 @@ var accountsRetrieveMe = cli.Command{
 }
 
 var accountsRetrieveStatements = cli.Command{
-	Name:  "retrieve-statements",
-	Usage: "Fetches digital statements for a specific account, allowing filtering by date\nrange and format.",
+	Name:    "retrieve-statements",
+	Usage:   "Fetches digital statements for a specific account, allowing filtering by date\nrange and format.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "account-id",
+			Name:     "account-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:      "month",
 			Usage:     "Month for the statement (1-12).",
+			Required:  true,
 			QueryPath: "month",
 		},
 		&requestflag.Flag[any]{
 			Name:      "year",
 			Usage:     "Year for the statement.",
+			Required:  true,
 			QueryPath: "year",
 		},
 		&requestflag.Flag[string]{
@@ -105,14 +116,14 @@ var accountsRetrieveStatements = cli.Command{
 }
 
 func handleAccountsLink(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.AccountLinkParams{}
+	params := jocall3.AccountLinkParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -139,7 +150,7 @@ func handleAccountsLink(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleAccountsRetrieveDetails(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("account-id") && len(unusedArgs) > 0 {
 		cmd.Set("account-id", unusedArgs[0])
@@ -162,7 +173,7 @@ func handleAccountsRetrieveDetails(ctx context.Context, cmd *cli.Command) error 
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Accounts.GetDetails(ctx, cmd.Value("account-id").(any), options...)
+	_, err = client.Accounts.GetDetails(ctx, interface{}(cmd.Value("account-id").(any)), options...)
 	if err != nil {
 		return err
 	}
@@ -174,14 +185,14 @@ func handleAccountsRetrieveDetails(ctx context.Context, cmd *cli.Command) error 
 }
 
 func handleAccountsRetrieveMe(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.AccountGetMeParams{}
+	params := jocall3.AccountGetMeParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -208,7 +219,7 @@ func handleAccountsRetrieveMe(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleAccountsRetrieveStatements(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("account-id") && len(unusedArgs) > 0 {
 		cmd.Set("account-id", unusedArgs[0])
@@ -218,7 +229,7 @@ func handleAccountsRetrieveStatements(ctx context.Context, cmd *cli.Command) err
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.AccountGetStatementsParams{}
+	params := jocall3.AccountGetStatementsParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -235,7 +246,7 @@ func handleAccountsRetrieveStatements(ctx context.Context, cmd *cli.Command) err
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Accounts.GetStatements(
 		ctx,
-		cmd.Value("account-id").(any),
+		interface{}(cmd.Value("account-id").(any)),
 		params,
 		options...,
 	)

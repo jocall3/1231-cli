@@ -11,6 +11,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/jocall3/1231-cli/internal/autocomplete"
 	docs "github.com/urfave/cli-docs/v3"
 	"github.com/urfave/cli/v3"
 )
@@ -21,8 +22,8 @@ var (
 
 func init() {
 	Command = &cli.Command{
-		Name:    "1231",
-		Usage:   "CLI for the 1231 API",
+		Name:    "jocall3",
+		Usage:   "CLI for the jocall3 API",
 		Suggest: true,
 		Version: Version,
 		Flags: []cli.Flag{
@@ -70,6 +71,7 @@ func init() {
 			{
 				Name:     "users",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&usersLogin,
 					&usersRegister,
@@ -78,6 +80,7 @@ func init() {
 			{
 				Name:     "users:password-reset",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&usersPasswordResetConfirm,
 					&usersPasswordResetInitiate,
@@ -86,6 +89,7 @@ func init() {
 			{
 				Name:     "users:me",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&usersMeRetrieve,
 					&usersMeUpdate,
@@ -94,6 +98,7 @@ func init() {
 			{
 				Name:     "users:me:preferences",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&usersMePreferencesRetrieve,
 					&usersMePreferencesUpdate,
@@ -102,15 +107,19 @@ func init() {
 			{
 				Name:     "users:me:devices",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&usersMeDevicesList,
+					&usersMeDevicesDeregister,
 					&usersMeDevicesRegister,
 				},
 			},
 			{
 				Name:     "users:me:biometrics",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
+					&usersMeBiometricsDeregister,
 					&usersMeBiometricsEnroll,
 					&usersMeBiometricsStatus,
 					&usersMeBiometricsVerify,
@@ -119,6 +128,7 @@ func init() {
 			{
 				Name:     "accounts",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&accountsLink,
 					&accountsRetrieveDetails,
@@ -129,6 +139,7 @@ func init() {
 			{
 				Name:     "accounts:transactions",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&accountsTransactionsRetrievePending,
 				},
@@ -136,6 +147,7 @@ func init() {
 			{
 				Name:     "accounts:overdraft-settings",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&accountsOverdraftSettingsRetrieveOverdraftSettings,
 					&accountsOverdraftSettingsUpdateOverdraftSettings,
@@ -144,6 +156,7 @@ func init() {
 			{
 				Name:     "transactions",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&transactionsRetrieve,
 					&transactionsList,
@@ -155,6 +168,7 @@ func init() {
 			{
 				Name:     "transactions:recurring",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&transactionsRecurringCreate,
 					&transactionsRecurringList,
@@ -163,6 +177,7 @@ func init() {
 			{
 				Name:     "transactions:insights",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&transactionsInsightsGetSpendingTrends,
 				},
@@ -170,16 +185,19 @@ func init() {
 			{
 				Name:     "budgets",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&budgetsCreate,
 					&budgetsRetrieve,
 					&budgetsUpdate,
 					&budgetsList,
+					&budgetsDelete,
 				},
 			},
 			{
 				Name:     "investments:portfolios",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&investmentsPortfoliosCreate,
 					&investmentsPortfoliosRetrieve,
@@ -191,6 +209,7 @@ func init() {
 			{
 				Name:     "investments:assets",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&investmentsAssetsSearch,
 				},
@@ -198,6 +217,7 @@ func init() {
 			{
 				Name:     "ai:advisor",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&aiAdvisorListTools,
 				},
@@ -205,6 +225,7 @@ func init() {
 			{
 				Name:     "ai:advisor:chat",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&aiAdvisorChatRetrieveHistory,
 					&aiAdvisorChatSendMessage,
@@ -213,6 +234,7 @@ func init() {
 			{
 				Name:     "ai:oracle:simulate",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&aiOracleSimulateRunAdvanced,
 					&aiOracleSimulateRunStandard,
@@ -221,14 +243,17 @@ func init() {
 			{
 				Name:     "ai:oracle:simulations",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&aiOracleSimulationsRetrieve,
 					&aiOracleSimulationsList,
+					&aiOracleSimulationsDelete,
 				},
 			},
 			{
 				Name:     "ai:incubator",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&aiIncubatorListPitches,
 				},
@@ -236,6 +261,7 @@ func init() {
 			{
 				Name:     "ai:incubator:pitch",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&aiIncubatorPitchRetrieveDetails,
 					&aiIncubatorPitchSubmit,
@@ -245,6 +271,7 @@ func init() {
 			{
 				Name:     "ai:ads",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&aiAdsListGenerated,
 					&aiAdsRetrieveStatus,
@@ -253,6 +280,7 @@ func init() {
 			{
 				Name:     "ai:ads:generate",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&aiAdsGenerateAdvanced,
 					&aiAdsGenerateStandard,
@@ -261,6 +289,7 @@ func init() {
 			{
 				Name:     "corporate",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&corporatePerformSanctionScreening,
 				},
@@ -268,6 +297,7 @@ func init() {
 			{
 				Name:     "corporate:cards",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&corporateCardsList,
 					&corporateCardsCreateVirtual,
@@ -279,6 +309,7 @@ func init() {
 			{
 				Name:     "corporate:anomalies",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&corporateAnomaliesList,
 					&corporateAnomaliesUpdateStatus,
@@ -287,6 +318,7 @@ func init() {
 			{
 				Name:     "corporate:compliance:audits",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&corporateComplianceAuditsRequest,
 					&corporateComplianceAuditsRetrieveReport,
@@ -295,6 +327,7 @@ func init() {
 			{
 				Name:     "corporate:treasury",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&corporateTreasuryGetLiquidityPositions,
 				},
@@ -302,6 +335,7 @@ func init() {
 			{
 				Name:     "corporate:treasury:cash-flow",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&corporateTreasuryCashFlowGetForecast,
 				},
@@ -309,15 +343,18 @@ func init() {
 			{
 				Name:     "corporate:risk:fraud:rules",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&corporateRiskFraudRulesCreate,
 					&corporateRiskFraudRulesUpdate,
 					&corporateRiskFraudRulesList,
+					&corporateRiskFraudRulesDelete,
 				},
 			},
 			{
 				Name:     "web3",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&web3RetrieveNFTs,
 				},
@@ -325,6 +362,7 @@ func init() {
 			{
 				Name:     "web3:wallets",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&web3WalletsList,
 					&web3WalletsConnect,
@@ -334,6 +372,7 @@ func init() {
 			{
 				Name:     "web3:transactions",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&web3TransactionsInitiateTransfer,
 				},
@@ -341,6 +380,7 @@ func init() {
 			{
 				Name:     "payments:international",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&paymentsInternationalInitiate,
 					&paymentsInternationalRetrieveStatus,
@@ -349,6 +389,7 @@ func init() {
 			{
 				Name:     "payments:fx",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&paymentsFxConvert,
 					&paymentsFxRetrieveRates,
@@ -357,6 +398,7 @@ func init() {
 			{
 				Name:     "sustainability",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&sustainabilityPurchaseCarbonOffsets,
 					&sustainabilityRetrieveCarbonFootprint,
@@ -365,6 +407,7 @@ func init() {
 			{
 				Name:     "sustainability:investments",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&sustainabilityInvestmentsAnalyzeImpact,
 				},
@@ -372,6 +415,7 @@ func init() {
 			{
 				Name:     "lending:applications",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&lendingApplicationsRetrieve,
 					&lendingApplicationsSubmit,
@@ -380,6 +424,7 @@ func init() {
 			{
 				Name:     "lending:offers",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&lendingOffersListPreApproved,
 				},
@@ -387,23 +432,28 @@ func init() {
 			{
 				Name:     "developers:webhooks",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&developersWebhooksCreate,
 					&developersWebhooksUpdate,
 					&developersWebhooksList,
+					&developersWebhooksDelete,
 				},
 			},
 			{
 				Name:     "developers:api-keys",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&developersAPIKeysCreate,
 					&developersAPIKeysList,
+					&developersAPIKeysRevoke,
 				},
 			},
 			{
 				Name:     "identity:kyc",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&identityKYCRetrieveStatus,
 					&identityKYCSubmit,
@@ -412,16 +462,19 @@ func init() {
 			{
 				Name:     "goals",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&goalsCreate,
 					&goalsRetrieve,
 					&goalsUpdate,
 					&goalsList,
+					&goalsDelete,
 				},
 			},
 			{
 				Name:     "notifications",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&notificationsListUserNotifications,
 					&notificationsMarkAsRead,
@@ -430,6 +483,7 @@ func init() {
 			{
 				Name:     "notifications:settings",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&notificationsSettingsRetrieve,
 					&notificationsSettingsUpdate,
@@ -438,6 +492,7 @@ func init() {
 			{
 				Name:     "marketplace:products",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&marketplaceProductsList,
 					&marketplaceProductsSimulateImpact,
@@ -446,6 +501,7 @@ func init() {
 			{
 				Name:     "marketplace:offers",
 				Category: "API RESOURCE",
+				Suggest:  true,
 				Commands: []*cli.Command{
 					&marketplaceOffersRedeem,
 				},
@@ -453,7 +509,7 @@ func init() {
 			{
 				Name:            "@manpages",
 				Usage:           "Generate documentation for 'man'",
-				UsageText:       "1231 @manpages [-o 1231.1] [--gzip]",
+				UsageText:       "jocall3 @manpages [-o jocall3.1] [--gzip]",
 				Hidden:          true,
 				Action:          generateManpages,
 				HideHelpCommand: true,
@@ -478,10 +534,20 @@ func init() {
 					},
 				},
 			},
+			{
+				Name:            "__complete",
+				Hidden:          true,
+				HideHelpCommand: true,
+				Action:          autocomplete.ExecuteShellCompletion,
+			},
+			{
+				Name:            "@completion",
+				Hidden:          true,
+				HideHelpCommand: true,
+				Action:          autocomplete.OutputCompletionScript,
+			},
 		},
-		EnableShellCompletion:      true,
-		ShellCompletionCommandName: "@completion",
-		HideHelpCommand:            true,
+		HideHelpCommand: true,
 	}
 }
 
@@ -496,7 +562,7 @@ func generateManpages(ctx context.Context, c *cli.Command) error {
 		// handle error
 	}
 	if c.Bool("text") {
-		file, err := os.Create(filepath.Join(dir, "man1", "1231.1"))
+		file, err := os.Create(filepath.Join(dir, "man1", "jocall3.1"))
 		if err != nil {
 			return err
 		}
@@ -506,7 +572,7 @@ func generateManpages(ctx context.Context, c *cli.Command) error {
 		}
 	}
 	if c.Bool("gzip") {
-		file, err := os.Create(filepath.Join(dir, "man1", "1231.1.gz"))
+		file, err := os.Create(filepath.Join(dir, "man1", "jocall3.1.gz"))
 		if err != nil {
 			return err
 		}

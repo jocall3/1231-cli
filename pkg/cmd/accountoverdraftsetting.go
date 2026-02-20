@@ -7,20 +7,22 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var accountsOverdraftSettingsRetrieveOverdraftSettings = cli.Command{
-	Name:  "retrieve-overdraft-settings",
-	Usage: "Retrieves the current overdraft protection settings for a specific account.",
+	Name:    "retrieve-overdraft-settings",
+	Usage:   "Retrieves the current overdraft protection settings for a specific account.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "account-id",
+			Name:     "account-id",
+			Required: true,
 		},
 	},
 	Action:          handleAccountsOverdraftSettingsRetrieveOverdraftSettings,
@@ -28,11 +30,13 @@ var accountsOverdraftSettingsRetrieveOverdraftSettings = cli.Command{
 }
 
 var accountsOverdraftSettingsUpdateOverdraftSettings = cli.Command{
-	Name:  "update-overdraft-settings",
-	Usage: "Updates the overdraft protection settings for a specific account, enabling or\ndisabling protection and configuring preferences.",
+	Name:    "update-overdraft-settings",
+	Usage:   "Updates the overdraft protection settings for a specific account, enabling or\ndisabling protection and configuring preferences.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "account-id",
+			Name:     "account-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "enabled",
@@ -65,7 +69,7 @@ var accountsOverdraftSettingsUpdateOverdraftSettings = cli.Command{
 }
 
 func handleAccountsOverdraftSettingsRetrieveOverdraftSettings(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("account-id") && len(unusedArgs) > 0 {
 		cmd.Set("account-id", unusedArgs[0])
@@ -88,7 +92,7 @@ func handleAccountsOverdraftSettingsRetrieveOverdraftSettings(ctx context.Contex
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Accounts.OverdraftSettings.GetOverdraftSettings(ctx, cmd.Value("account-id").(any), options...)
+	_, err = client.Accounts.OverdraftSettings.GetOverdraftSettings(ctx, interface{}(cmd.Value("account-id").(any)), options...)
 	if err != nil {
 		return err
 	}
@@ -100,7 +104,7 @@ func handleAccountsOverdraftSettingsRetrieveOverdraftSettings(ctx context.Contex
 }
 
 func handleAccountsOverdraftSettingsUpdateOverdraftSettings(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("account-id") && len(unusedArgs) > 0 {
 		cmd.Set("account-id", unusedArgs[0])
@@ -110,7 +114,7 @@ func handleAccountsOverdraftSettingsUpdateOverdraftSettings(ctx context.Context,
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.AccountOverdraftSettingUpdateOverdraftSettingsParams{}
+	params := jocall3.AccountOverdraftSettingUpdateOverdraftSettingsParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -127,7 +131,7 @@ func handleAccountsOverdraftSettingsUpdateOverdraftSettings(ctx context.Context,
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Accounts.OverdraftSettings.UpdateOverdraftSettings(
 		ctx,
-		cmd.Value("account-id").(any),
+		interface{}(cmd.Value("account-id").(any)),
 		params,
 		options...,
 	)

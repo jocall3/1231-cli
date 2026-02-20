@@ -7,17 +7,18 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var web3WalletsList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of all securely linked cryptocurrency wallets (e.g., MetaMask,\nLedger integration), showing their addresses, associated networks, and\nverification status.",
+	Name:    "list",
+	Usage:   "Retrieves a list of all securely linked cryptocurrency wallets (e.g., MetaMask,\nLedger integration), showing their addresses, associated networks, and\nverification status.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -28,6 +29,7 @@ var web3WalletsList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -36,32 +38,38 @@ var web3WalletsList = cli.Command{
 }
 
 var web3WalletsConnect = cli.Command{
-	Name:  "connect",
-	Usage: "Initiates the process to securely connect a new cryptocurrency wallet to the\nuser's profile, typically involving a signed message or OAuth flow from the\nwallet provider.",
+	Name:    "connect",
+	Usage:   "Initiates the process to securely connect a new cryptocurrency wallet to the\nuser's profile, typically involving a signed message or OAuth flow from the\nwallet provider.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "blockchain-network",
 			Usage:    "The blockchain network for this wallet (e.g., Ethereum, Solana).",
+			Required: true,
 			BodyPath: "blockchainNetwork",
 		},
 		&requestflag.Flag[any]{
 			Name:     "signed-message",
 			Usage:    "A message cryptographically signed by the wallet owner to prove ownership/intent.",
+			Required: true,
 			BodyPath: "signedMessage",
 		},
 		&requestflag.Flag[any]{
 			Name:     "wallet-address",
 			Usage:    "The public address of the cryptocurrency wallet.",
+			Required: true,
 			BodyPath: "walletAddress",
 		},
 		&requestflag.Flag[any]{
 			Name:     "wallet-provider",
 			Usage:    "The name of the wallet provider (e.g., MetaMask, Phantom).",
+			Required: true,
 			BodyPath: "walletProvider",
 		},
 		&requestflag.Flag[any]{
 			Name:     "request-write-access",
 			Usage:    "If true, requests write access to initiate transactions from this wallet.",
+			Default:  false,
 			BodyPath: "requestWriteAccess",
 		},
 	},
@@ -70,11 +78,13 @@ var web3WalletsConnect = cli.Command{
 }
 
 var web3WalletsRetrieveBalances = cli.Command{
-	Name:  "retrieve-balances",
-	Usage: "Retrieves the current balances of all recognized crypto assets within a specific\nconnected wallet.",
+	Name:    "retrieve-balances",
+	Usage:   "Retrieves the current balances of all recognized crypto assets within a specific\nconnected wallet.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "wallet-id",
+			Name:     "wallet-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -85,6 +95,7 @@ var web3WalletsRetrieveBalances = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -93,14 +104,14 @@ var web3WalletsRetrieveBalances = cli.Command{
 }
 
 func handleWeb3WalletsList(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.Web3WalletListParams{}
+	params := jocall3.Web3WalletListParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -127,14 +138,14 @@ func handleWeb3WalletsList(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleWeb3WalletsConnect(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.Web3WalletConnectParams{}
+	params := jocall3.Web3WalletConnectParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -161,7 +172,7 @@ func handleWeb3WalletsConnect(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleWeb3WalletsRetrieveBalances(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("wallet-id") && len(unusedArgs) > 0 {
 		cmd.Set("wallet-id", unusedArgs[0])
@@ -171,7 +182,7 @@ func handleWeb3WalletsRetrieveBalances(ctx context.Context, cmd *cli.Command) er
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.Web3WalletGetBalancesParams{}
+	params := jocall3.Web3WalletGetBalancesParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -188,7 +199,7 @@ func handleWeb3WalletsRetrieveBalances(ctx context.Context, cmd *cli.Command) er
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Web3.Wallets.GetBalances(
 		ctx,
-		cmd.Value("wallet-id").(any),
+		interface{}(cmd.Value("wallet-id").(any)),
 		params,
 		options...,
 	)

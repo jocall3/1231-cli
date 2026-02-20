@@ -7,41 +7,47 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var paymentsFxConvert = cli.Command{
-	Name:  "convert",
-	Usage: "Executes an instant currency conversion between two currencies, either from a\nbalance or into a specified account.",
+	Name:    "convert",
+	Usage:   "Executes an instant currency conversion between two currencies, either from a\nbalance or into a specified account.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "source-account-id",
 			Usage:    "The ID of the account from which funds will be converted.",
+			Required: true,
 			BodyPath: "sourceAccountId",
 		},
 		&requestflag.Flag[any]{
 			Name:     "source-amount",
 			Usage:    "The amount to convert from the source currency.",
+			Required: true,
 			BodyPath: "sourceAmount",
 		},
 		&requestflag.Flag[any]{
 			Name:     "source-currency",
 			Usage:    "The ISO 4217 currency code of the source funds.",
+			Required: true,
 			BodyPath: "sourceCurrency",
 		},
 		&requestflag.Flag[any]{
 			Name:     "target-currency",
 			Usage:    "The ISO 4217 currency code for the target currency.",
+			Required: true,
 			BodyPath: "targetCurrency",
 		},
 		&requestflag.Flag[any]{
 			Name:     "fx-rate-lock",
 			Usage:    "If true, attempts to lock the quoted FX rate for a short period.",
+			Default:  false,
 			BodyPath: "fxRateLock",
 		},
 		&requestflag.Flag[any]{
@@ -55,17 +61,20 @@ var paymentsFxConvert = cli.Command{
 }
 
 var paymentsFxRetrieveRates = cli.Command{
-	Name:  "retrieve-rates",
-	Usage: "Retrieves current and AI-predicted future foreign exchange rates for a specified\ncurrency pair, including bid/ask spreads and historical volatility data for\ninformed decisions.",
+	Name:    "retrieve-rates",
+	Usage:   "Retrieves current and AI-predicted future foreign exchange rates for a specified\ncurrency pair, including bid/ask spreads and historical volatility data for\ninformed decisions.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "base-currency",
 			Usage:     "The base currency code (e.g., USD).",
+			Required:  true,
 			QueryPath: "baseCurrency",
 		},
 		&requestflag.Flag[any]{
 			Name:      "target-currency",
 			Usage:     "The target currency code (e.g., EUR).",
+			Required:  true,
 			QueryPath: "targetCurrency",
 		},
 		&requestflag.Flag[any]{
@@ -80,14 +89,14 @@ var paymentsFxRetrieveRates = cli.Command{
 }
 
 func handlePaymentsFxConvert(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.PaymentFxConvertParams{}
+	params := jocall3.PaymentFxConvertParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -114,14 +123,14 @@ func handlePaymentsFxConvert(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handlePaymentsFxRetrieveRates(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.PaymentFxGetRatesParams{}
+	params := jocall3.PaymentFxGetRatesParams{}
 
 	options, err := flagOptions(
 		cmd,

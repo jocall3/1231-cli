@@ -7,17 +7,18 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var corporateAnomaliesList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a comprehensive list of AI-detected financial anomalies across\ntransactions, payments, and corporate cards that require immediate review and\npotential action to mitigate risk and ensure compliance.",
+	Name:    "list",
+	Usage:   "Retrieves a comprehensive list of AI-detected financial anomalies across\ntransactions, payments, and corporate cards that require immediate review and\npotential action to mitigate risk and ensure compliance.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "end-date",
@@ -38,6 +39,7 @@ var corporateAnomaliesList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 		&requestflag.Flag[string]{
@@ -62,15 +64,18 @@ var corporateAnomaliesList = cli.Command{
 }
 
 var corporateAnomaliesUpdateStatus = cli.Command{
-	Name:  "update-status",
-	Usage: "Updates the review status of a specific financial anomaly, allowing compliance\nofficers to mark it as dismissed, resolved, or escalate for further\ninvestigation after thorough AI-assisted and human review.",
+	Name:    "update-status",
+	Usage:   "Updates the review status of a specific financial anomaly, allowing compliance\nofficers to mark it as dismissed, resolved, or escalate for further\ninvestigation after thorough AI-assisted and human review.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "anomaly-id",
+			Name:     "anomaly-id",
+			Required: true,
 		},
 		&requestflag.Flag[string]{
 			Name:     "status",
 			Usage:    "The new status for the financial anomaly.",
+			Required: true,
 			BodyPath: "status",
 		},
 		&requestflag.Flag[any]{
@@ -84,14 +89,14 @@ var corporateAnomaliesUpdateStatus = cli.Command{
 }
 
 func handleCorporateAnomaliesList(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.CorporateAnomalyListParams{}
+	params := jocall3.CorporateAnomalyListParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -118,7 +123,7 @@ func handleCorporateAnomaliesList(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleCorporateAnomaliesUpdateStatus(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("anomaly-id") && len(unusedArgs) > 0 {
 		cmd.Set("anomaly-id", unusedArgs[0])
@@ -128,7 +133,7 @@ func handleCorporateAnomaliesUpdateStatus(ctx context.Context, cmd *cli.Command)
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.CorporateAnomalyUpdateStatusParams{}
+	params := jocall3.CorporateAnomalyUpdateStatusParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -145,7 +150,7 @@ func handleCorporateAnomaliesUpdateStatus(ctx context.Context, cmd *cli.Command)
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Corporate.Anomalies.UpdateStatus(
 		ctx,
-		cmd.Value("anomaly-id").(any),
+		interface{}(cmd.Value("anomaly-id").(any)),
 		params,
 		options...,
 	)

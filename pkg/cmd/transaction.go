@@ -7,20 +7,22 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var transactionsRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Retrieves granular information for a single transaction by its unique ID,\nincluding AI categorization confidence, merchant details, and associated carbon\nfootprint.",
+	Name:    "retrieve",
+	Usage:   "Retrieves granular information for a single transaction by its unique ID,\nincluding AI categorization confidence, merchant details, and associated carbon\nfootprint.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "transaction-id",
+			Name:     "transaction-id",
+			Required: true,
 		},
 	},
 	Action:          handleTransactionsRetrieve,
@@ -28,8 +30,9 @@ var transactionsRetrieve = cli.Command{
 }
 
 var transactionsList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a paginated list of the user's transactions, with extensive options\nfor filtering by type, category, date range, amount, and intelligent AI-driven\nsorting and search capabilities.",
+	Name:    "list",
+	Usage:   "Retrieves a paginated list of the user's transactions, with extensive options\nfor filtering by type, category, date range, amount, and intelligent AI-driven\nsorting and search capabilities.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "category",
@@ -60,6 +63,7 @@ var transactionsList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 		&requestflag.Flag[any]{
@@ -83,20 +87,24 @@ var transactionsList = cli.Command{
 }
 
 var transactionsCategorize = cli.Command{
-	Name:  "categorize",
-	Usage: "Allows the user to override or refine the AI's categorization for a transaction,\nimproving future AI accuracy and personal financial reporting.",
+	Name:    "categorize",
+	Usage:   "Allows the user to override or refine the AI's categorization for a transaction,\nimproving future AI accuracy and personal financial reporting.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "transaction-id",
+			Name:     "transaction-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "category",
 			Usage:    "The new category for the transaction. Can be hierarchical.",
+			Required: true,
 			BodyPath: "category",
 		},
 		&requestflag.Flag[any]{
 			Name:     "apply-to-future",
 			Usage:    "If true, the AI will learn from this correction and try to apply it to similar future transactions.",
+			Default:  false,
 			BodyPath: "applyToFuture",
 		},
 		&requestflag.Flag[any]{
@@ -110,23 +118,27 @@ var transactionsCategorize = cli.Command{
 }
 
 var transactionsDispute = cli.Command{
-	Name:  "dispute",
-	Usage: "Begins the process of disputing a specific transaction, providing details and\nsupporting documentation for review by our compliance team and AI.",
+	Name:    "dispute",
+	Usage:   "Begins the process of disputing a specific transaction, providing details and\nsupporting documentation for review by our compliance team and AI.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "transaction-id",
+			Name:     "transaction-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "details",
 			Usage:    "Detailed explanation of the dispute.",
+			Required: true,
 			BodyPath: "details",
 		},
 		&requestflag.Flag[string]{
 			Name:     "reason",
 			Usage:    "The primary reason for disputing the transaction.",
+			Required: true,
 			BodyPath: "reason",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "supporting-document",
 			Usage:    "URLs to supporting documents (e.g., receipts, communication).",
 			BodyPath: "supportingDocuments",
@@ -137,15 +149,18 @@ var transactionsDispute = cli.Command{
 }
 
 var transactionsUpdateNotes = cli.Command{
-	Name:  "update-notes",
-	Usage: "Allows the user to add or update personal notes for a specific transaction.",
+	Name:    "update-notes",
+	Usage:   "Allows the user to add or update personal notes for a specific transaction.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "transaction-id",
+			Name:     "transaction-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "notes",
 			Usage:    "The personal notes to add or update for the transaction.",
+			Required: true,
 			BodyPath: "notes",
 		},
 	},
@@ -154,7 +169,7 @@ var transactionsUpdateNotes = cli.Command{
 }
 
 func handleTransactionsRetrieve(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("transaction-id") && len(unusedArgs) > 0 {
 		cmd.Set("transaction-id", unusedArgs[0])
@@ -177,7 +192,7 @@ func handleTransactionsRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Transactions.Get(ctx, cmd.Value("transaction-id").(any), options...)
+	_, err = client.Transactions.Get(ctx, interface{}(cmd.Value("transaction-id").(any)), options...)
 	if err != nil {
 		return err
 	}
@@ -189,14 +204,14 @@ func handleTransactionsRetrieve(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleTransactionsList(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.TransactionListParams{}
+	params := jocall3.TransactionListParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -223,7 +238,7 @@ func handleTransactionsList(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleTransactionsCategorize(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("transaction-id") && len(unusedArgs) > 0 {
 		cmd.Set("transaction-id", unusedArgs[0])
@@ -233,7 +248,7 @@ func handleTransactionsCategorize(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.TransactionCategorizeParams{}
+	params := jocall3.TransactionCategorizeParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -250,7 +265,7 @@ func handleTransactionsCategorize(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Transactions.Categorize(
 		ctx,
-		cmd.Value("transaction-id").(any),
+		interface{}(cmd.Value("transaction-id").(any)),
 		params,
 		options...,
 	)
@@ -265,7 +280,7 @@ func handleTransactionsCategorize(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleTransactionsDispute(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("transaction-id") && len(unusedArgs) > 0 {
 		cmd.Set("transaction-id", unusedArgs[0])
@@ -275,7 +290,7 @@ func handleTransactionsDispute(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.TransactionDisputeParams{}
+	params := jocall3.TransactionDisputeParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -292,7 +307,7 @@ func handleTransactionsDispute(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Transactions.Dispute(
 		ctx,
-		cmd.Value("transaction-id").(any),
+		interface{}(cmd.Value("transaction-id").(any)),
 		params,
 		options...,
 	)
@@ -307,7 +322,7 @@ func handleTransactionsDispute(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleTransactionsUpdateNotes(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("transaction-id") && len(unusedArgs) > 0 {
 		cmd.Set("transaction-id", unusedArgs[0])
@@ -317,7 +332,7 @@ func handleTransactionsUpdateNotes(ctx context.Context, cmd *cli.Command) error 
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.TransactionUpdateNotesParams{}
+	params := jocall3.TransactionUpdateNotesParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -334,7 +349,7 @@ func handleTransactionsUpdateNotes(ctx context.Context, cmd *cli.Command) error 
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Transactions.UpdateNotes(
 		ctx,
-		cmd.Value("transaction-id").(any),
+		interface{}(cmd.Value("transaction-id").(any)),
 		params,
 		options...,
 	)

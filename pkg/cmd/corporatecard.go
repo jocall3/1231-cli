@@ -7,17 +7,18 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var corporateCardsList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a comprehensive list of all physical and virtual corporate cards\nassociated with the user's organization, including their status, assigned\nholder, and current spending controls.",
+	Name:    "list",
+	Usage:   "Retrieves a comprehensive list of all physical and virtual corporate cards\nassociated with the user's organization, including their status, assigned\nholder, and current spending controls.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -28,6 +29,7 @@ var corporateCardsList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -35,28 +37,33 @@ var corporateCardsList = cli.Command{
 	HideHelpCommand: true,
 }
 
-var corporateCardsCreateVirtual = cli.Command{
-	Name:  "create-virtual",
-	Usage: "Creates and issues a new virtual corporate card with specified spending limits,\nmerchant restrictions, and expiration dates, ideal for secure online purchases\nand temporary projects.",
+var corporateCardsCreateVirtual = requestflag.WithInnerFlags(cli.Command{
+	Name:    "create-virtual",
+	Usage:   "Creates and issues a new virtual corporate card with specified spending limits,\nmerchant restrictions, and expiration dates, ideal for secure online purchases\nand temporary projects.",
+	Suggest: true,
 	Flags: []cli.Flag{
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "controls",
 			Usage:    "Granular spending controls for a corporate card.",
+			Required: true,
 			BodyPath: "controls",
 		},
 		&requestflag.Flag[any]{
 			Name:     "expiration-date",
 			Usage:    "Expiration date for the virtual card (YYYY-MM-DD).",
+			Required: true,
 			BodyPath: "expirationDate",
 		},
 		&requestflag.Flag[any]{
 			Name:     "holder-name",
 			Usage:    "Name to appear on the virtual card.",
+			Required: true,
 			BodyPath: "holderName",
 		},
 		&requestflag.Flag[any]{
 			Name:     "purpose",
 			Usage:    "Brief description of the virtual card's purpose.",
+			Required: true,
 			BodyPath: "purpose",
 		},
 		&requestflag.Flag[any]{
@@ -72,18 +79,69 @@ var corporateCardsCreateVirtual = cli.Command{
 	},
 	Action:          handleCorporateCardsCreateVirtual,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"controls": {
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.atm-withdrawals",
+			Usage:      "If true, ATM cash withdrawals are allowed.",
+			InnerField: "atmWithdrawals",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.contactless-payments",
+			Usage:      "If true, contactless payments are allowed.",
+			InnerField: "contactlessPayments",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.daily-limit",
+			Usage:      "Maximum spending limit per day (null for no limit).",
+			InnerField: "dailyLimit",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.international-transactions",
+			Usage:      "If true, international transactions are allowed.",
+			InnerField: "internationalTransactions",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.merchant-category-restrictions",
+			Usage:      "List of allowed merchant categories. If empty, all are allowed unless explicitly denied.",
+			InnerField: "merchantCategoryRestrictions",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.monthly-limit",
+			Usage:      "Maximum spending limit per month (null for no limit).",
+			InnerField: "monthlyLimit",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.online-transactions",
+			Usage:      "If true, online transactions are allowed.",
+			InnerField: "onlineTransactions",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.single-transaction-limit",
+			Usage:      "Maximum amount for a single transaction (null for no limit).",
+			InnerField: "singleTransactionLimit",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "controls.vendor-restrictions",
+			Usage:      "List of allowed vendors/merchants by name.",
+			InnerField: "vendorRestrictions",
+		},
+	},
+})
 
 var corporateCardsFreeze = cli.Command{
-	Name:  "freeze",
-	Usage: "Immediately changes the frozen status of a corporate card, preventing or\nallowing transactions in real-time, critical for security and expense\nmanagement.",
+	Name:    "freeze",
+	Usage:   "Immediately changes the frozen status of a corporate card, preventing or\nallowing transactions in real-time, critical for security and expense\nmanagement.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "card-id",
+			Name:     "card-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "freeze",
 			Usage:    "Set to `true` to freeze the card, `false` to unfreeze.",
+			Required: true,
 			BodyPath: "freeze",
 		},
 	},
@@ -92,11 +150,13 @@ var corporateCardsFreeze = cli.Command{
 }
 
 var corporateCardsListTransactions = cli.Command{
-	Name:  "list-transactions",
-	Usage: "Retrieves a paginated list of transactions made with a specific corporate card,\nincluding AI categorization and compliance flags.",
+	Name:    "list-transactions",
+	Usage:   "Retrieves a paginated list of transactions made with a specific corporate card,\nincluding AI categorization and compliance flags.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "card-id",
+			Name:     "card-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:      "end-date",
@@ -112,6 +172,7 @@ var corporateCardsListTransactions = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 		&requestflag.Flag[any]{
@@ -125,11 +186,13 @@ var corporateCardsListTransactions = cli.Command{
 }
 
 var corporateCardsUpdateControls = cli.Command{
-	Name:  "update-controls",
-	Usage: "Updates the sophisticated spending controls, limits, and policy overrides for a\nspecific corporate card, enabling real-time adjustments for security and budget\nadherence.",
+	Name:    "update-controls",
+	Usage:   "Updates the sophisticated spending controls, limits, and policy overrides for a\nspecific corporate card, enabling real-time adjustments for security and budget\nadherence.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "card-id",
+			Name:     "card-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "atm-withdrawals",
@@ -151,7 +214,7 @@ var corporateCardsUpdateControls = cli.Command{
 			Usage:    "If true, international transactions are allowed.",
 			BodyPath: "internationalTransactions",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "merchant-category-restriction",
 			Usage:    "List of allowed merchant categories. If empty, all are allowed unless explicitly denied.",
 			BodyPath: "merchantCategoryRestrictions",
@@ -171,7 +234,7 @@ var corporateCardsUpdateControls = cli.Command{
 			Usage:    "Maximum amount for a single transaction (null for no limit).",
 			BodyPath: "singleTransactionLimit",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "vendor-restriction",
 			Usage:    "List of allowed vendors/merchants by name.",
 			BodyPath: "vendorRestrictions",
@@ -182,14 +245,14 @@ var corporateCardsUpdateControls = cli.Command{
 }
 
 func handleCorporateCardsList(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.CorporateCardListParams{}
+	params := jocall3.CorporateCardListParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -216,14 +279,14 @@ func handleCorporateCardsList(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleCorporateCardsCreateVirtual(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.CorporateCardNewVirtualParams{}
+	params := jocall3.CorporateCardNewVirtualParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -250,7 +313,7 @@ func handleCorporateCardsCreateVirtual(ctx context.Context, cmd *cli.Command) er
 }
 
 func handleCorporateCardsFreeze(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("card-id") && len(unusedArgs) > 0 {
 		cmd.Set("card-id", unusedArgs[0])
@@ -260,7 +323,7 @@ func handleCorporateCardsFreeze(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.CorporateCardFreezeParams{}
+	params := jocall3.CorporateCardFreezeParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -277,7 +340,7 @@ func handleCorporateCardsFreeze(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Corporate.Cards.Freeze(
 		ctx,
-		cmd.Value("card-id").(any),
+		interface{}(cmd.Value("card-id").(any)),
 		params,
 		options...,
 	)
@@ -292,7 +355,7 @@ func handleCorporateCardsFreeze(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleCorporateCardsListTransactions(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("card-id") && len(unusedArgs) > 0 {
 		cmd.Set("card-id", unusedArgs[0])
@@ -302,7 +365,7 @@ func handleCorporateCardsListTransactions(ctx context.Context, cmd *cli.Command)
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.CorporateCardListTransactionsParams{}
+	params := jocall3.CorporateCardListTransactionsParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -319,7 +382,7 @@ func handleCorporateCardsListTransactions(ctx context.Context, cmd *cli.Command)
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Corporate.Cards.ListTransactions(
 		ctx,
-		cmd.Value("card-id").(any),
+		interface{}(cmd.Value("card-id").(any)),
 		params,
 		options...,
 	)
@@ -334,7 +397,7 @@ func handleCorporateCardsListTransactions(ctx context.Context, cmd *cli.Command)
 }
 
 func handleCorporateCardsUpdateControls(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("card-id") && len(unusedArgs) > 0 {
 		cmd.Set("card-id", unusedArgs[0])
@@ -344,7 +407,7 @@ func handleCorporateCardsUpdateControls(ctx context.Context, cmd *cli.Command) e
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.CorporateCardUpdateControlsParams{}
+	params := jocall3.CorporateCardUpdateControlsParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -361,7 +424,7 @@ func handleCorporateCardsUpdateControls(ctx context.Context, cmd *cli.Command) e
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Corporate.Cards.UpdateControls(
 		ctx,
-		cmd.Value("card-id").(any),
+		interface{}(cmd.Value("card-id").(any)),
 		params,
 		options...,
 	)

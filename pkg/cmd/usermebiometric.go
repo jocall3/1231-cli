@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
@@ -18,28 +18,33 @@ import (
 var usersMeBiometricsDeregister = cli.Command{
 	Name:            "deregister",
 	Usage:           "Removes all enrolled biometric data associated with the user's account for\nsecurity reasons.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleUsersMeBiometricsDeregister,
 	HideHelpCommand: true,
 }
 
 var usersMeBiometricsEnroll = cli.Command{
-	Name:  "enroll",
-	Usage: "Initiates the enrollment process for biometric authentication (e.g.,\nfingerprint, facial scan) to enable secure and convenient access to sensitive\nfeatures. Requires a biometric signature for initial proof.",
+	Name:    "enroll",
+	Usage:   "Initiates the enrollment process for biometric authentication (e.g.,\nfingerprint, facial scan) to enable secure and convenient access to sensitive\nfeatures. Requires a biometric signature for initial proof.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "biometric-signature",
 			Usage:    "Base64 encoded representation of the biometric template or proof.",
+			Required: true,
 			BodyPath: "biometricSignature",
 		},
 		&requestflag.Flag[string]{
 			Name:     "biometric-type",
 			Usage:    "The type of biometric data being enrolled.",
+			Required: true,
 			BodyPath: "biometricType",
 		},
 		&requestflag.Flag[any]{
 			Name:     "device-id",
 			Usage:    "The ID of the device on which the biometric is being enrolled.",
+			Required: true,
 			BodyPath: "deviceId",
 		},
 		&requestflag.Flag[any]{
@@ -55,28 +60,33 @@ var usersMeBiometricsEnroll = cli.Command{
 var usersMeBiometricsStatus = cli.Command{
 	Name:            "status",
 	Usage:           "Retrieves the current status of biometric enrollments for the authenticated\nuser.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleUsersMeBiometricsStatus,
 	HideHelpCommand: true,
 }
 
 var usersMeBiometricsVerify = cli.Command{
-	Name:  "verify",
-	Usage: "Performs real-time biometric verification to authorize sensitive actions or\naccess protected resources, using a one-time biometric signature.",
+	Name:    "verify",
+	Usage:   "Performs real-time biometric verification to authorize sensitive actions or\naccess protected resources, using a one-time biometric signature.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "biometric-signature",
 			Usage:    "Base64 encoded representation of the one-time biometric proof for verification.",
+			Required: true,
 			BodyPath: "biometricSignature",
 		},
 		&requestflag.Flag[string]{
 			Name:     "biometric-type",
 			Usage:    "The type of biometric data being verified.",
+			Required: true,
 			BodyPath: "biometricType",
 		},
 		&requestflag.Flag[any]{
 			Name:     "device-id",
 			Usage:    "The ID of the device initiating the biometric verification.",
+			Required: true,
 			BodyPath: "deviceId",
 		},
 	},
@@ -85,7 +95,7 @@ var usersMeBiometricsVerify = cli.Command{
 }
 
 func handleUsersMeBiometricsDeregister(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
@@ -107,14 +117,14 @@ func handleUsersMeBiometricsDeregister(ctx context.Context, cmd *cli.Command) er
 }
 
 func handleUsersMeBiometricsEnroll(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.UserMeBiometricEnrollParams{}
+	params := jocall3.UserMeBiometricEnrollParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -141,7 +151,7 @@ func handleUsersMeBiometricsEnroll(ctx context.Context, cmd *cli.Command) error 
 }
 
 func handleUsersMeBiometricsStatus(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
@@ -173,14 +183,14 @@ func handleUsersMeBiometricsStatus(ctx context.Context, cmd *cli.Command) error 
 }
 
 func handleUsersMeBiometricsVerify(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.UserMeBiometricVerifyParams{}
+	params := jocall3.UserMeBiometricVerifyParams{}
 
 	options, err := flagOptions(
 		cmd,

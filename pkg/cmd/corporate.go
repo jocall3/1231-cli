@@ -7,34 +7,38 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
-var corporatePerformSanctionScreening = cli.Command{
-	Name:  "perform-sanction-screening",
-	Usage: "Executes a real-time screening of an individual or entity against global\nsanction lists and watchlists.",
+var corporatePerformSanctionScreening = requestflag.WithInnerFlags(cli.Command{
+	Name:    "perform-sanction-screening",
+	Usage:   "Executes a real-time screening of an individual or entity against global\nsanction lists and watchlists.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "country",
 			Usage:    "Two-letter ISO country code related to the entity (e.g., country of residence, registration).",
+			Required: true,
 			BodyPath: "country",
 		},
 		&requestflag.Flag[string]{
 			Name:     "entity-type",
 			Usage:    "The type of entity being screened.",
+			Required: true,
 			BodyPath: "entityType",
 		},
 		&requestflag.Flag[any]{
 			Name:     "name",
 			Usage:    "Full name of the individual or organization to screen.",
+			Required: true,
 			BodyPath: "name",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "address",
 			BodyPath: "address",
 		},
@@ -51,17 +55,40 @@ var corporatePerformSanctionScreening = cli.Command{
 	},
 	Action:          handleCorporatePerformSanctionScreening,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"address": {
+		&requestflag.InnerFlag[any]{
+			Name:       "address.city",
+			InnerField: "city",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.country",
+			InnerField: "country",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.state",
+			InnerField: "state",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.street",
+			InnerField: "street",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "address.zip",
+			InnerField: "zip",
+		},
+	},
+})
 
 func handleCorporatePerformSanctionScreening(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.CorporatePerformSanctionScreeningParams{}
+	params := jocall3.CorporatePerformSanctionScreeningParams{}
 
 	options, err := flagOptions(
 		cmd,

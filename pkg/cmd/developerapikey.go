@@ -7,26 +7,29 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var developersAPIKeysCreate = cli.Command{
-	Name:  "create",
-	Usage: "Generates a new API key for the developer application with specified scopes and\nan optional expiration.",
+	Name:    "create",
+	Usage:   "Generates a new API key for the developer application with specified scopes and\nan optional expiration.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "name",
 			Usage:    "A descriptive name for the API key.",
+			Required: true,
 			BodyPath: "name",
 		},
 		&requestflag.Flag[[]any]{
 			Name:     "scope",
 			Usage:    "List of permissions to grant to this API key.",
+			Required: true,
 			BodyPath: "scopes",
 		},
 		&requestflag.Flag[any]{
@@ -40,8 +43,9 @@ var developersAPIKeysCreate = cli.Command{
 }
 
 var developersAPIKeysList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of API keys issued to the authenticated developer application.",
+	Name:    "list",
+	Usage:   "Retrieves a list of API keys issued to the authenticated developer application.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -52,6 +56,7 @@ var developersAPIKeysList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -60,11 +65,13 @@ var developersAPIKeysList = cli.Command{
 }
 
 var developersAPIKeysRevoke = cli.Command{
-	Name:  "revoke",
-	Usage: "Revokes an existing API key, disabling its access immediately.",
+	Name:    "revoke",
+	Usage:   "Revokes an existing API key, disabling its access immediately.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "key-id",
+			Name:     "key-id",
+			Required: true,
 		},
 	},
 	Action:          handleDevelopersAPIKeysRevoke,
@@ -72,14 +79,14 @@ var developersAPIKeysRevoke = cli.Command{
 }
 
 func handleDevelopersAPIKeysCreate(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.DeveloperAPIKeyNewParams{}
+	params := jocall3.DeveloperAPIKeyNewParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -106,14 +113,14 @@ func handleDevelopersAPIKeysCreate(ctx context.Context, cmd *cli.Command) error 
 }
 
 func handleDevelopersAPIKeysList(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.DeveloperAPIKeyListParams{}
+	params := jocall3.DeveloperAPIKeyListParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -140,7 +147,7 @@ func handleDevelopersAPIKeysList(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleDevelopersAPIKeysRevoke(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("key-id") && len(unusedArgs) > 0 {
 		cmd.Set("key-id", unusedArgs[0])
@@ -161,5 +168,5 @@ func handleDevelopersAPIKeysRevoke(ctx context.Context, cmd *cli.Command) error 
 		return err
 	}
 
-	return client.Developers.APIKeys.Revoke(ctx, cmd.Value("key-id").(any), options...)
+	return client.Developers.APIKeys.Revoke(ctx, interface{}(cmd.Value("key-id").(any)), options...)
 }

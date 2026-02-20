@@ -7,21 +7,23 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var investmentsAssetsSearch = cli.Command{
-	Name:  "search",
-	Usage: "Searches for available investment assets (stocks, ETFs, mutual funds) and\nreturns their ESG impact scores.",
+	Name:    "search",
+	Usage:   "Searches for available investment assets (stocks, ETFs, mutual funds) and\nreturns their ESG impact scores.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "query",
 			Usage:     "Search query for asset name or symbol.",
+			Required:  true,
 			QueryPath: "query",
 		},
 		&requestflag.Flag[any]{
@@ -38,6 +40,7 @@ var investmentsAssetsSearch = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -46,14 +49,14 @@ var investmentsAssetsSearch = cli.Command{
 }
 
 func handleInvestmentsAssetsSearch(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.InvestmentAssetSearchParams{}
+	params := jocall3.InvestmentAssetSearchParams{}
 
 	options, err := flagOptions(
 		cmd,

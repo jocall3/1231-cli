@@ -7,17 +7,18 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var usersMeDevicesList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of all devices linked to the user's account, including mobile\nphones, tablets, and desktops, indicating their last active status and security\nposture.",
+	Name:    "list",
+	Usage:   "Retrieves a list of all devices linked to the user's account, including mobile\nphones, tablets, and desktops, indicating their last active status and security\nposture.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -28,6 +29,7 @@ var usersMeDevicesList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -36,11 +38,13 @@ var usersMeDevicesList = cli.Command{
 }
 
 var usersMeDevicesDeregister = cli.Command{
-	Name:  "deregister",
-	Usage: "Removes a specific device from the user's linked devices, revoking its access\nand requiring re-registration for future use. Useful for lost or compromised\ndevices.",
+	Name:    "deregister",
+	Usage:   "Removes a specific device from the user's linked devices, revoking its access\nand requiring re-registration for future use. Useful for lost or compromised\ndevices.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "device-id",
+			Name:     "device-id",
+			Required: true,
 		},
 	},
 	Action:          handleUsersMeDevicesDeregister,
@@ -48,22 +52,26 @@ var usersMeDevicesDeregister = cli.Command{
 }
 
 var usersMeDevicesRegister = cli.Command{
-	Name:  "register",
-	Usage: "Registers a new device for secure access and multi-factor authentication,\nassociating it with the user's profile. This typically initiates a biometric or\nMFA enrollment flow.",
+	Name:    "register",
+	Usage:   "Registers a new device for secure access and multi-factor authentication,\nassociating it with the user's profile. This typically initiates a biometric or\nMFA enrollment flow.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "device-type",
 			Usage:    "Type of the device being registered.",
+			Required: true,
 			BodyPath: "deviceType",
 		},
 		&requestflag.Flag[any]{
 			Name:     "model",
 			Usage:    "Model of the device.",
+			Required: true,
 			BodyPath: "model",
 		},
 		&requestflag.Flag[any]{
 			Name:     "os",
 			Usage:    "Operating system of the device.",
+			Required: true,
 			BodyPath: "os",
 		},
 		&requestflag.Flag[any]{
@@ -87,14 +95,14 @@ var usersMeDevicesRegister = cli.Command{
 }
 
 func handleUsersMeDevicesList(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.UserMeDeviceListParams{}
+	params := jocall3.UserMeDeviceListParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -121,7 +129,7 @@ func handleUsersMeDevicesList(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleUsersMeDevicesDeregister(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("device-id") && len(unusedArgs) > 0 {
 		cmd.Set("device-id", unusedArgs[0])
@@ -142,18 +150,18 @@ func handleUsersMeDevicesDeregister(ctx context.Context, cmd *cli.Command) error
 		return err
 	}
 
-	return client.Users.Me.Devices.Deregister(ctx, cmd.Value("device-id").(any), options...)
+	return client.Users.Me.Devices.Deregister(ctx, interface{}(cmd.Value("device-id").(any)), options...)
 }
 
 func handleUsersMeDevicesRegister(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.UserMeDeviceRegisterParams{}
+	params := jocall3.UserMeDeviceRegisterParams{}
 
 	options, err := flagOptions(
 		cmd,

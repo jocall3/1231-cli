@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
@@ -18,41 +18,48 @@ import (
 var identityKYCRetrieveStatus = cli.Command{
 	Name:            "retrieve-status",
 	Usage:           "Retrieves the current status of the user's Know Your Customer (KYC) verification\nprocess.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleIdentityKYCRetrieveStatus,
 	HideHelpCommand: true,
 }
 
 var identityKYCSubmit = cli.Command{
-	Name:  "submit",
-	Usage: "Submits Know Your Customer (KYC) documentation, such as identity proofs and\naddress verification, for AI-accelerated compliance and identity verification,\ncrucial for higher service tiers and regulatory adherence.",
+	Name:    "submit",
+	Usage:   "Submits Know Your Customer (KYC) documentation, such as identity proofs and\naddress verification, for AI-accelerated compliance and identity verification,\ncrucial for higher service tiers and regulatory adherence.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "country-of-issue",
 			Usage:    "The two-letter ISO country code where the document was issued.",
+			Required: true,
 			BodyPath: "countryOfIssue",
 		},
 		&requestflag.Flag[any]{
 			Name:     "document-number",
 			Usage:    "The identification number on the document.",
+			Required: true,
 			BodyPath: "documentNumber",
 		},
 		&requestflag.Flag[string]{
 			Name:     "document-type",
 			Usage:    "The type of KYC document being submitted.",
+			Required: true,
 			BodyPath: "documentType",
 		},
 		&requestflag.Flag[any]{
 			Name:     "expiration-date",
 			Usage:    "The expiration date of the document (YYYY-MM-DD).",
+			Required: true,
 			BodyPath: "expirationDate",
 		},
 		&requestflag.Flag[any]{
 			Name:     "issue-date",
 			Usage:    "The issue date of the document (YYYY-MM-DD).",
+			Required: true,
 			BodyPath: "issueDate",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "additional-document",
 			Usage:    "Array of additional documents (e.g., utility bills) as base64 encoded images.",
 			BodyPath: "additionalDocuments",
@@ -73,7 +80,7 @@ var identityKYCSubmit = cli.Command{
 }
 
 func handleIdentityKYCRetrieveStatus(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
@@ -105,14 +112,14 @@ func handleIdentityKYCRetrieveStatus(ctx context.Context, cmd *cli.Command) erro
 }
 
 func handleIdentityKYCSubmit(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.IdentityKYCSubmitParams{}
+	params := jocall3.IdentityKYCSubmitParams{}
 
 	options, err := flagOptions(
 		cmd,

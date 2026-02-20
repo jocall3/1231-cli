@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
@@ -18,14 +18,16 @@ import (
 var usersMePreferencesRetrieve = cli.Command{
 	Name:            "retrieve",
 	Usage:           "Retrieves the user's deep personalization preferences, including AI\ncustomization settings, notification channel priorities, thematic choices, and\ndata sharing consents.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleUsersMePreferencesRetrieve,
 	HideHelpCommand: true,
 }
 
-var usersMePreferencesUpdate = cli.Command{
-	Name:  "update",
-	Usage: "Updates the user's deep personalization preferences, allowing dynamic control\nover AI behavior, notification delivery, thematic choices, and data privacy\nsettings.",
+var usersMePreferencesUpdate = requestflag.WithInnerFlags(cli.Command{
+	Name:    "update",
+	Usage:   "Updates the user's deep personalization preferences, allowing dynamic control\nover AI behavior, notification delivery, thematic choices, and data privacy\nsettings.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
 			Name:     "ai-interaction-mode",
@@ -37,7 +39,7 @@ var usersMePreferencesUpdate = cli.Command{
 			Usage:    "Consent status for sharing anonymized data for AI improvement and personalized offers.",
 			BodyPath: "dataSharingConsent",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "notification-channels",
 			Usage:    "Preferred channels for receiving notifications.",
 			BodyPath: "notificationChannels",
@@ -60,10 +62,29 @@ var usersMePreferencesUpdate = cli.Command{
 	},
 	Action:          handleUsersMePreferencesUpdate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"notification-channels": {
+		&requestflag.InnerFlag[any]{
+			Name:       "notification-channels.email",
+			InnerField: "email",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "notification-channels.in-app",
+			InnerField: "inApp",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "notification-channels.push",
+			InnerField: "push",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "notification-channels.sms",
+			InnerField: "sms",
+		},
+	},
+})
 
 func handleUsersMePreferencesRetrieve(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
@@ -95,14 +116,14 @@ func handleUsersMePreferencesRetrieve(ctx context.Context, cmd *cli.Command) err
 }
 
 func handleUsersMePreferencesUpdate(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.UserMePreferenceUpdateParams{}
+	params := jocall3.UserMePreferenceUpdateParams{}
 
 	options, err := flagOptions(
 		cmd,

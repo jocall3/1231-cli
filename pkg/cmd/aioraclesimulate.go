@@ -7,33 +7,36 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
-var aiOracleSimulateRunAdvanced = cli.Command{
-	Name:  "run-advanced",
-	Usage: "Engages the Quantum Oracle for highly complex, multi-variable simulations,\nallowing precise control over numerous financial parameters, market conditions,\nand personal events to generate deep, predictive insights and sensitivity\nanalysis.",
+var aiOracleSimulateRunAdvanced = requestflag.WithInnerFlags(cli.Command{
+	Name:    "run-advanced",
+	Usage:   "Engages the Quantum Oracle for highly complex, multi-variable simulations,\nallowing precise control over numerous financial parameters, market conditions,\nand personal events to generate deep, predictive insights and sensitivity\nanalysis.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "prompt",
 			Usage:    "A natural language prompt describing the complex, multi-variable scenario.",
+			Required: true,
 			BodyPath: "prompt",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[[]map[string]any]{
 			Name:     "scenario",
+			Required: true,
 			BodyPath: "scenarios",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "global-economic-factors",
 			Usage:    "Optional: Global economic conditions to apply to all scenarios.",
 			BodyPath: "globalEconomicFactors",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "personal-assumptions",
 			Usage:    "Optional: Personal financial assumptions to override defaults.",
 			BodyPath: "personalAssumptions",
@@ -41,15 +44,60 @@ var aiOracleSimulateRunAdvanced = cli.Command{
 	},
 	Action:          handleAIOracleSimulateRunAdvanced,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"scenario": {
+		&requestflag.InnerFlag[any]{
+			Name:       "scenario.duration-years",
+			Usage:      "The duration in years over which this scenario is simulated.",
+			InnerField: "durationYears",
+		},
+		&requestflag.InnerFlag[[]map[string]any]{
+			Name:       "scenario.events",
+			Usage:      "A list of discrete or continuous events that define this scenario.",
+			InnerField: "events",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "scenario.name",
+			Usage:      "A descriptive name for this specific scenario.",
+			InnerField: "name",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "scenario.sensitivity-analysis-params",
+			Usage:      "Parameters for multi-variable sensitivity analysis within this scenario.",
+			InnerField: "sensitivityAnalysisParams",
+		},
+	},
+	"global-economic-factors": {
+		&requestflag.InnerFlag[any]{
+			Name:       "global-economic-factors.inflation-rate",
+			InnerField: "inflationRate",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "global-economic-factors.interest-rate-baseline",
+			InnerField: "interestRateBaseline",
+		},
+	},
+	"personal-assumptions": {
+		&requestflag.InnerFlag[any]{
+			Name:       "personal-assumptions.annual-savings-rate",
+			InnerField: "annualSavingsRate",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "personal-assumptions.risk-tolerance",
+			InnerField: "riskTolerance",
+		},
+	},
+})
 
 var aiOracleSimulateRunStandard = cli.Command{
-	Name:  "run-standard",
-	Usage: "Submits a hypothetical scenario to the Quantum Oracle AI for standard financial\nimpact analysis. The AI simulates the effect on the user's current financial\nstate and provides a summary.",
+	Name:    "run-standard",
+	Usage:   "Submits a hypothetical scenario to the Quantum Oracle AI for standard financial\nimpact analysis. The AI simulates the effect on the user's current financial\nstate and provides a summary.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "prompt",
 			Usage:    "A natural language prompt describing the 'what-if' scenario.",
+			Required: true,
 			BodyPath: "prompt",
 		},
 		&requestflag.Flag[any]{
@@ -63,14 +111,14 @@ var aiOracleSimulateRunStandard = cli.Command{
 }
 
 func handleAIOracleSimulateRunAdvanced(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.AIOracleSimulateRunAdvancedParams{}
+	params := jocall3.AIOracleSimulateRunAdvancedParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -97,14 +145,14 @@ func handleAIOracleSimulateRunAdvanced(ctx context.Context, cmd *cli.Command) er
 }
 
 func handleAIOracleSimulateRunStandard(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.AIOracleSimulateRunStandardParams{}
+	params := jocall3.AIOracleSimulateRunStandardParams{}
 
 	options, err := flagOptions(
 		cmd,

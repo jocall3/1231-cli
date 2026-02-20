@@ -7,39 +7,44 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var goalsCreate = cli.Command{
-	Name:  "create",
-	Usage: "Creates a new long-term financial goal, with optional AI plan generation.",
+	Name:    "create",
+	Usage:   "Creates a new long-term financial goal, with optional AI plan generation.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "name",
 			Usage:    "Name of the new financial goal.",
+			Required: true,
 			BodyPath: "name",
 		},
 		&requestflag.Flag[any]{
 			Name:     "target-amount",
 			Usage:    "The target monetary amount for the goal.",
+			Required: true,
 			BodyPath: "targetAmount",
 		},
 		&requestflag.Flag[any]{
 			Name:     "target-date",
 			Usage:    "The target completion date for the goal.",
+			Required: true,
 			BodyPath: "targetDate",
 		},
 		&requestflag.Flag[string]{
 			Name:     "type",
 			Usage:    "Type of financial goal.",
+			Required: true,
 			BodyPath: "type",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "contributing-account",
 			Usage:    "Optional: List of account IDs initially contributing to this goal.",
 			BodyPath: "contributingAccounts",
@@ -47,14 +52,16 @@ var goalsCreate = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "generate-ai-plan",
 			Usage:    "If true, AI will automatically generate a strategic plan for the goal.",
+			Default:  false,
 			BodyPath: "generateAIPlan",
 		},
 		&requestflag.Flag[any]{
 			Name:     "initial-contribution",
 			Usage:    "Optional: Initial amount to contribute to the goal.",
+			Default:  0,
 			BodyPath: "initialContribution",
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:     "risk-tolerance",
 			Usage:    "Desired risk tolerance for investments related to this goal.",
 			BodyPath: "riskTolerance",
@@ -65,11 +72,13 @@ var goalsCreate = cli.Command{
 }
 
 var goalsRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Retrieves detailed information for a specific financial goal, including current\nprogress, AI strategic plan, and related insights.",
+	Name:    "retrieve",
+	Usage:   "Retrieves detailed information for a specific financial goal, including current\nprogress, AI strategic plan, and related insights.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "goal-id",
+			Name:     "goal-id",
+			Required: true,
 		},
 	},
 	Action:          handleGoalsRetrieve,
@@ -77,13 +86,15 @@ var goalsRetrieve = cli.Command{
 }
 
 var goalsUpdate = cli.Command{
-	Name:  "update",
-	Usage: "Updates the parameters of an existing financial goal, such as target amount,\ndate, or contributing accounts. This may trigger an AI plan recalculation.",
+	Name:    "update",
+	Usage:   "Updates the parameters of an existing financial goal, such as target amount,\ndate, or contributing accounts. This may trigger an AI plan recalculation.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "goal-id",
+			Name:     "goal-id",
+			Required: true,
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[any]{
 			Name:     "contributing-account",
 			Usage:    "Updated list of account IDs contributing to this goal.",
 			BodyPath: "contributingAccounts",
@@ -91,6 +102,7 @@ var goalsUpdate = cli.Command{
 		&requestflag.Flag[any]{
 			Name:     "generate-ai-plan",
 			Usage:    "If true, AI will recalculate and update the strategic plan for the goal.",
+			Default:  false,
 			BodyPath: "generateAIPlan",
 		},
 		&requestflag.Flag[any]{
@@ -98,7 +110,7 @@ var goalsUpdate = cli.Command{
 			Usage:    "Updated name of the financial goal.",
 			BodyPath: "name",
 		},
-		&requestflag.Flag[string]{
+		&requestflag.Flag[any]{
 			Name:     "risk-tolerance",
 			Usage:    "Updated risk tolerance for investments related to this goal.",
 			BodyPath: "riskTolerance",
@@ -124,8 +136,9 @@ var goalsUpdate = cli.Command{
 }
 
 var goalsList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of all financial goals defined by the user, including their\nprogress and associated AI plans.",
+	Name:    "list",
+	Usage:   "Retrieves a list of all financial goals defined by the user, including their\nprogress and associated AI plans.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -136,6 +149,7 @@ var goalsList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -144,11 +158,13 @@ var goalsList = cli.Command{
 }
 
 var goalsDelete = cli.Command{
-	Name:  "delete",
-	Usage: "Deletes a specific financial goal from the user's profile.",
+	Name:    "delete",
+	Usage:   "Deletes a specific financial goal from the user's profile.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "goal-id",
+			Name:     "goal-id",
+			Required: true,
 		},
 	},
 	Action:          handleGoalsDelete,
@@ -156,14 +172,14 @@ var goalsDelete = cli.Command{
 }
 
 func handleGoalsCreate(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.GoalNewParams{}
+	params := jocall3.GoalNewParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -190,7 +206,7 @@ func handleGoalsCreate(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleGoalsRetrieve(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("goal-id") && len(unusedArgs) > 0 {
 		cmd.Set("goal-id", unusedArgs[0])
@@ -213,7 +229,7 @@ func handleGoalsRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Goals.Get(ctx, cmd.Value("goal-id").(any), options...)
+	_, err = client.Goals.Get(ctx, interface{}(cmd.Value("goal-id").(any)), options...)
 	if err != nil {
 		return err
 	}
@@ -225,7 +241,7 @@ func handleGoalsRetrieve(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleGoalsUpdate(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("goal-id") && len(unusedArgs) > 0 {
 		cmd.Set("goal-id", unusedArgs[0])
@@ -235,7 +251,7 @@ func handleGoalsUpdate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.GoalUpdateParams{}
+	params := jocall3.GoalUpdateParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -252,7 +268,7 @@ func handleGoalsUpdate(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Goals.Update(
 		ctx,
-		cmd.Value("goal-id").(any),
+		interface{}(cmd.Value("goal-id").(any)),
 		params,
 		options...,
 	)
@@ -267,14 +283,14 @@ func handleGoalsUpdate(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleGoalsList(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.GoalListParams{}
+	params := jocall3.GoalListParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -301,7 +317,7 @@ func handleGoalsList(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleGoalsDelete(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("goal-id") && len(unusedArgs) > 0 {
 		cmd.Set("goal-id", unusedArgs[0])
@@ -322,5 +338,5 @@ func handleGoalsDelete(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	return client.Goals.Delete(ctx, cmd.Value("goal-id").(any), options...)
+	return client.Goals.Delete(ctx, interface{}(cmd.Value("goal-id").(any)), options...)
 }

@@ -8,16 +8,30 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"slices"
 
-	"github.com/stainless-sdks/1231-cli/pkg/cmd"
-	"github.com/stainless-sdks/1231-go"
+	"github.com/jocall3/1231-cli/pkg/cmd"
+	"github.com/jocall3/go"
 	"github.com/tidwall/gjson"
+	"github.com/urfave/cli/v3"
 )
 
 func main() {
 	app := cmd.Command
+
+	if slices.Contains(os.Args, "__complete") {
+		prepareForAutocomplete(app)
+	}
+
 	if err := app.Run(context.Background(), os.Args); err != nil {
-		var apierr *jamesburvelocallaghaniiicitibankdemobusinessinc.Error
+		exitCode := 1
+
+		// Check if error has a custom exit code
+		if exitErr, ok := err.(cli.ExitCoder); ok {
+			exitCode = exitErr.ExitCode()
+		}
+
+		var apierr *jocall3.Error
 		if errors.As(err, &apierr) {
 			fmt.Fprintf(os.Stderr, "%s %q: %d %s\n", apierr.Request.Method, apierr.Request.URL, apierr.Response.StatusCode, http.StatusText(apierr.Response.StatusCode))
 			format := app.String("format-error")
@@ -30,6 +44,15 @@ func main() {
 		} else {
 			fmt.Fprintf(os.Stderr, "%s\n", err.Error())
 		}
-		os.Exit(1)
+		os.Exit(exitCode)
+	}
+}
+
+func prepareForAutocomplete(cmd *cli.Command) {
+	// urfave/cli does not handle flag completions and will print an error if we inspect a command with invalid flags.
+	// This skips that sort of validation
+	cmd.SkipFlagParsing = true
+	for _, child := range cmd.Commands {
+		prepareForAutocomplete(child)
 	}
 }

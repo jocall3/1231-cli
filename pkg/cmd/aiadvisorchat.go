@@ -7,17 +7,18 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var aiAdvisorChatRetrieveHistory = cli.Command{
-	Name:  "retrieve-history",
-	Usage: "Fetches the full conversation history with the Quantum AI Advisor for a given\nsession or user.",
+	Name:    "retrieve-history",
+	Usage:   "Fetches the full conversation history with the Quantum AI Advisor for a given\nsession or user.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -28,6 +29,7 @@ var aiAdvisorChatRetrieveHistory = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 		&requestflag.Flag[any]{
@@ -40,11 +42,12 @@ var aiAdvisorChatRetrieveHistory = cli.Command{
 	HideHelpCommand: true,
 }
 
-var aiAdvisorChatSendMessage = cli.Command{
-	Name:  "send-message",
-	Usage: "Initiates or continues a sophisticated conversation with Quantum, the AI\nAdvisor. Quantum can provide advanced financial insights, execute complex tasks\nvia an expanding suite of intelligent tools, and learn from user interactions to\noffer hyper-personalized guidance.",
+var aiAdvisorChatSendMessage = requestflag.WithInnerFlags(cli.Command{
+	Name:    "send-message",
+	Usage:   "Initiates or continues a sophisticated conversation with Quantum, the AI\nAdvisor. Quantum can provide advanced financial insights, execute complex tasks\nvia an expanding suite of intelligent tools, and learn from user interactions to\noffer hyper-personalized guidance.",
+	Suggest: true,
 	Flags: []cli.Flag{
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "function-response",
 			Usage:    "Optional: The output from a tool function that the AI previously requested to be executed.",
 			BodyPath: "functionResponse",
@@ -62,17 +65,30 @@ var aiAdvisorChatSendMessage = cli.Command{
 	},
 	Action:          handleAIAdvisorChatSendMessage,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"function-response": {
+		&requestflag.InnerFlag[any]{
+			Name:       "function-response.name",
+			Usage:      "The name of the tool function for which this is a response.",
+			InnerField: "name",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "function-response.response",
+			Usage:      "The JSON output from the execution of the tool function.",
+			InnerField: "response",
+		},
+	},
+})
 
 func handleAIAdvisorChatRetrieveHistory(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.AIAdvisorChatGetHistoryParams{}
+	params := jocall3.AIAdvisorChatGetHistoryParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -99,14 +115,14 @@ func handleAIAdvisorChatRetrieveHistory(ctx context.Context, cmd *cli.Command) e
 }
 
 func handleAIAdvisorChatSendMessage(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.AIAdvisorChatSendMessageParams{}
+	params := jocall3.AIAdvisorChatSendMessageParams{}
 
 	options, err := flagOptions(
 		cmd,

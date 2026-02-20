@@ -7,46 +7,53 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
-var budgetsCreate = cli.Command{
-	Name:  "create",
-	Usage: "Creates a new financial budget for the user, with optional AI auto-population of\ncategories and amounts.",
+var budgetsCreate = requestflag.WithInnerFlags(cli.Command{
+	Name:    "create",
+	Usage:   "Creates a new financial budget for the user, with optional AI auto-population of\ncategories and amounts.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "end-date",
 			Usage:    "End date of the budget period.",
+			Required: true,
 			BodyPath: "endDate",
 		},
 		&requestflag.Flag[any]{
 			Name:     "name",
 			Usage:    "Name of the new budget.",
+			Required: true,
 			BodyPath: "name",
 		},
 		&requestflag.Flag[string]{
 			Name:     "period",
 			Usage:    "The frequency or period of the budget.",
+			Required: true,
 			BodyPath: "period",
 		},
 		&requestflag.Flag[any]{
 			Name:     "start-date",
 			Usage:    "Start date of the budget period.",
+			Required: true,
 			BodyPath: "startDate",
 		},
 		&requestflag.Flag[any]{
 			Name:     "total-amount",
 			Usage:    "Total amount allocated for the entire budget.",
+			Required: true,
 			BodyPath: "totalAmount",
 		},
 		&requestflag.Flag[any]{
 			Name:     "ai-auto-populate",
 			Usage:    "If true, AI will automatically populate categories and amounts based on historical spending.",
+			Default:  false,
 			BodyPath: "aiAutoPopulate",
 		},
 		&requestflag.Flag[any]{
@@ -54,7 +61,7 @@ var budgetsCreate = cli.Command{
 			Usage:    "Percentage threshold at which an alert is triggered.",
 			BodyPath: "alertThreshold",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[[]map[string]any]{
 			Name:     "category",
 			Usage:    "Initial breakdown of the budget by categories.",
 			BodyPath: "categories",
@@ -62,33 +69,48 @@ var budgetsCreate = cli.Command{
 	},
 	Action:          handleBudgetsCreate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"category": {
+		&requestflag.InnerFlag[any]{
+			Name:       "category.allocated",
+			InnerField: "allocated",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "category.name",
+			InnerField: "name",
+		},
+	},
+})
 
 var budgetsRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Retrieves detailed information for a specific budget, including current\nspending, remaining amounts, and AI recommendations.",
+	Name:    "retrieve",
+	Usage:   "Retrieves detailed information for a specific budget, including current\nspending, remaining amounts, and AI recommendations.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "budget-id",
+			Name:     "budget-id",
+			Required: true,
 		},
 	},
 	Action:          handleBudgetsRetrieve,
 	HideHelpCommand: true,
 }
 
-var budgetsUpdate = cli.Command{
-	Name:  "update",
-	Usage: "Updates the parameters of an existing budget, such as total amount, dates, or\ncategories.",
+var budgetsUpdate = requestflag.WithInnerFlags(cli.Command{
+	Name:    "update",
+	Usage:   "Updates the parameters of an existing budget, such as total amount, dates, or\ncategories.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "budget-id",
+			Name:     "budget-id",
+			Required: true,
 		},
 		&requestflag.Flag[any]{
 			Name:     "alert-threshold",
 			Usage:    "Updated percentage threshold for alerts.",
 			BodyPath: "alertThreshold",
 		},
-		&requestflag.Flag[[]any]{
+		&requestflag.Flag[[]map[string]any]{
 			Name:     "category",
 			Usage:    "Updated breakdown of the budget by categories. Existing categories will be updated, new ones added.",
 			BodyPath: "categories",
@@ -121,11 +143,23 @@ var budgetsUpdate = cli.Command{
 	},
 	Action:          handleBudgetsUpdate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"category": {
+		&requestflag.InnerFlag[any]{
+			Name:       "category.allocated",
+			InnerField: "allocated",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "category.name",
+			InnerField: "name",
+		},
+	},
+})
 
 var budgetsList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of all active and historical budgets for the authenticated\nuser.",
+	Name:    "list",
+	Usage:   "Retrieves a list of all active and historical budgets for the authenticated\nuser.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -136,6 +170,7 @@ var budgetsList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -144,11 +179,13 @@ var budgetsList = cli.Command{
 }
 
 var budgetsDelete = cli.Command{
-	Name:  "delete",
-	Usage: "Deletes a specific budget from the user's profile.",
+	Name:    "delete",
+	Usage:   "Deletes a specific budget from the user's profile.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "budget-id",
+			Name:     "budget-id",
+			Required: true,
 		},
 	},
 	Action:          handleBudgetsDelete,
@@ -156,14 +193,14 @@ var budgetsDelete = cli.Command{
 }
 
 func handleBudgetsCreate(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.BudgetNewParams{}
+	params := jocall3.BudgetNewParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -190,7 +227,7 @@ func handleBudgetsCreate(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleBudgetsRetrieve(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("budget-id") && len(unusedArgs) > 0 {
 		cmd.Set("budget-id", unusedArgs[0])
@@ -213,7 +250,7 @@ func handleBudgetsRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Budgets.Get(ctx, cmd.Value("budget-id").(any), options...)
+	_, err = client.Budgets.Get(ctx, interface{}(cmd.Value("budget-id").(any)), options...)
 	if err != nil {
 		return err
 	}
@@ -225,7 +262,7 @@ func handleBudgetsRetrieve(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleBudgetsUpdate(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("budget-id") && len(unusedArgs) > 0 {
 		cmd.Set("budget-id", unusedArgs[0])
@@ -235,7 +272,7 @@ func handleBudgetsUpdate(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.BudgetUpdateParams{}
+	params := jocall3.BudgetUpdateParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -252,7 +289,7 @@ func handleBudgetsUpdate(ctx context.Context, cmd *cli.Command) error {
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Budgets.Update(
 		ctx,
-		cmd.Value("budget-id").(any),
+		interface{}(cmd.Value("budget-id").(any)),
 		params,
 		options...,
 	)
@@ -267,14 +304,14 @@ func handleBudgetsUpdate(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleBudgetsList(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.BudgetListParams{}
+	params := jocall3.BudgetListParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -301,7 +338,7 @@ func handleBudgetsList(ctx context.Context, cmd *cli.Command) error {
 }
 
 func handleBudgetsDelete(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("budget-id") && len(unusedArgs) > 0 {
 		cmd.Set("budget-id", unusedArgs[0])
@@ -322,5 +359,5 @@ func handleBudgetsDelete(ctx context.Context, cmd *cli.Command) error {
 		return err
 	}
 
-	return client.Budgets.Delete(ctx, cmd.Value("budget-id").(any), options...)
+	return client.Budgets.Delete(ctx, interface{}(cmd.Value("budget-id").(any)), options...)
 }

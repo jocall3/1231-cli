@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
@@ -17,13 +17,14 @@ import (
 var transactionsInsightsGetSpendingTrends = cli.Command{
 	Name:            "get-spending-trends",
 	Usage:           "Retrieves AI-generated insights into user spending trends over time, identifying\npatterns and anomalies.",
+	Suggest:         true,
 	Flags:           []cli.Flag{},
 	Action:          handleTransactionsInsightsGetSpendingTrends,
 	HideHelpCommand: true,
 }
 
 func handleTransactionsInsightsGetSpendingTrends(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {

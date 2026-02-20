@@ -7,43 +7,49 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var lendingApplicationsRetrieve = cli.Command{
-	Name:  "retrieve",
-	Usage: "Retrieves the current status and detailed information for a submitted loan\napplication, including AI underwriting outcomes, approved terms, and next steps.",
+	Name:    "retrieve",
+	Usage:   "Retrieves the current status and detailed information for a submitted loan\napplication, including AI underwriting outcomes, approved terms, and next steps.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "application-id",
+			Name:     "application-id",
+			Required: true,
 		},
 	},
 	Action:          handleLendingApplicationsRetrieve,
 	HideHelpCommand: true,
 }
 
-var lendingApplicationsSubmit = cli.Command{
-	Name:  "submit",
-	Usage: "Submits a new loan application, which is instantly processed and underwritten by\nour Quantum AI, providing rapid decisions and personalized loan offers based on\nreal-time financial health data.",
+var lendingApplicationsSubmit = requestflag.WithInnerFlags(cli.Command{
+	Name:    "submit",
+	Usage:   "Submits a new loan application, which is instantly processed and underwritten by\nour Quantum AI, providing rapid decisions and personalized loan offers based on\nreal-time financial health data.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "loan-amount",
 			Usage:    "The desired loan amount.",
+			Required: true,
 			BodyPath: "loanAmount",
 		},
 		&requestflag.Flag[string]{
 			Name:     "loan-purpose",
 			Usage:    "The purpose of the loan.",
+			Required: true,
 			BodyPath: "loanPurpose",
 		},
 		&requestflag.Flag[any]{
 			Name:     "repayment-term-months",
 			Usage:    "The desired repayment term in months.",
+			Required: true,
 			BodyPath: "repaymentTermMonths",
 		},
 		&requestflag.Flag[any]{
@@ -51,7 +57,7 @@ var lendingApplicationsSubmit = cli.Command{
 			Usage:    "Optional notes or details for the application.",
 			BodyPath: "additionalNotes",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "co-applicant",
 			Usage:    "Optional: Details of a co-applicant for the loan.",
 			BodyPath: "coApplicant",
@@ -59,10 +65,25 @@ var lendingApplicationsSubmit = cli.Command{
 	},
 	Action:          handleLendingApplicationsSubmit,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"co-applicant": {
+		&requestflag.InnerFlag[any]{
+			Name:       "co-applicant.email",
+			InnerField: "email",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "co-applicant.income",
+			InnerField: "income",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "co-applicant.name",
+			InnerField: "name",
+		},
+	},
+})
 
 func handleLendingApplicationsRetrieve(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("application-id") && len(unusedArgs) > 0 {
 		cmd.Set("application-id", unusedArgs[0])
@@ -85,7 +106,7 @@ func handleLendingApplicationsRetrieve(ctx context.Context, cmd *cli.Command) er
 
 	var res []byte
 	options = append(options, option.WithResponseBodyInto(&res))
-	_, err = client.Lending.Applications.Get(ctx, cmd.Value("application-id").(any), options...)
+	_, err = client.Lending.Applications.Get(ctx, interface{}(cmd.Value("application-id").(any)), options...)
 	if err != nil {
 		return err
 	}
@@ -97,14 +118,14 @@ func handleLendingApplicationsRetrieve(ctx context.Context, cmd *cli.Command) er
 }
 
 func handleLendingApplicationsSubmit(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.LendingApplicationSubmitParams{}
+	params := jocall3.LendingApplicationSubmitParams{}
 
 	options, err := flagOptions(
 		cmd,

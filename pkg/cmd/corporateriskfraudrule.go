@@ -7,66 +7,150 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
-var corporateRiskFraudRulesCreate = cli.Command{
-	Name:  "create",
-	Usage: "Creates a new custom AI-powered fraud detection rule, allowing organizations to\ndefine specific criteria, risk scores, and automated responses to evolving\nthreat landscapes.",
+var corporateRiskFraudRulesCreate = requestflag.WithInnerFlags(cli.Command{
+	Name:    "create",
+	Usage:   "Creates a new custom AI-powered fraud detection rule, allowing organizations to\ndefine specific criteria, risk scores, and automated responses to evolving\nthreat landscapes.",
+	Suggest: true,
 	Flags: []cli.Flag{
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "action",
 			Usage:    "Action to take when a fraud rule is triggered.",
+			Required: true,
 			BodyPath: "action",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "criteria",
 			Usage:    "Criteria that define when a fraud rule should trigger.",
+			Required: true,
 			BodyPath: "criteria",
 		},
 		&requestflag.Flag[any]{
 			Name:     "description",
 			Usage:    "Detailed description of what the rule detects.",
+			Required: true,
 			BodyPath: "description",
 		},
 		&requestflag.Flag[any]{
 			Name:     "name",
 			Usage:    "Name of the new fraud rule.",
+			Required: true,
 			BodyPath: "name",
 		},
 		&requestflag.Flag[string]{
 			Name:     "severity",
 			Usage:    "Severity level when this rule is triggered.",
+			Required: true,
 			BodyPath: "severity",
 		},
 		&requestflag.Flag[string]{
 			Name:     "status",
 			Usage:    "Initial status of the rule.",
+			Required: true,
 			BodyPath: "status",
 		},
 	},
 	Action:          handleCorporateRiskFraudRulesCreate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"action": {
+		&requestflag.InnerFlag[any]{
+			Name:       "action.details",
+			Usage:      "Details or instructions for the action.",
+			InnerField: "details",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "action.type",
+			Usage:      "Type of action to perform.",
+			InnerField: "type",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "action.target-team",
+			Usage:      "The team or department to notify for alerts/reviews.",
+			InnerField: "targetTeam",
+		},
+	},
+	"criteria": {
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.account-inactivity-days",
+			Usage:      "Number of days an account must be inactive for the rule to apply.",
+			InnerField: "accountInactivityDays",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.country-of-origin",
+			Usage:      "List of ISO 2-letter country codes for transaction origin.",
+			InnerField: "countryOfOrigin",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.geographic-distance-km",
+			Usage:      "Minimum geographic distance (in km) from recent activity for anomaly.",
+			InnerField: "geographicDistanceKm",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.last-login-days",
+			Usage:      "Number of days since last user login for anomaly detection.",
+			InnerField: "lastLoginDays",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.no-travel-notification",
+			Usage:      "If true, rule applies only if no prior travel notification was made.",
+			InnerField: "noTravelNotification",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.payment-count-min",
+			Usage:      "Minimum number of payments in a timeframe.",
+			InnerField: "paymentCountMin",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.recipient-country-risk-level",
+			Usage:      "List of risk levels for recipient countries.",
+			InnerField: "recipientCountryRiskLevel",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.recipient-new",
+			Usage:      "If true, recipient must be a new payee.",
+			InnerField: "recipientNew",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.timeframe-hours",
+			Usage:      "Timeframe in hours for payment count or other event aggregations.",
+			InnerField: "timeframeHours",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.transaction-amount-min",
+			Usage:      "Minimum transaction amount to consider.",
+			InnerField: "transactionAmountMin",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.transaction-type",
+			Usage:      "Specific transaction type (e.g., debit, credit).",
+			InnerField: "transactionType",
+		},
+	},
+})
 
-var corporateRiskFraudRulesUpdate = cli.Command{
-	Name:  "update",
-	Usage: "Updates an existing custom AI-powered fraud detection rule, modifying its\ncriteria, actions, or status.",
+var corporateRiskFraudRulesUpdate = requestflag.WithInnerFlags(cli.Command{
+	Name:    "update",
+	Usage:   "Updates an existing custom AI-powered fraud detection rule, modifying its\ncriteria, actions, or status.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "rule-id",
+			Name:     "rule-id",
+			Required: true,
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "action",
 			Usage:    "Action to take when a fraud rule is triggered.",
 			BodyPath: "action",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "criteria",
 			Usage:    "Criteria that define when a fraud rule should trigger.",
 			BodyPath: "criteria",
@@ -94,11 +178,87 @@ var corporateRiskFraudRulesUpdate = cli.Command{
 	},
 	Action:          handleCorporateRiskFraudRulesUpdate,
 	HideHelpCommand: true,
-}
+}, map[string][]requestflag.HasOuterFlag{
+	"action": {
+		&requestflag.InnerFlag[any]{
+			Name:       "action.details",
+			Usage:      "Details or instructions for the action.",
+			InnerField: "details",
+		},
+		&requestflag.InnerFlag[string]{
+			Name:       "action.type",
+			Usage:      "Type of action to perform.",
+			InnerField: "type",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "action.target-team",
+			Usage:      "The team or department to notify for alerts/reviews.",
+			InnerField: "targetTeam",
+		},
+	},
+	"criteria": {
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.account-inactivity-days",
+			Usage:      "Number of days an account must be inactive for the rule to apply.",
+			InnerField: "accountInactivityDays",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.country-of-origin",
+			Usage:      "List of ISO 2-letter country codes for transaction origin.",
+			InnerField: "countryOfOrigin",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.geographic-distance-km",
+			Usage:      "Minimum geographic distance (in km) from recent activity for anomaly.",
+			InnerField: "geographicDistanceKm",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.last-login-days",
+			Usage:      "Number of days since last user login for anomaly detection.",
+			InnerField: "lastLoginDays",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.no-travel-notification",
+			Usage:      "If true, rule applies only if no prior travel notification was made.",
+			InnerField: "noTravelNotification",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.payment-count-min",
+			Usage:      "Minimum number of payments in a timeframe.",
+			InnerField: "paymentCountMin",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.recipient-country-risk-level",
+			Usage:      "List of risk levels for recipient countries.",
+			InnerField: "recipientCountryRiskLevel",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.recipient-new",
+			Usage:      "If true, recipient must be a new payee.",
+			InnerField: "recipientNew",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.timeframe-hours",
+			Usage:      "Timeframe in hours for payment count or other event aggregations.",
+			InnerField: "timeframeHours",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.transaction-amount-min",
+			Usage:      "Minimum transaction amount to consider.",
+			InnerField: "transactionAmountMin",
+		},
+		&requestflag.InnerFlag[any]{
+			Name:       "criteria.transaction-type",
+			Usage:      "Specific transaction type (e.g., debit, credit).",
+			InnerField: "transactionType",
+		},
+	},
+})
 
 var corporateRiskFraudRulesList = cli.Command{
-	Name:  "list",
-	Usage: "Retrieves a list of AI-powered fraud detection rules currently active for the\norganization, including their parameters, thresholds, and associated actions\n(e.g., flag, block, alert).",
+	Name:    "list",
+	Usage:   "Retrieves a list of AI-powered fraud detection rules currently active for the\norganization, including their parameters, thresholds, and associated actions\n(e.g., flag, block, alert).",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:      "limit",
@@ -109,6 +269,7 @@ var corporateRiskFraudRulesList = cli.Command{
 		&requestflag.Flag[any]{
 			Name:      "offset",
 			Usage:     "Number of items to skip before starting to collect the result set.",
+			Default:   0,
 			QueryPath: "offset",
 		},
 	},
@@ -117,11 +278,13 @@ var corporateRiskFraudRulesList = cli.Command{
 }
 
 var corporateRiskFraudRulesDelete = cli.Command{
-	Name:  "delete",
-	Usage: "Deletes a specific custom AI-powered fraud detection rule.",
+	Name:    "delete",
+	Usage:   "Deletes a specific custom AI-powered fraud detection rule.",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
-			Name: "rule-id",
+			Name:     "rule-id",
+			Required: true,
 		},
 	},
 	Action:          handleCorporateRiskFraudRulesDelete,
@@ -129,14 +292,14 @@ var corporateRiskFraudRulesDelete = cli.Command{
 }
 
 func handleCorporateRiskFraudRulesCreate(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.CorporateRiskFraudRuleNewParams{}
+	params := jocall3.CorporateRiskFraudRuleNewParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -163,7 +326,7 @@ func handleCorporateRiskFraudRulesCreate(ctx context.Context, cmd *cli.Command) 
 }
 
 func handleCorporateRiskFraudRulesUpdate(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("rule-id") && len(unusedArgs) > 0 {
 		cmd.Set("rule-id", unusedArgs[0])
@@ -173,7 +336,7 @@ func handleCorporateRiskFraudRulesUpdate(ctx context.Context, cmd *cli.Command) 
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.CorporateRiskFraudRuleUpdateParams{}
+	params := jocall3.CorporateRiskFraudRuleUpdateParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -190,7 +353,7 @@ func handleCorporateRiskFraudRulesUpdate(ctx context.Context, cmd *cli.Command) 
 	options = append(options, option.WithResponseBodyInto(&res))
 	_, err = client.Corporate.Risk.Fraud.Rules.Update(
 		ctx,
-		cmd.Value("rule-id").(any),
+		interface{}(cmd.Value("rule-id").(any)),
 		params,
 		options...,
 	)
@@ -205,14 +368,14 @@ func handleCorporateRiskFraudRulesUpdate(ctx context.Context, cmd *cli.Command) 
 }
 
 func handleCorporateRiskFraudRulesList(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.CorporateRiskFraudRuleListParams{}
+	params := jocall3.CorporateRiskFraudRuleListParams{}
 
 	options, err := flagOptions(
 		cmd,
@@ -239,7 +402,7 @@ func handleCorporateRiskFraudRulesList(ctx context.Context, cmd *cli.Command) er
 }
 
 func handleCorporateRiskFraudRulesDelete(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 	if !cmd.IsSet("rule-id") && len(unusedArgs) > 0 {
 		cmd.Set("rule-id", unusedArgs[0])
@@ -260,5 +423,5 @@ func handleCorporateRiskFraudRulesDelete(ctx context.Context, cmd *cli.Command) 
 		return err
 	}
 
-	return client.Corporate.Risk.Fraud.Rules.Delete(ctx, cmd.Value("rule-id").(any), options...)
+	return client.Corporate.Risk.Fraud.Rules.Delete(ctx, interface{}(cmd.Value("rule-id").(any)), options...)
 }

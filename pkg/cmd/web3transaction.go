@@ -7,41 +7,47 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/stainless-sdks/1231-cli/internal/apiquery"
-	"github.com/stainless-sdks/1231-cli/internal/requestflag"
-	"github.com/stainless-sdks/1231-go"
-	"github.com/stainless-sdks/1231-go/option"
+	"github.com/jocall3/1231-cli/internal/apiquery"
+	"github.com/jocall3/1231-cli/internal/requestflag"
+	"github.com/jocall3/go"
+	"github.com/jocall3/go/option"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
 
 var web3TransactionsInitiateTransfer = cli.Command{
-	Name:  "initiate-transfer",
-	Usage: "Prepares and initiates a cryptocurrency transfer from a connected wallet to a\nspecified recipient address. Requires user confirmation (e.g., via wallet\nsignature).",
+	Name:    "initiate-transfer",
+	Usage:   "Prepares and initiates a cryptocurrency transfer from a connected wallet to a\nspecified recipient address. Requires user confirmation (e.g., via wallet\nsignature).",
+	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[any]{
 			Name:     "amount",
 			Usage:    "The amount of cryptocurrency to transfer.",
+			Required: true,
 			BodyPath: "amount",
 		},
 		&requestflag.Flag[any]{
 			Name:     "asset-symbol",
 			Usage:    "Symbol of the crypto asset to transfer (e.g., ETH, USDC).",
+			Required: true,
 			BodyPath: "assetSymbol",
 		},
 		&requestflag.Flag[any]{
 			Name:     "blockchain-network",
 			Usage:    "The blockchain network for the transfer.",
+			Required: true,
 			BodyPath: "blockchainNetwork",
 		},
 		&requestflag.Flag[any]{
 			Name:     "recipient-address",
 			Usage:    "The recipient's blockchain address.",
+			Required: true,
 			BodyPath: "recipientAddress",
 		},
 		&requestflag.Flag[any]{
 			Name:     "source-wallet-id",
 			Usage:    "ID of the connected wallet from which to send funds.",
+			Required: true,
 			BodyPath: "sourceWalletId",
 		},
 		&requestflag.Flag[any]{
@@ -60,14 +66,14 @@ var web3TransactionsInitiateTransfer = cli.Command{
 }
 
 func handleWeb3TransactionsInitiateTransfer(ctx context.Context, cmd *cli.Command) error {
-	client := jamesburvelocallaghaniiicitibankdemobusinessinc.NewClient(getDefaultRequestOptions(cmd)...)
+	client := jocall3.NewClient(getDefaultRequestOptions(cmd)...)
 	unusedArgs := cmd.Args().Slice()
 
 	if len(unusedArgs) > 0 {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := jamesburvelocallaghaniiicitibankdemobusinessinc.Web3TransactionInitiateTransferParams{}
+	params := jocall3.Web3TransactionInitiateTransferParams{}
 
 	options, err := flagOptions(
 		cmd,
