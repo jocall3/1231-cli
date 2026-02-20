@@ -10,7 +10,7 @@ import (
 )
 
 func TestBudgetsCreate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"budgets", "create",
@@ -47,7 +47,7 @@ func TestBudgetsCreate(t *testing.T) {
 }
 
 func TestBudgetsRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"budgets", "retrieve",
@@ -56,7 +56,7 @@ func TestBudgetsRetrieve(t *testing.T) {
 }
 
 func TestBudgetsUpdate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"budgets", "update",
@@ -90,7 +90,7 @@ func TestBudgetsUpdate(t *testing.T) {
 }
 
 func TestBudgetsList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"budgets", "list",
@@ -100,7 +100,7 @@ func TestBudgetsList(t *testing.T) {
 }
 
 func TestBudgetsDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"budgets", "delete",

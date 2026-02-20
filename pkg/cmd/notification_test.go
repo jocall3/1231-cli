@@ -9,7 +9,7 @@ import (
 )
 
 func TestNotificationsListUserNotifications(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"notifications", "list-user-notifications",
@@ -21,7 +21,7 @@ func TestNotificationsListUserNotifications(t *testing.T) {
 }
 
 func TestNotificationsMarkAsRead(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"notifications", "mark-as-read",

@@ -9,7 +9,7 @@ import (
 )
 
 func TestDevelopersWebhooksCreate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"developers:webhooks", "create",
@@ -21,7 +21,7 @@ func TestDevelopersWebhooksCreate(t *testing.T) {
 }
 
 func TestDevelopersWebhooksUpdate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"developers:webhooks", "update",
@@ -34,7 +34,7 @@ func TestDevelopersWebhooksUpdate(t *testing.T) {
 }
 
 func TestDevelopersWebhooksList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"developers:webhooks", "list",
@@ -44,7 +44,7 @@ func TestDevelopersWebhooksList(t *testing.T) {
 }
 
 func TestDevelopersWebhooksDelete(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"developers:webhooks", "delete",

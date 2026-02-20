@@ -10,7 +10,7 @@ import (
 )
 
 func TestUsersLogin(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users", "login",
@@ -21,7 +21,7 @@ func TestUsersLogin(t *testing.T) {
 }
 
 func TestUsersRegister(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"users", "register",

@@ -9,7 +9,7 @@ import (
 )
 
 func TestAccountsLink(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"accounts", "link",
@@ -21,7 +21,7 @@ func TestAccountsLink(t *testing.T) {
 }
 
 func TestAccountsRetrieveDetails(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"accounts", "retrieve-details",
@@ -30,7 +30,7 @@ func TestAccountsRetrieveDetails(t *testing.T) {
 }
 
 func TestAccountsRetrieveMe(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"accounts", "retrieve-me",
@@ -40,7 +40,7 @@ func TestAccountsRetrieveMe(t *testing.T) {
 }
 
 func TestAccountsRetrieveStatements(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"accounts", "retrieve-statements",

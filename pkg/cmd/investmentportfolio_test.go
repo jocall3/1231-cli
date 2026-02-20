@@ -9,7 +9,7 @@ import (
 )
 
 func TestInvestmentsPortfoliosCreate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"investments:portfolios", "create",
@@ -24,7 +24,7 @@ func TestInvestmentsPortfoliosCreate(t *testing.T) {
 }
 
 func TestInvestmentsPortfoliosRetrieve(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"investments:portfolios", "retrieve",
@@ -33,7 +33,7 @@ func TestInvestmentsPortfoliosRetrieve(t *testing.T) {
 }
 
 func TestInvestmentsPortfoliosUpdate(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"investments:portfolios", "update",
@@ -45,7 +45,7 @@ func TestInvestmentsPortfoliosUpdate(t *testing.T) {
 }
 
 func TestInvestmentsPortfoliosList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"investments:portfolios", "list",
@@ -55,7 +55,7 @@ func TestInvestmentsPortfoliosList(t *testing.T) {
 }
 
 func TestInvestmentsPortfoliosRebalance(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"investments:portfolios", "rebalance",

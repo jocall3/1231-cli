@@ -9,7 +9,7 @@ import (
 )
 
 func TestWeb3WalletsList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"web3:wallets", "list",
@@ -19,7 +19,7 @@ func TestWeb3WalletsList(t *testing.T) {
 }
 
 func TestWeb3WalletsConnect(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"web3:wallets", "connect",
@@ -32,7 +32,7 @@ func TestWeb3WalletsConnect(t *testing.T) {
 }
 
 func TestWeb3WalletsRetrieveBalances(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"web3:wallets", "retrieve-balances",

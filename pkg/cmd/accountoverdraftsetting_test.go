@@ -9,7 +9,7 @@ import (
 )
 
 func TestAccountsOverdraftSettingsRetrieveOverdraftSettings(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"accounts:overdraft-settings", "retrieve-overdraft-settings",
@@ -18,7 +18,7 @@ func TestAccountsOverdraftSettingsRetrieveOverdraftSettings(t *testing.T) {
 }
 
 func TestAccountsOverdraftSettingsUpdateOverdraftSettings(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"accounts:overdraft-settings", "update-overdraft-settings",

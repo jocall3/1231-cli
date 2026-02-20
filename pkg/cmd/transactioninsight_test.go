@@ -9,7 +9,7 @@ import (
 )
 
 func TestTransactionsInsightsGetSpendingTrends(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"transactions:insights", "get-spending-trends",

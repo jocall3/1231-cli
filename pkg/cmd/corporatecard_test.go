@@ -10,7 +10,7 @@ import (
 )
 
 func TestCorporateCardsList(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"corporate:cards", "list",
@@ -20,7 +20,7 @@ func TestCorporateCardsList(t *testing.T) {
 }
 
 func TestCorporateCardsCreateVirtual(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"corporate:cards", "create-virtual",
@@ -57,7 +57,7 @@ func TestCorporateCardsCreateVirtual(t *testing.T) {
 }
 
 func TestCorporateCardsFreeze(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"corporate:cards", "freeze",
@@ -67,7 +67,7 @@ func TestCorporateCardsFreeze(t *testing.T) {
 }
 
 func TestCorporateCardsListTransactions(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"corporate:cards", "list-transactions",
@@ -80,7 +80,7 @@ func TestCorporateCardsListTransactions(t *testing.T) {
 }
 
 func TestCorporateCardsUpdateControls(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"corporate:cards", "update-controls",

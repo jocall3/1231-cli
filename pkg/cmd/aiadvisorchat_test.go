@@ -10,7 +10,7 @@ import (
 )
 
 func TestAIAdvisorChatRetrieveHistory(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"ai:advisor:chat", "retrieve-history",
@@ -21,7 +21,7 @@ func TestAIAdvisorChatRetrieveHistory(t *testing.T) {
 }
 
 func TestAIAdvisorChatSendMessage(t *testing.T) {
-	t.Skip("Prism tests are disabled")
+	t.Skip("Mock server tests are disabled")
 	mocktest.TestRunMockTestWithFlags(
 		t,
 		"ai:advisor:chat", "send-message",
